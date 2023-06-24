@@ -38,3 +38,18 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+ipcMain.on(
+    'EVENT_LISTENER_NAME', 
+    (event, args) => {
+      /* ---- Code to execute as callback ---- */
+    }
+  );
+
+  ipcRenderer.send(
+    'BACKGROUND_PROCESS_START', 
+    { 
+      "Key1": 123,
+      "Key2": 456
+    }
+  );
