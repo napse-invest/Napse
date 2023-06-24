@@ -1,11 +1,4 @@
-const electron = require('electron');
-const path = require('path');
-const url = require('url');
-
-const { app } = electron;
-const { BrowserWindow } = electron;
-
-let mainWindow;
+const { app, BrowserWindow } = require('electron')
 
 function createWindow() {
   const startUrl = process.env.DEV
