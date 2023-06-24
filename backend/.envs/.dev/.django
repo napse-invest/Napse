@@ -1,4 +1,6 @@
 # General secrets
 # ----------------------------------------------------------------------------------------------------
 # Django
-SECRET_KEY =
+
+SECRET_KEY=Qq9WfpbkqQdP07CrqNl5dJsCK6XvDdrhpNPed1LLBKQ
+PROUT=RUMp8jLcJW-_YBKz-agaHWP0Ih4qP7RRXKl4jbEEP54
