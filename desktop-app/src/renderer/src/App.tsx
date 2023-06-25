@@ -1,5 +1,5 @@
-import Versions from './components/Versions'
 import icons from './assets/icons.svg'
+import Versions from './components/Versions'
 
 function App(): JSX.Element {
   return (

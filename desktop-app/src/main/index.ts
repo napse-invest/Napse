@@ -1,10 +1,17 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
+import { BrowserWindow, app, shell } from 'electron'
 import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-
+const { PythonShell } = require('python-shell')
 function createWindow(): void {
   // Create the browser window.
+  PythonShell.run(
+    'backend/manage.py',
+    { args: ['runserver_plus 0.0.0.0:8000'] },
+    function (err, results) {
+      if (err) console.log(err)
+    }
+  )
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,

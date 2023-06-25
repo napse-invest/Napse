@@ -1,5 +1,5 @@
 {
-  "name": "desktop-app",
+  "name": "napse-desktop-app",
   "version": "1.0.0",
   "description": "An Electron application with React and TypeScript",
   "main": "./out/main/index.js",
@@ -22,7 +22,8 @@
   "dependencies": {
     "@electron-toolkit/preload": "^2.0.0",
     "@electron-toolkit/utils": "^1.0.2",
-    "electron-updater": "^5.3.0"
+    "electron-updater": "^5.3.0",
+    "python-shell": "^5.0.0"
   },
   "devDependencies": {
     "@electron-toolkit/tsconfig": "^1.0.1",
