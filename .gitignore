@@ -1,2 +1,3 @@
 backend/napse/secrets.py
 .venv
+requirements.txt
