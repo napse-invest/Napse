@@ -3,8 +3,13 @@ import ReactDOM from 'react-dom/client'
 // import './assets/index.css'
 import App from './App'
 
+// Translations
+import Languages from './components/Languages'
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <App />
+    <Languages>
+      <App />
+    </Languages>
   </React.StrictMode>
 )
