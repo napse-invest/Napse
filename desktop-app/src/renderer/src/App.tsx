@@ -1,9 +1,9 @@
 // Mui
-import { Stack, Button } from '@mui/material'
+import { Button, Stack } from '@mui/material'
 
 // Components
-import MainLayout from './layouts/MainLayout'
 import BasicCard from './components/Cards/BasicCard'
+import MainLayout from './layouts/MainLayout'
 
 // Intl
 import { useIntl } from 'react-intl'
@@ -19,7 +19,12 @@ function App(): JSX.Element {
               id: 'global.my-environments',
               defaultMessage: 'My environments'
             })}
-            <Button variant="contained">Create environment</Button>
+            <Button variant="contained">
+              {intl.formatMessage({
+                id: 'global.create-environment',
+                defaultMessage: 'Create environment'
+              })}
+            </Button>
           </Stack>
         }
         body={<></>}
