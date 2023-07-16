@@ -1,8 +1,38 @@
-export const palette = (mode: string) => {
+interface Color1 {
+  main: string
+}
+interface Color3 extends Color1 {
+  light: string
+  dark: string
+}
+
+interface Color5 extends Color3 {
+  lighter: string
+  darker: string
+}
+
+type Palette = {
+  mode: string
+  primary: Color3
+  secondary: Color3
+  grey: Color5
+  white: Color1
+  black: Color1
+  success: Color3
+  error: Color3
+  background: { default: string }
+}
+
+export const palette = (mode: string): Palette => {
   return {
     mode: mode,
 
     primary: {
+      ...{
+        light: '#4AAD9F',
+        main: '#007D71',
+        dark: '#005046'
+      },
       ...(mode === 'light' && {
         light: '#4AAD9F',
         main: '#007D71',
@@ -33,6 +63,11 @@ export const palette = (mode: string) => {
       main: '#404840'
     },
     success: {
+      ...{
+        light: '#8EEB8F',
+        main: '#4BB543',
+        dark: '#1D7F0E'
+      },
       ...(mode === 'light' && {
         light: '#8EEB8F',
         main: '#4BB543',
@@ -45,6 +80,11 @@ export const palette = (mode: string) => {
       })
     },
     error: {
+      ...{
+        light: '#FF6666',
+        main: '#FF0033',
+        dark: '#CC0022'
+      },
       ...(mode === 'light' && {
         light: '#FF6666',
         main: '#FF0033',
@@ -57,6 +97,7 @@ export const palette = (mode: string) => {
       })
     },
     background: {
+      ...{ default: '#F7FAF7' },
       ...(mode === 'light' && {
         default: '#F7FAF7'
       }),
@@ -64,13 +105,5 @@ export const palette = (mode: string) => {
         default: '#1C1D1C'
       })
     }
-    // inherit: {
-    //   ...(mode === 'light' && {
-    //     main: '#1C1D1C'
-    //   }),
-    //   ...(mode === 'dark' && {
-    //     main: '#F7FAF7'
-    //   })
-    // }
   }
 }
