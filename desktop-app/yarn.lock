@@ -3331,6 +3331,13 @@ react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
+react-font@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-font/-/react-font-1.2.1.tgz#929d8c58bba5fcfae3e30d48670da8ba29ad62e6"
+  integrity sha512-QWJmMHmr0c42XNCgKJxYrk13oO37fgfdokENj0a1CHFSN8u2w/h/RBQgK9ExgaCwnP5dHD48GXTMn3ejuR12kA==
+  dependencies:
+    webfontloader "^1.6.28"
+
 react-intl@^6.4.4:
   version "6.4.4"
   resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-6.4.4.tgz#14b45ce046bfbb60c0e6d392d8ddc30e9ead5a4f"
@@ -3936,6 +3943,11 @@ vite@^4.3.9:
     rollup "^3.21.0"
   optionalDependencies:
     fsevents "~2.3.2"
+
+webfontloader@^1.6.28:
+  version "1.6.28"
+  resolved "https://registry.yarnpkg.com/webfontloader/-/webfontloader-1.6.28.tgz#db786129253cb6e8eae54c2fb05f870af6675bae"
+  integrity sha512-Egb0oFEga6f+nSgasH3E0M405Pzn6y3/9tOVanv/DLfa1YBIgcv90L18YyWnvXkRbIM17v5Kv6IT2N6g1x5tvQ==
 
 which-boxed-primitive@^1.0.2:
   version "1.0.2"

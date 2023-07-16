@@ -12,29 +12,35 @@ import { useIntl } from 'react-intl'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { getTheme } from './utils/mui/theme'
 
+// Fonts
+import Font from 'react-font'
+
 function App(): JSX.Element {
   const intl = useIntl()
+  const theme = createTheme(getTheme('light'))
   return (
-    <ThemeProvider theme={createTheme(getTheme('light'))}>
-      <MainLayout>
-        <BasicCard
-          title={
-            <Stack direction="row" justifyContent="space-between">
-              {intl.formatMessage({
-                id: 'global.my-environments',
-                defaultMessage: 'My environments'
-              })}
-              <Button variant="contained">
+    <ThemeProvider theme={theme}>
+      <Font family={theme.typography.fontFamily || 'Roboto'}>
+        <MainLayout>
+          <BasicCard
+            title={
+              <Stack direction="row" justifyContent="space-between">
                 {intl.formatMessage({
-                  id: 'global.create-environment',
-                  defaultMessage: 'Create environment'
+                  id: 'global.my-environments',
+                  defaultMessage: 'My environments'
                 })}
-              </Button>
-            </Stack>
-          }
-          body={<></>}
-        />
-      </MainLayout>
+                <Button variant="contained">
+                  {intl.formatMessage({
+                    id: 'global.create-environment',
+                    defaultMessage: 'Create environment'
+                  })}
+                </Button>
+              </Stack>
+            }
+            body={<></>}
+          />
+        </MainLayout>
+      </Font>
     </ThemeProvider>
   )
 }

@@ -28,6 +28,7 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.6",
     "electron-updater": "^5.3.0",
+    "react-font": "^1.2.1",
     "react-intl": "^6.4.4"
   },
   "devDependencies": {
