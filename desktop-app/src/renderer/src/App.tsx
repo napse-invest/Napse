@@ -15,7 +15,7 @@ import { getTheme } from './utils/mui/theme'
 function App(): JSX.Element {
   const intl = useIntl()
   return (
-    <ThemeProvider theme={createTheme(getTheme())}>
+    <ThemeProvider theme={createTheme(getTheme('light'))}>
       <MainLayout>
         <BasicCard
           title={

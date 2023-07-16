@@ -1,6 +1,6 @@
 // Styles
 import { palette } from './palette'
 
-export const getTheme = () => ({
-  palette: palette('light')
+export const getTheme = (mode: string) => ({
+  palette: palette(mode)
 })
