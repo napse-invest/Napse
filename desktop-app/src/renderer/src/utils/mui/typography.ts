@@ -1,4 +1,24 @@
-export const typography = {
+interface TextVariant {
+  fontSize: string
+  fontWeight: number
+}
+
+export type Typography = {
+  fontFamily: string
+  h1: TextVariant
+  h2: TextVariant
+  h3: TextVariant
+  h4: TextVariant
+  h5: TextVariant
+  h6: TextVariant
+  body1: TextVariant
+  body2: TextVariant
+  button: TextVariant
+  caption: TextVariant
+  overline: TextVariant
+}
+
+export const typography: Typography = {
   fontFamily: 'Inter',
   h1: {
     fontSize: '3.5rem',
@@ -23,12 +43,6 @@ export const typography = {
   h6: {
     fontSize: '1rem',
     fontWeight: 700
-    // opacity: 0.8,
-  },
-  h7: {
-    fontSize: '1rem',
-    fontWeight: 700,
-    opacity: 0.8
   },
   body1: {
     fontSize: '1rem',

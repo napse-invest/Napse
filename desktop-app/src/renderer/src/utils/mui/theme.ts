@@ -1,8 +1,13 @@
 // Styles
-import { palette } from './palette'
-import { typography } from './typography'
+import { palette, Palette } from './palette'
+import { typography, Typography } from './typography'
 
-export const getTheme = (mode: string) => ({
+type Theme = {
+  palette: Palette
+  typography: Typography
+}
+
+export const getTheme = (mode: string): Theme => ({
   palette: palette(mode),
   typography: typography
 })

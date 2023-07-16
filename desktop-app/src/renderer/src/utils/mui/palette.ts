@@ -11,7 +11,7 @@ interface Color5 extends Color3 {
   darker: string
 }
 
-type Palette = {
+export type Palette = {
   mode: string
   primary: Color3
   secondary: Color3
