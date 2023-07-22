@@ -28,9 +28,11 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.6",
     "@total-typescript/ts-reset": "^0.4.2",
+    "electron-router-dom": "^1.0.5",
     "electron-updater": "^5.3.0",
     "react-font": "^1.2.1",
-    "react-intl": "^6.4.4"
+    "react-intl": "^6.4.4",
+    "react-router-dom": "^6.14.2"
   },
   "devDependencies": {
     "@electron-toolkit/tsconfig": "^1.0.1",
