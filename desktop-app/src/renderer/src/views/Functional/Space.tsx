@@ -1,16 +1,23 @@
 // React
 import * as React from 'react'
+import { useEffect, useState } from 'react'
 
 // Mui
 import { Button, Menu, MenuItem, Stack, Typography } from '@mui/material'
 
 const Space = (): JSX.Element => {
-  const [spaceName, setSpaceName] = React.useState<string>('space-1')
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [spaceName, setSpaceName] = useState<string>(
+    localStorage.getItem('current-space') || 'space-1'
+  )
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
+
+  useEffect(() => {
+    localStorage.setItem('current-space', spaceName)
+  }, [spaceName])
 
   return (
     <Stack spacing={2}>
