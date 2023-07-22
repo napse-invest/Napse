@@ -11,8 +11,14 @@ const Space = (): JSX.Element => {
   )
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
     setAnchorEl(event.currentTarget)
+  }
+
+  const changeSpace = (space: string): void => {
+    setAnchorEl(null)
+    setSpaceName(space)
+    window.dispatchEvent(new Event('space-changed'))
   }
 
   useEffect(() => {
@@ -36,7 +42,7 @@ const Space = (): JSX.Element => {
           id="basic-menu"
           anchorEl={anchorEl}
           open={open}
-          onClose={() => {
+          onClose={(): void => {
             setAnchorEl(null)
           }}
           MenuListProps={{
@@ -44,17 +50,15 @@ const Space = (): JSX.Element => {
           }}
         >
           <MenuItem
-            onClick={() => {
-              setSpaceName('space-1')
-              setAnchorEl(null)
+            onClick={(): void => {
+              changeSpace('space-1')
             }}
           >
             space-1
           </MenuItem>
           <MenuItem
-            onClick={() => {
-              setSpaceName('space-2')
-              setAnchorEl(null)
+            onClick={(): void => {
+              changeSpace('space-2')
             }}
           >
             space-2
