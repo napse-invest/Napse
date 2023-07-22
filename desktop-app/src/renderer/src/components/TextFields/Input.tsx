@@ -1,7 +1,11 @@
-// Mui
-import { TextField, styled } from '@mui/material'
+// React
+import { FC } from 'react'
 
-const StyledTextField = styled(TextField)(({ theme }) => ({
+// Mui
+import { styled } from '@mui/material'
+import MuiTextField, { TextFieldProps } from '@mui/material/TextField'
+
+const StyledTextField = styled(MuiTextField)(({ theme }) => ({
   '& input': {
     '&:-webkit-autofill': {
       boxShadow: 'unset',
@@ -11,12 +15,12 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   }
 }))
 
-interface Props {
+type Props = TextFieldProps & {
   helperText?: string
   error?: boolean
 }
 
-const Input = (props: Props): JSX.Element => {
+const Input: FC<Props> = (props) => {
   const { helperText, error, ...otherProps } = props
 
   return <StyledTextField helperText={!error ? null : helperText} error={error} {...otherProps} />
