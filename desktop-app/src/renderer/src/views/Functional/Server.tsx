@@ -24,7 +24,7 @@ const Server = (): JSX.Element => {
             `api-key-server-${localStorage.getItem('current-space') || 'space-1'}`
           ) || ''
         )
-      }, 200)
+      }, 100)
     })
   }, [])
 
