@@ -1,6 +1,9 @@
 // React
 import React, { FC, useState } from 'react'
 
+// Router
+import { useNavigate } from 'react-router-dom'
+
 // Mui
 import { Button, Menu, MenuItem } from '@mui/material'
 
@@ -18,6 +21,8 @@ interface Props {
 const SupplierSelector: FC<Props> = (props) => {
   const { suppliers, selectedSupplier, setSelectedSupplier } = props
 
+  const navigate = useNavigate()
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
@@ -28,9 +33,9 @@ const SupplierSelector: FC<Props> = (props) => {
     setSelectedSupplier(supplier.name)
   }
   const newSupplier = (): void => {
-    console.log('012809E1I0')
     setAnchorEl(null)
     setSelectedSupplier('')
+    navigate('/suppliers/new')
   }
 
   return (
