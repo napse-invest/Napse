@@ -19,6 +19,7 @@ const PageLogin: FC = () => {
 
   const handleSubmit = (): void => {
     console.log('submit')
+    localStorage.setItem('is-logged', 'true')
     navigate('/dashboard')
   }
 
