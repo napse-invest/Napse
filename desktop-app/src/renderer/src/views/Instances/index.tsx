@@ -1,5 +1,5 @@
 // React
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 // Components
 import InstancesList from './InstancesList'
@@ -16,21 +16,33 @@ const suppliers = [
   }
 ]
 
-const instances = [
-  {
-    id: '1',
-    name: 'Instance 1'
-  },
-  {
-    id: '2',
-    name: 'Instance 2'
-  }
-]
-
 const PageInstances: FC = () => {
   const [selectedSupplier, setSelectedSupplier] = useState(
     localStorage.getItem('selected-supplier') || ''
   )
+
+  const [instances, setInstances] = useState<
+    {
+      id: string
+      name: string
+    }[]
+  >([])
+
+  useEffect(() => {
+    localStorage.setItem('selected-supplier', selectedSupplier)
+
+    // Fetch instances related to the selected supplier
+    const fetchInstances = async (): Promise<void> => {
+      console.log('D09D0239')
+      setInstances(
+        [...Array(Math.floor(Math.random() * 10))].map((_, index) => ({
+          id: index.toString(),
+          name: `Instance ${index}`
+        }))
+      )
+    }
+    fetchInstances()
+  }, [selectedSupplier])
 
   return (
     <div>

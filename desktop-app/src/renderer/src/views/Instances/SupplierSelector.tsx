@@ -24,8 +24,13 @@ const SupplierSelector: FC<Props> = (props) => {
     setAnchorEl(event.currentTarget)
   }
   const changeSupplier = (supplier: Supplier): void => {
+    setAnchorEl(null)
     setSelectedSupplier(supplier.name)
-    localStorage.setItem('selected-supplier', supplier.name)
+  }
+  const newSupplier = (): void => {
+    console.log('012809E1I0')
+    setAnchorEl(null)
+    setSelectedSupplier('')
   }
 
   return (
@@ -53,6 +58,7 @@ const SupplierSelector: FC<Props> = (props) => {
             {supplier.name}
           </MenuItem>
         ))}
+        <MenuItem onClick={newSupplier}>New Supplier</MenuItem>
       </Menu>
     </div>
   )
