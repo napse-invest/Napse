@@ -1,8 +1,9 @@
 // React
-import React from 'react'
+import { FC } from 'react'
 
 // Components
 import InstancesList from './InstancesList'
+import SupplierSelector from './SupplierSelector'
 
 const instances = [
   {
@@ -15,9 +16,10 @@ const instances = [
   }
 ]
 
-const PageInstances: React.FC = () => {
+const PageInstances: FC = () => {
   return (
     <div>
+      <SupplierSelector />
       <InstancesList instances={instances} />
     </div>
   )

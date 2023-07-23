@@ -1,8 +1,8 @@
 // React
-import React from 'react'
+import { FC } from 'react'
 
 // Mui
-import { Stack } from '@mui/material'
+import { Button, Stack } from '@mui/material'
 
 interface Props {
   instances: {
@@ -11,12 +11,14 @@ interface Props {
   }[]
 }
 
-const InstancesList: React.FC<Props> = (props) => {
+const InstancesList: FC<Props> = (props) => {
   const { instances } = props
   return (
     <Stack spacing={2}>
       {instances.map((instance) => (
-        <div key={instance.id}>{instance.name}</div>
+        <Button key={instance.id} variant="contained" fullWidth>
+          {instance.name}
+        </Button>
       ))}
     </Stack>
   )
