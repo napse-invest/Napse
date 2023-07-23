@@ -1,6 +1,9 @@
 // React
 import { FC, useState } from 'react'
 
+// Router
+import { useNavigate } from 'react-router-dom'
+
 // Components
 import Input from '../../../components/TextFields/Input'
 import Password from '../../../components/TextFields/Password'
@@ -9,8 +12,16 @@ import Password from '../../../components/TextFields/Password'
 import { Button, Stack } from '@mui/material'
 
 const PageLogin: FC = () => {
+  const navigate = useNavigate()
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  const handleSubmit = (): void => {
+    console.log('submit')
+    navigate('/dashboard')
+  }
+
   return (
     <Stack spacing={2}>
       <Input
@@ -27,7 +38,7 @@ const PageLogin: FC = () => {
         fullWidth
         variant="outlined"
       />
-      <Button variant="contained" fullWidth>
+      <Button onClick={handleSubmit} variant="contained" fullWidth>
         Login
       </Button>
     </Stack>
