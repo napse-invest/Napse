@@ -9,7 +9,7 @@ const Redirect: FC = () => {
 
   useEffect(() => {
     if (localStorage.getItem('is-logged') === 'true') {
-      navigate('/dashboard')
+      navigate('/instances')
     } else {
       navigate('/login')
     }

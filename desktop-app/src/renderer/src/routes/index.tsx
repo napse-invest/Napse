@@ -14,7 +14,7 @@ const AppRoutes: FC = () => {
       <Routes>
         <Route path="/" element={<Redirect />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<div>Dashboard</div>} />
+        <Route path="/instances" element={<div>Instances</div>} />
       </Routes>
     </Router>
   )

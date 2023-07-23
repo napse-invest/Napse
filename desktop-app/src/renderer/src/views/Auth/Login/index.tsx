@@ -18,9 +18,9 @@ const PageLogin: FC = () => {
   const [password, setPassword] = useState('')
 
   const handleSubmit = (): void => {
-    console.log('submit')
+    console.log('S2039032')
     localStorage.setItem('is-logged', 'true')
-    navigate('/dashboard')
+    navigate('/instances')
   }
 
   return (
