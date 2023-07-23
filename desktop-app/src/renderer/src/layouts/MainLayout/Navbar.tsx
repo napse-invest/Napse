@@ -1,10 +1,13 @@
+// Router
+import { useNavigate } from 'react-router-dom'
+
 // Mui
-import { Stack, Box, IconButton } from '@mui/material'
+import { Box, IconButton, Stack } from '@mui/material'
 import { grey } from '@mui/material/colors'
 
 // Icons
-import SettingsIcon from '@mui/icons-material/Settings'
 import LogoutIcon from '@mui/icons-material/Logout'
+import SettingsIcon from '@mui/icons-material/Settings'
 
 // Assets
 import logo from '../../assets/logo-napse-1.svg'
@@ -15,6 +18,8 @@ interface Props {
 
 const Navbar = (props: Props): JSX.Element => {
   const { height } = props
+
+  const navigate = useNavigate()
 
   return (
     <Stack
@@ -47,7 +52,7 @@ const Navbar = (props: Props): JSX.Element => {
         <IconButton sx={{ color: grey[50] }}>
           <SettingsIcon sx={{ width: '18px' }} />
         </IconButton>
-        <IconButton sx={{ color: grey[50] }}>
+        <IconButton onClick={(): void => navigate('/login')} sx={{ color: grey[50] }}>
           <LogoutIcon sx={{ width: '18px' }} />
         </IconButton>
       </Stack>

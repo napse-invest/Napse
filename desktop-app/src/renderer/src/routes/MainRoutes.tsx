@@ -8,11 +8,28 @@ import { Route, Routes } from 'react-router-dom'
 import PageInstances from 'src/renderer/src/views/Instances'
 import PageNewSupplier from 'src/renderer/src/views/Suppliers/NewSupplier'
 
+// Layout
+import MainLayout from 'src/renderer/src/layouts/MainLayout'
+
 const AuthRoutes: FC = () => {
   return (
     <Routes>
-      <Route path="/instances" element={<PageInstances />} />
-      <Route path="/suppliers/new" element={<PageNewSupplier />} />
+      <Route
+        path="/instances"
+        element={
+          <MainLayout>
+            <PageInstances />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/suppliers/new"
+        element={
+          <MainLayout>
+            <PageNewSupplier />
+          </MainLayout>
+        }
+      />
     </Routes>
   )
 }
