@@ -4,11 +4,13 @@ import React, { FC, useState } from 'react'
 // Mui
 import { Button, Menu, MenuItem } from '@mui/material'
 
+type Supplier = {
+  id: string
+  name: string
+}
+
 interface Props {
-  suppliers: {
-    id: string
-    name: string
-  }[]
+  suppliers: Supplier[]
   selectedSupplier: string
   setSelectedSupplier: (value: string) => void
 }
@@ -21,7 +23,7 @@ const SupplierSelector: FC<Props> = (props) => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
     setAnchorEl(event.currentTarget)
   }
-  const changeSupplier = (supplier: { id: string; name: string }): void => {
+  const changeSupplier = (supplier: Supplier): void => {
     setSelectedSupplier(supplier.name)
     localStorage.setItem('selected-supplier', supplier.name)
   }
