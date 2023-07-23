@@ -36,7 +36,9 @@ const Navbar = (props: Props): JSX.Element => {
     >
       {/* Logo */}
       <Box
+        onClick={(): void => navigate('/')}
         sx={{
+          cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
           marginLeft: '8px',
