@@ -13,6 +13,10 @@ interface Props {
 
 const InstancesList: FC<Props> = (props) => {
   const { instances } = props
+
+  const newInstance = (): void => {
+    console.log('PDO230I')
+  }
   return (
     <Stack spacing={2}>
       {instances.map((instance) => (
@@ -20,6 +24,9 @@ const InstancesList: FC<Props> = (props) => {
           {instance.name}
         </Button>
       ))}
+      <Button onClick={newInstance} fullWidth>
+        New Instance
+      </Button>
     </Stack>
   )
 }
