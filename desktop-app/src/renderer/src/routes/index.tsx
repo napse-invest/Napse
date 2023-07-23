@@ -5,7 +5,8 @@ import { FC } from 'react'
 import { Route, HashRouter as Router, Routes } from 'react-router-dom'
 
 // Components
-import Login from 'src/renderer/src/views/Auth/Login'
+import PageLogin from 'src/renderer/src/views/Auth/Login'
+import PageInstances from 'src/renderer/src/views/Instances'
 import Redirect from 'src/renderer/src/views/Redirect'
 
 const AppRoutes: FC = () => {
@@ -13,8 +14,8 @@ const AppRoutes: FC = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Redirect />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/instances" element={<div>Instances</div>} />
+        <Route path="/login" element={<PageLogin />} />
+        <Route path="/instances" element={<PageInstances />} />
       </Routes>
     </Router>
   )
