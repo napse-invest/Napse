@@ -1,6 +1,12 @@
 // React
 import { FC, useEffect, useState } from 'react'
 
+// Mui
+import { Button } from '@mui/material'
+
+// Router
+import { useNavigate } from 'react-router-dom'
+
 // Components
 import InstancesList from './InstancesList'
 import SupplierSelector from './SupplierSelector'
@@ -17,6 +23,8 @@ const suppliers = [
 ]
 
 const PageInstances: FC = () => {
+  const navigate = useNavigate()
+
   const [selectedSupplier, setSelectedSupplier] = useState(
     localStorage.getItem('selected-supplier') || ''
   )
@@ -44,6 +52,10 @@ const PageInstances: FC = () => {
     fetchInstances()
   }, [selectedSupplier])
 
+  const newInstance = (): void => {
+    navigate('/instances/new')
+  }
+
   return (
     <div>
       <SupplierSelector
@@ -52,6 +64,9 @@ const PageInstances: FC = () => {
         setSelectedSupplier={setSelectedSupplier}
       />
       <InstancesList instances={instances} />
+      <Button onClick={newInstance} fullWidth>
+        Add new instance
+      </Button>
     </div>
   )
 }

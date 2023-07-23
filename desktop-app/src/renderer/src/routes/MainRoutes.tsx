@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom'
 
 // Components
 import PageInstances from 'src/renderer/src/views/Instances'
+import PageNewInstance from 'src/renderer/src/views/Instances/NewInstance'
 import PageNewSupplier from 'src/renderer/src/views/Suppliers/NewSupplier'
 
 // Layout
@@ -19,6 +20,14 @@ const AuthRoutes: FC = () => {
         element={
           <MainLayout>
             <PageInstances />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/instances/new"
+        element={
+          <MainLayout>
+            <PageNewInstance />
           </MainLayout>
         }
       />
