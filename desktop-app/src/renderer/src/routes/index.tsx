@@ -1,6 +1,6 @@
 import { Route, HashRouter as Router, Routes } from 'react-router-dom'
-import Login from '../views/Auth/Login'
-import Redirect from '../views/Redirect'
+import Login from 'src/renderer/src/views/Auth/Login'
+import Redirect from 'src/renderer/src/views/Redirect'
 
 const AppRoutes = (): JSX.Element => {
   return (
