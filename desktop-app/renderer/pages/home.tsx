@@ -6,7 +6,6 @@ import {
 } from "@/components/ui/accordion"
 export default function Home() {
 
-
   return (
 
     <Accordion type="single" collapsible className="w-full">
