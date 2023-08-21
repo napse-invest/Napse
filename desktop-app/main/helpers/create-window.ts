@@ -1,7 +1,7 @@
 import {
-  screen,
   BrowserWindow,
   BrowserWindowConstructorOptions,
+  screen,
 } from 'electron';
 import Store from 'electron-store';
 
