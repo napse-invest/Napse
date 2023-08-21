@@ -1,5 +1,5 @@
-node_modules/
-.webpack/
+node_modules
+*.log
+.next
+app
 dist
-out
-*.log*
