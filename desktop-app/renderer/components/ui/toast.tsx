@@ -21,6 +21,7 @@ const ToastViewport = React.forwardRef<
   />
 ))
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName
+ToastViewport.propTypes = ToastPrimitives.Viewport.propTypes
 
 const toastVariants = cva(
   'group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full',
@@ -67,6 +68,7 @@ const ToastAction = React.forwardRef<
   />
 ))
 ToastAction.displayName = ToastPrimitives.Action.displayName
+ToastAction.propTypes = ToastPrimitives.Action.propTypes
 
 const ToastClose = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Close>,
@@ -85,6 +87,7 @@ const ToastClose = React.forwardRef<
   </ToastPrimitives.Close>
 ))
 ToastClose.displayName = ToastPrimitives.Close.displayName
+ToastClose.propTypes = ToastPrimitives.Close.propTypes
 
 const ToastTitle = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Title>,
@@ -97,6 +100,7 @@ const ToastTitle = React.forwardRef<
   />
 ))
 ToastTitle.displayName = ToastPrimitives.Title.displayName
+ToastTitle.propTypes = ToastPrimitives.Title.propTypes
 
 const ToastDescription = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Description>,
@@ -109,6 +113,7 @@ const ToastDescription = React.forwardRef<
   />
 ))
 ToastDescription.displayName = ToastPrimitives.Description.displayName
+ToastDescription.propTypes = ToastPrimitives.Description.propTypes
 
 type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
 

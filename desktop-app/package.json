@@ -6,7 +6,7 @@
   "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
   "main": "app/background.js",
   "scripts": {
-    "dev": "nextron",
+    "start": "nextron",
     "build": "nextron build",
     "postinstall": "electron-builder install-app-deps",
     "lint": "next lint"
@@ -25,6 +25,7 @@
     "electron-serve": "^1.1.0",
     "electron-store": "^8.1.0",
     "lucide-react": "^0.268.0",
+    "prop-types": "^15.8.1",
     "react-day-picker": "^8.8.1",
     "react-hook-form": "^7.45.4",
     "tailwind-merge": "^1.14.0",
