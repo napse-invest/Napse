@@ -39,7 +39,7 @@ export default function ContextHeader({
               })
             }}
           >
-            <Image src={'/images/logo.svg'} layout={'fill'} />
+            <Image src="/images/logo.svg" alt="Napse Logo" fill />
           </Button>
           <Separator className="relative h-2/3" orientation="vertical" />
         </div>
