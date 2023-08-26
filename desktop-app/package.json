@@ -48,7 +48,7 @@
     "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.33.2",
-    "next": "^12.3.4",
+    "next": "^13.4.19",
     "nextron": "^8.5.0",
     "postcss": "^8.4.13",
     "prettier": "^3.0.2",
