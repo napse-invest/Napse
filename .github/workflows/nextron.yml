@@ -9,8 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: true
+
   build:
-    name: Django build
+    name: Nextron build
     needs: authorize
     runs-on: ubuntu-latest
     steps:
