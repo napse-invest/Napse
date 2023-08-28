@@ -1,0 +1,25 @@
+name: Check Source Branch
+
+on:
+  pull_request_target:
+
+jobs:
+  check-branches:
+    name: Check branches
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branches
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          BASE_REF: ${{ github.base_ref }}
+          ENVIRONMENT: ${{ github.event.pull_request.head.repo.full_name != github.repository && 'external' || 'internal' }}
+        run: |
+          if [[ "$ENVIRONMENT" == "internal" ]] && [[ "$HEAD_REF" != "dev" ]] && [[ "$BASE_REF" == "main" ]]; then
+              echo "Merge requests to the main branch are only allowed from the dev branch."
+              exit 1
+          fi
+
+          if [[ "$ENVIRONMENT" == "external" ]] && [[ "$BASE_REF" != "dev" ]]; then
+              echo "Merge requests from external repositories are only allowed to the dev branch."
+              exit 1
+          fi

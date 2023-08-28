@@ -1,0 +1,33 @@
+name: Cross-PR Checks
+on:
+  pull_request_target:
+
+jobs:
+  check_cross_prs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: List open PRs based on the same branch
+        id: list_prs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BRANCH_NAME=${{ github.head_ref }}
+
+          REPO_NAME=${{ github.repository }}
+
+          PR_LIST=$(gh pr list --repo $REPO_NAME --head $BRANCH_NAME)
+
+          PR_COUNT=$(echo "$PR_LIST" | wc -l)
+          echo "PR_COUNT=$PR_COUNT" >> $GITHUB_ENV
+
+      - name: Fail if there are more than one PRs open
+        id: fail_multiple_prs
+        run: |
+          if [ $PR_COUNT -gt 1 ]; then
+            echo "There are $PR_COUNT open PRs from the same branch. Please close them before merging this PR."
+            exit 1
+          fi
