@@ -1,9 +1,9 @@
-import type { ReactNode } from 'react'
 import HeaderPopover from '@/components/custom/headerPopover'
+import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import Image from 'next/image'
-import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/router'
+import type { ReactNode } from 'react'
 import { ThemeButton } from '../custom/themeButton'
 
 export default function ContextHeader({
@@ -79,7 +79,7 @@ export default function ContextHeader({
                 title="Spaces"
                 variant="button"
                 onclick={() => {
-                  router.push('/').catch((err) => {
+                  router.push('/spaces').catch((err) => {
                     console.error(err)
                   })
                 }}
