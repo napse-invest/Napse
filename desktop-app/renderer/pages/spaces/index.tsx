@@ -29,16 +29,22 @@ function DisplaySpaces(): JSX.Element {
             name: 'Space Mountain',
             bots: 152,
             value: 152163231.89,
-            change: -4
+            change: 0
+        },
+        {
+            name: 'Space Mountain',
+            bots: 152,
+            value: 152163231.89,
+            change: 0
         }
     ];
 
     return (
         <ContextHeader isSpace>
-            <div className="mx-auto grid gap-4 md:grid-cols-2 lg:grid-cols-3 my-10 max-w-screen-xl px-36">
+            <div className="mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-3 my-10 max-w-screen-xl px-24">
                 {spaces.map((space, index) => (
                     <Card key={index} className="hover:shadow-lg">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 p-6">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 p-7">
                             <CardTitle className="text-sm font-medium">
                                 {space.name}
                             </CardTitle>
