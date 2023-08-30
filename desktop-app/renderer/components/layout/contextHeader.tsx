@@ -50,7 +50,7 @@ export default function ContextHeader({
                 title="Providers"
                 variant="button"
                 onclick={() => {
-                  router.push('/').catch((err) => {
+                  router.push('/providers').catch((err) => {
                     console.error(err)
                   })
                 }}
