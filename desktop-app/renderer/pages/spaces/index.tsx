@@ -37,7 +37,7 @@ function DisplaySpaces(): JSX.Element {
             value={space.value}
             change={space.change}
             tooltip={space.tooltip}
-            onClic={() => {
+            onClick={() => {
               console.log('test')
             }}
             badge={space.bots + ' bots'}
