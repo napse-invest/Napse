@@ -1,6 +1,6 @@
 import ContextHeader from '@/components/layout/contextHeader'
 import React from 'react'
-import ValuePanelCard from '@/components/ui/panel/value_panel_card'
+import ValuePanelCard from '@/components/custom/panel/value_panel_card'
 
 function DisplaySpaces(): JSX.Element {
   const spaces = [
