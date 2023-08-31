@@ -1,0 +1,20 @@
+name: Check Workflow Files Changes
+
+on:
+  pull_request_target:
+    paths:
+      - .github/workflows/*
+
+jobs:
+  check-changes:
+    name: Check changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check changes
+        env:
+          ENVIRONMENT: ${{ github.event.pull_request.head.repo.full_name != github.repository && 'external' || 'internal' }}
+        run: |
+          if [[ "$ENVIRONMENT" == "external" ]]; then
+              echo "Merge requests from external repositories cannot contain changes to workflow files."
+              exit 1
+          fi
