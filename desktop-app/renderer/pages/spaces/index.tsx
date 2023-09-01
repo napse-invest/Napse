@@ -1,8 +1,16 @@
 import ContextHeader from '@/components/layout/contextHeader'
-import React from 'react'
 import ValuePanelCard from '@/components/ui/panel/value_panel_card'
+import {
+  SET_SPACE_IDS,
+  SET_TAB,
+  SET_ID,
+  SET_CONTAINER_STATE
+} from '@/redux/reducers/headerStateSlice'
+import { useDispatch } from 'react-redux'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
-function DisplaySpaces(): JSX.Element {
+export default function Spaces(): JSX.Element {
   const spaces = [
     {
       name: 'Space Jam',
@@ -26,18 +34,28 @@ function DisplaySpaces(): JSX.Element {
       tooltip: 'test'
     }
   ]
-
+  const dispatch = useDispatch()
+  const router = useRouter()
+  useEffect(() => {
+    dispatch(SET_SPACE_IDS(spaces.map((space) => space.name)))
+  }, [])
   return (
-    <ContextHeader isSpace>
+    <ContextHeader isBot>
       <div className="mx-auto my-10 grid max-w-screen-xl gap-6 px-24 lg:grid-cols-3">
         {spaces.map((space, index) => (
           <ValuePanelCard
+            key={index}
             title={space.name}
             value={space.value}
             change={space.change}
             tooltip={space.tooltip}
             onClick={() => {
-              console.log('test')
+              router.push(`/spaces/${space.name}`).catch((err) => {
+                console.error(err)
+              })
+              dispatch(SET_CONTAINER_STATE(true))
+              dispatch(SET_TAB('Spaces'))
+              dispatch(SET_ID(space.name))
             }}
             badge={space.bots + ' bots'}
           />
@@ -46,5 +64,3 @@ function DisplaySpaces(): JSX.Element {
     </ContextHeader>
   )
 }
-
-export default DisplaySpaces

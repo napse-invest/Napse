@@ -4,6 +4,8 @@ import { createWindow } from './helpers'
 
 const isProd: boolean = process.env.NODE_ENV === 'production'
 
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
+
 if (isProd) {
   serve({ directory: 'app' })
 } else {

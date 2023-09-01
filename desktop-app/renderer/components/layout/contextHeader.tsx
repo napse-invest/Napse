@@ -5,27 +5,30 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
 import { ThemeButton } from '../custom/themeButton'
+import { useSelector } from 'react-redux'
+import type { RootStateType } from '@/redux/store'
 
 export default function ContextHeader({
   children,
-  isProvider = false,
+  isServer = false,
   isExchangeAccount = false,
   isSpace = false,
   isFleet = false,
   isBot = false
 }: {
   children: ReactNode
-  isProvider?: boolean
+  isServer?: boolean
   isExchangeAccount?: boolean
   isSpace?: boolean
   isFleet?: boolean
   isBot?: boolean
 }): JSX.Element {
-  isProvider = isProvider || isExchangeAccount || isSpace || isFleet || isBot
+  isServer = isServer || isExchangeAccount || isSpace || isFleet || isBot
   isExchangeAccount = isExchangeAccount || isSpace || isFleet || isBot
   isSpace = isSpace || isFleet || isBot
   isFleet = isFleet || isBot
   const router = useRouter()
+  const { spaceIds } = useSelector((state: RootStateType) => state.headerState)
   return (
     <>
       <div className="container flex h-20 flex-row items-center justify-between space-y-0 py-4">
@@ -39,81 +42,33 @@ export default function ContextHeader({
               })
             }}
           >
-            <Image src="/images/logo.svg" alt="Napse Logo" fill />
+            <Image src="/images/logo.svg" alt="Napse Logo" fill priority />
           </Button>
           <Separator className="relative h-2/3" orientation="vertical" />
         </div>
         <div className="flex w-full justify-start space-x-2">
-          {isProvider && (
-            <>
-              <HeaderPopover
-                title="Providers"
-                variant="button"
-                onclick={() => {
-                  router.push('/providers').catch((err) => {
-                    console.error(err)
-                  })
-                }}
-              />
-              {/* <Separator className="h-10" orientation="vertical" /> */}
-            </>
-          )}
-
           {isExchangeAccount && (
-            <>
-              <HeaderPopover
-                title="Exchange accounts"
-                variant="button"
-                onclick={() => {
-                  router.push('/').catch((err) => {
-                    console.error(err)
-                  })
-                }}
-              />
-              {/* <Separator className="h-10" orientation="vertical" /> */}
-            </>
-          )}
-          {isSpace && (
-            <>
-              <HeaderPopover
-                title="Spaces"
-                variant="button"
-                onclick={() => {
-                  router.push('/spaces').catch((err) => {
-                    console.error(err)
-                  })
-                }}
-              />
-              {/* <Separator className="h-10" orientation="vertical" /> */}
-            </>
-          )}
-          {isFleet && (
-            <>
-              <HeaderPopover
-                title="Fleets"
-                variant="button"
-                onclick={() => {
-                  router.push('/').catch((err) => {
-                    console.error(err)
-                  })
-                }}
-              />
-              {/* <Separator className="h-10" orientation="vertical" /> */}
-            </>
-          )}
-          {isBot && (
             <HeaderPopover
-              title="Bots"
-              variant="button"
-              onclick={() => {
-                router.push('/').catch((err) => {
-                  console.error(err)
-                })
-              }}
+              title="Exchange Accounts"
+              route="/exchangeAccounts"
             />
           )}
+          {isSpace && (
+            <HeaderPopover title="Spaces" route="/spaces" ids={spaceIds} />
+          )}
+          {isFleet && <HeaderPopover title="Fleets" route="/fleets" />}
+          {isBot && <HeaderPopover title="Bots" route="/bots" />}
         </div>
-        <ThemeButton />
+        <div className="flex  justify-start space-x-2">
+          {isServer && (
+            <HeaderPopover
+              title="Servers"
+              route="/servers"
+              ids={['AWS - Tom JEANNESSON']}
+            />
+          )}
+          <ThemeButton />
+        </div>
       </div>
       <Separator className="h-[1px]" />
       <div>{children}</div>
