@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "lib": [
       "dom",
       "dom.iterable",
@@ -30,5 +30,20 @@
     "renderer/next.config.js",
     "app",
     "dist"
-  ]
+  ],
+  "forceConsistentCasingInFileNames": true,
+  "noEmit": true,
+  "esModuleInterop": true,
+  "module": "esnext",
+  "moduleResolution": "node",
+  "resolveJsonModule": true,
+  "isolatedModules": true,
+  "jsx": "preserve",
+  "incremental": true,
+  "noImplicitAny": true,
+  "strictNullChecks": true,
+  "noImplicitReturns": true,
+  "noImplicitThis": true,
+  "noUnusedParameters": true,
+  "noUnusedLocals": true,
 }

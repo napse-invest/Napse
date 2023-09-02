@@ -9,8 +9,8 @@ import Link from 'next/link'
 export default function Home(): JSX.Element {
   return (
     <>
-      <Link href="/next">
-        <a className="btn-blue">Go to next page</a>
+      <Link href="/next" className="btn-blue">
+        Go to next page
       </Link>
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1">
