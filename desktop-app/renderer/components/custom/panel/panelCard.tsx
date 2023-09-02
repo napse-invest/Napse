@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/tooltip'
 
 type PanelCardProps = {
-  title: string | React.ReactNode
+  title?: string | React.ReactNode
   badge?: string | React.ReactNode
   content: string | React.ReactNode
   description?: string | React.ReactNode

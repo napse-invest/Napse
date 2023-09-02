@@ -31,6 +31,10 @@ export default function ContextHeader({
   const { spaceNames } = useSelector(
     (state: RootStateType) => state.headerState
   )
+  // Define type in the store
+  const { serverName, serverUrl } = useSelector(
+    (state: RootStateType) => state.serverState
+  )
   return (
     <>
       <div className="container flex h-20 flex-row items-center justify-between space-y-0 py-4">
@@ -64,9 +68,9 @@ export default function ContextHeader({
         <div className="flex  justify-start space-x-2">
           {isServer && (
             <HeaderPopover
-              title="Servers"
+              title={serverName}
               route="/servers"
-              names={['AWS - Tom JEANNESSON']}
+              names={['AWS - Tom JEANNESSON', serverUrl]}
             />
           )}
           <ThemeButton />
