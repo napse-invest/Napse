@@ -1,5 +1,5 @@
 import ContextHeader from '@/components/layout/contextHeader'
-import ValuePanelCard from '@/components/ui/panel/value_panel_card'
+import ValuePanelCard from '@/components/custom/panel/value_panel_card'
 import {
   SET_SPACE_IDS,
   SET_TAB,
