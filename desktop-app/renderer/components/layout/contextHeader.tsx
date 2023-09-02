@@ -28,7 +28,13 @@ export default function ContextHeader({
   isSpace = isSpace || isFleet || isBot
   isFleet = isFleet || isBot
   const router = useRouter()
-  const { spaceIds } = useSelector((state: RootStateType) => state.headerState)
+  const { spaceNames } = useSelector(
+    (state: RootStateType) => state.headerState
+  )
+  // Define type in the store
+  const { serverName, serverUrl } = useSelector(
+    (state: RootStateType) => state.serverState
+  )
   return (
     <>
       <div className="container flex h-20 flex-row items-center justify-between space-y-0 py-4">
@@ -54,7 +60,7 @@ export default function ContextHeader({
             />
           )}
           {isSpace && (
-            <HeaderPopover title="Spaces" route="/spaces" ids={spaceIds} />
+            <HeaderPopover title="Spaces" route="/spaces" names={spaceNames} />
           )}
           {isFleet && <HeaderPopover title="Fleets" route="/fleets" />}
           {isBot && <HeaderPopover title="Bots" route="/bots" />}
@@ -62,9 +68,9 @@ export default function ContextHeader({
         <div className="flex  justify-start space-x-2">
           {isServer && (
             <HeaderPopover
-              title="Servers"
+              title={serverName}
               route="/servers"
-              ids={['AWS - Tom JEANNESSON']}
+              names={['AWS - Tom JEANNESSON', serverName]}
             />
           )}
           <ThemeButton />

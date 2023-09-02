@@ -1,9 +1,9 @@
 import ContextHeader from '@/components/layout/contextHeader'
-import ValuePanelCard from '@/components/custom/panel/value_panel_card'
+import ValuePanelCard from '@/components/custom/panel/valuePanelCard'
 import {
-  SET_SPACE_IDS,
+  SET_SPACE_NAMES,
   SET_TAB,
-  SET_ID,
+  SET_NAME,
   SET_CONTAINER_STATE
 } from '@/redux/reducers/headerStateSlice'
 import { useDispatch } from 'react-redux'
@@ -37,7 +37,7 @@ export default function Spaces(): JSX.Element {
   const dispatch = useDispatch()
   const router = useRouter()
   useEffect(() => {
-    dispatch(SET_SPACE_IDS(spaces.map((space) => space.name)))
+    dispatch(SET_SPACE_NAMES(spaces.map((space) => space.name)))
   }, [])
   return (
     <ContextHeader isBot>
@@ -55,7 +55,7 @@ export default function Spaces(): JSX.Element {
               })
               dispatch(SET_CONTAINER_STATE(true))
               dispatch(SET_TAB('Spaces'))
-              dispatch(SET_ID(space.name))
+              dispatch(SET_NAME(space.name))
             }}
             badge={space.bots + ' bots'}
           />

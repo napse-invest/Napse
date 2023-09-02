@@ -1,4 +1,4 @@
-import PanelCard from '@/components/custom/panel/panel_card'
+import PanelCard from '@/components/custom/panel/panelCard'
 import React from 'react'
 
 function ChangeValueColor(value: number): string {
@@ -11,13 +11,13 @@ function ChangeValueColor(value: number): string {
   }
 }
 
-function formatChangeValue(change: number): string {
+function FormatChangeValue(change: number): string {
   return `${change >= 0 ? '+' : ''}${Intl.NumberFormat('us-US', {
     maximumSignificantDigits: 3
   }).format(change)}%`
 }
 
-function formatCurrencyValue(value: number): string {
+function FormatCurrencyValue(value: number): string {
   return Intl.NumberFormat('us-US', {
     style: 'currency',
     currency: 'USD'
@@ -33,25 +33,25 @@ type ValuePanelCardProps = {
   onClick?: () => void
 }
 
-const ValuePanelCard = ({
+function ValuePanelCard({
   title = '',
   badge = '',
   value = 0,
   change = 0,
   tooltip = '',
   onClick = () => {}
-}: ValuePanelCardProps): JSX.Element => {
+}: ValuePanelCardProps): JSX.Element {
   return (
     <PanelCard
       title={title}
       badge={badge}
       description={
         <p className={`text-sm ${ChangeValueColor(change)}`}>
-          {formatChangeValue(change)}
+          {FormatChangeValue(change)}
         </p>
       }
       content={
-        <div className="text-2xl font-bold">{formatCurrencyValue(value)}</div>
+        <div className="text-2xl font-bold">{FormatCurrencyValue(value)}</div>
       }
       tooltip={tooltip}
       onClick={onClick}

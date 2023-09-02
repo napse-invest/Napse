@@ -3,7 +3,7 @@ import Link from 'next/link'
 export default function Index(): JSX.Element {
   return (
     <>
-      <Link href="/servers">Enter App</Link>
+      <Link href="/servers">Enter server</Link>
       <br />
       <Link href="/exchangeAccounts">Enter Exchange Accounts</Link>
       <br />

@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/tooltip'
 
 type PanelCardProps = {
-  title: string | React.ReactNode
+  title?: string | React.ReactNode
   badge?: string | React.ReactNode
   content: string | React.ReactNode
   description?: string | React.ReactNode
@@ -23,14 +23,14 @@ type PanelCardProps = {
   onClick?: () => void
 }
 
-const PanelCard = ({
+function PanelCard({
   title = '',
   badge = '',
   content = '',
   description = '',
   tooltip = '',
   onClick = () => {}
-}: PanelCardProps): JSX.Element => {
+}: PanelCardProps): JSX.Element {
   const CardComponent = React.forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLDivElement>
@@ -43,8 +43,11 @@ const PanelCard = ({
           ) : (
             title
           )}
-          {/* edge case on badge */}
-          <div className="text-xs italic">{badge}</div>
+          {typeof title === 'string' ? (
+            <div className="text-xs italic">{badge}</div>
+          ) : (
+            badge
+          )}
         </CardHeader>
         <CardContent>
           {content}
