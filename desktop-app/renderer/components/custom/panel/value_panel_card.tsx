@@ -33,14 +33,14 @@ type ValuePanelCardProps = {
   onClick?: () => void
 }
 
-const ValuePanelCard = ({
+function ValuePanelCard({
   title = '',
   badge = '',
   value = 0,
   change = 0,
   tooltip = '',
   onClick = () => {}
-}: ValuePanelCardProps): JSX.Element => {
+}: ValuePanelCardProps): JSX.Element {
   return (
     <PanelCard
       title={title}
