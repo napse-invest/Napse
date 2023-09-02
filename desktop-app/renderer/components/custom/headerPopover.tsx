@@ -65,7 +65,7 @@ export default function HeaderPopover({
               {names.length > 0 ? `Specific ${title}:` : `No ${title} found`}
             </div>
             {names.map((currentName, index) => {
-              console.log(name, currentName)
+              // console.log(name, currentName)
               return (
                 <div key={index}>
                   {name === currentName ? (

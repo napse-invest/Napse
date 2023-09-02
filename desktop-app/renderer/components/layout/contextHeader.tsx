@@ -70,7 +70,7 @@ export default function ContextHeader({
             <HeaderPopover
               title={serverName}
               route="/servers"
-              names={['AWS - Tom JEANNESSON', serverUrl]}
+              names={['AWS - Tom JEANNESSON', serverName]}
             />
           )}
           <ThemeButton />
