@@ -6,7 +6,7 @@ export default function Servers(): JSX.Element {
   const router = useRouter()
   return (
     <ContextHeader isBot>
-      <p>Server ID: {router.query.slug}</p>
+      <p>Server ID: {router.query.serverId}</p>
     </ContextHeader>
   )
 }

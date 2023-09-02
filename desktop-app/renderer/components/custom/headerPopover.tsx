@@ -11,22 +11,22 @@ import { useDispatch, useSelector } from 'react-redux'
 import type { RootStateType } from '@/redux/store'
 import {
   SET_TAB,
-  SET_ID,
+  SET_NAME,
   SET_CONTAINER_STATE
 } from '@/redux/reducers/headerStateSlice'
 
 export default function HeaderPopover({
   title,
   route,
-  ids = []
+  names = []
 }: {
   title: string
   route: string
-  ids?: string[]
+  names?: string[]
 }): JSX.Element {
   const router = useRouter()
   const dispatch = useDispatch()
-  const { tab, id, isContainerMode } = useSelector(
+  const { tab, name, isContainerMode } = useSelector(
     (state: RootStateType) => state.headerState
   )
   const buttonProps: ButtonProps = {
@@ -53,7 +53,7 @@ export default function HeaderPopover({
                   })
                   dispatch(SET_CONTAINER_STATE(false))
                   dispatch(SET_TAB(title))
-                  dispatch(SET_ID(''))
+                  dispatch(SET_NAME(''))
                 }}
                 {...buttonProps}
               >
@@ -62,29 +62,29 @@ export default function HeaderPopover({
             )}
             <Separator orientation="horizontal" />
             <div className="w-full text-start">
-              {ids.length > 0 ? `Secific ${title}:` : `No ${title} found`}
+              {names.length > 0 ? `Specific ${title}:` : `No ${title} found`}
             </div>
-            {ids.map((cuerrentId, index) => {
-              console.log(id, cuerrentId)
+            {names.map((currentName, index) => {
+              console.log(name, currentName)
               return (
                 <div key={index}>
-                  {id === cuerrentId ? (
+                  {name === currentName ? (
                     <ClosePopover {...buttonProps} variant="secondary">
-                      {cuerrentId}
+                      {currentName}
                     </ClosePopover>
                   ) : (
                     <Button
                       onClick={() => {
-                        router.push(`${route}/${cuerrentId}`).catch((err) => {
+                        router.push(`${route}/${currentName}`).catch((err) => {
                           console.error(err)
                         })
                         dispatch(SET_CONTAINER_STATE(true))
                         dispatch(SET_TAB(title))
-                        dispatch(SET_ID(cuerrentId))
+                        dispatch(SET_NAME(currentName))
                       }}
                       {...buttonProps}
                     >
-                      {cuerrentId}
+                      {currentName}
                     </Button>
                   )}
                 </div>
