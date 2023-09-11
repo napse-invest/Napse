@@ -2,7 +2,7 @@ import ContextHeader from '@/components/layout/contextHeader'
 import axios from '@/api/axios'
 import { AxiosResponse } from 'axios'
 import InfoPanelCard from '@/components/custom/panel/infoPanelCard'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface ExchangeAccount {
   id: number
@@ -27,7 +27,6 @@ export default function ExchangeAccounts(): JSX.Element {
         setExchangeAccounts([])
       }
     }
-
     fetchData()
   }, [])
 
