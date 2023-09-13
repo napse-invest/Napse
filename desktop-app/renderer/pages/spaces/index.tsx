@@ -58,11 +58,7 @@ export default function Spaces(): JSX.Element {
               dispatch(SET_TAB('Spaces'))
               dispatch(SET_NAME(space.name))
             }}
-            badge={
-              space.fleet_count < 2
-                ? String(space.fleet_count) + ' fleet'
-                : String(space.fleet_count) + ' fleets'
-            }
+            badge={String(space.fleet_count) + ' fleets'}
           />
         ))}
       </div>
