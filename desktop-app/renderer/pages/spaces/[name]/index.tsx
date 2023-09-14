@@ -2,8 +2,39 @@ import ContextHeader from '@/components/layout/contextHeader'
 import React from 'react'
 import ValuePanelCard from '@/components/custom/panel/valuePanelCard'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Title, LineChart } from '@tremor/react'
-import { bool } from 'prop-types'
+import { DonutChart, AreaChart } from '@tremor/react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Button } from '@/components/ui/button'
+
+const cities = [
+  {
+    name: 'New York',
+    sales: 9800
+  },
+  {
+    name: 'London',
+    sales: 4567
+  },
+  {
+    name: 'Hong Kong',
+    sales: 3908
+  },
+  {
+    name: 'San Francisco',
+    sales: 2400
+  },
+  {
+    name: 'Singapore',
+    sales: 1908
+  },
+  {
+    name: 'Zurich',
+    sales: 1398
+  }
+]
+
+const valueFormatter = (number: number) =>
+  `$ ${Intl.NumberFormat('us').format(number).toString()}`
 
 const chartdata = [
   { index: 0, wallet: 1000 },
@@ -25,7 +56,7 @@ const chartdata = [
   { index: 16, wallet: 6069 },
   { index: 17, wallet: 7644 },
   { index: 18, wallet: 7206 },
-  { index: 19, wallet: 6069 },
+  { index: 19, wallet: -6069 },
   { index: 20, wallet: 4222 },
   { index: 21, wallet: 2336 },
   { index: 22, wallet: 1302 },
@@ -57,7 +88,7 @@ const GraphCardComponent = React.forwardRef<
         <CardTitle className="text-sm font-normal">MY FUCKING GRAPH</CardTitle>
       </CardHeader>
       <CardContent>
-        <LineChart
+        <AreaChart
           className="mx-auto pb-2"
           data={chartdata}
           index="index"
@@ -97,34 +128,91 @@ export default function Spaces(): JSX.Element {
       value: 300,
       fleet_count: 30,
       change: 30
-    },
-    {
-      name: 'Stat 4',
-      id: 4,
-      value: 400,
-      fleet_count: 40,
-      change: 40
     }
   ]
 
   return (
     <ContextHeader isBot>
-      <div className="mx-auto my-10 grid max-w-screen-xl gap-6 px-24 lg:grid-cols-3">
-        {spaces.map((space, index) => (
-          <ValuePanelCard
-            key={index}
-            title={space.name}
-            value={space.value}
-            change={space.change}
-            // tooltip={space.tooltip}
-            onClick={() => {}}
-            // badge={String(space.fleet_count) + ' fleets'}
-          />
-        ))}
+      <div className="mx-auto my-10 max-w-screen-xl px-10">
+        {/* <div className="hidden flex-col md:flex"> */}
+        {/* <div className="flex-1 space-y-4 p-8 pt-6"> */}
+        <Tabs defaultValue="space" className="">
+          <TabsList>
+            <TabsTrigger value="space">Space</TabsTrigger>
+            <TabsTrigger value="wallet">Wallet</TabsTrigger>
+            <TabsTrigger value="fleet">Fleet</TabsTrigger>
+          </TabsList>
+          <TabsContent value="space">
+            <div className="mx-auto my-10 grid max-w-screen-xl gap-6 lg:grid-cols-3">
+              {spaces.map((space, index) => (
+                <ValuePanelCard
+                  key={index}
+                  title={space.name}
+                  value={space.value}
+                  change={space.change}
+                  // tooltip={space.tooltip}
+                  onClick={() => {}}
+                  // badge={String(space.fleet_count) + ' fleets'}
+                />
+              ))}
+            </div>
+            <div className="mx-auto my-10 h-24 max-w-screen-xl justify-center">
+              <GraphCardComponent />
+            </div>
+          </TabsContent>
+          <TabsContent value="wallet">
+            <div className="my-10 grid gap-6 md:grid-cols-2 lg:grid-cols-8">
+              <Card className="col-span-5">
+                <CardHeader>
+                  <CardTitle>prout title</CardTitle>
+                </CardHeader>
+                <CardContent>prout content</CardContent>
+              </Card>
+              {/* <div className="col-span-2 mx-6 flex flex-col justify-around gap-6">
+                <Button className="mt-6 flex-1" variant="outline">
+                  Button
+                </Button>
+                
+                  Button
+                </Button>
+              </div> */}
+
+              <Card className="col-span-3">
+                <CardHeader>
+                  <CardTitle>Overview</CardTitle>
+                </CardHeader>
+                <CardContent className="pl-2">
+                  <DonutChart
+                    className="mt-6"
+                    data={cities}
+                    category="sales"
+                    index="name"
+                    valueFormatter={valueFormatter}
+                    colors={[
+                      'slate',
+                      'violet',
+                      'indigo',
+                      'rose',
+                      'cyan',
+                      'amber'
+                    ]}
+                  />
+                  <div className="mx-10 mt-10 flex flex-row justify-around gap-8">
+                    <Button className="flex-1" variant="secondary" size="lg">
+                      invest
+                    </Button>
+                    <Button className="flex-1" variant="secondary" size="lg">
+                      withdraw
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+          <TabsContent value="fleet">FLEET</TabsContent>
+        </Tabs>
       </div>
-      <div className="mx-auto my-10 h-24 max-w-screen-xl justify-center px-24">
-        <GraphCardComponent />
-      </div>
+      {/* </div> */}
     </ContextHeader>
   )
 }
