@@ -5,6 +5,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DonutChart, AreaChart } from '@tremor/react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
+import { useState } from 'react'
+import { useToast } from '@/components/ui/use-toast'
+import { ScrollArea } from '@/components/ui/scroll-area'
+
+import { Currency, getAssetColumns } from './assetsTable/columns'
+import { AssetsDataTable } from './assetsTable/data-table'
+import { Operation, columns } from './transactionHistTable/columns'
+import { OperationDataTable } from './transactionHistTable/data-table'
+import StatCard from '@/components/custom/statCard'
 
 const cities = [
   {
@@ -70,12 +79,10 @@ const chartdata = [
 ]
 const dataFormatter = (number: number) =>
   `${Intl.NumberFormat('us').format(number).toString()}%`
-interface Space {
-  name: string
-  id: number
-  value: number
-  fleet_count: number
-  change?: number
+interface Stat {
+  title: string
+  metric: number
+  delta: number
 }
 
 const GraphCardComponent = React.forwardRef<
@@ -83,13 +90,13 @@ const GraphCardComponent = React.forwardRef<
   React.HTMLAttributes<HTMLDivElement>
 >(({ ...props }, ref) => {
   return (
-    <Card {...props} ref={ref} className="h-96">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-5">
-        <CardTitle className="text-sm font-normal">MY FUCKING GRAPH</CardTitle>
+    <Card {...props} ref={ref} className=" pb-6">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0">
+        <CardTitle className="text-sm font-normal">MY GRAPH</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="  pb-0">
         <AreaChart
-          className="mx-auto pb-2"
+          className="mx-auto h-96 "
           data={chartdata}
           index="index"
           categories={['wallet']}
@@ -104,33 +111,97 @@ const GraphCardComponent = React.forwardRef<
   )
 })
 
+function getData(): Currency[] {
+  return [
+    {
+      amount: 100,
+      ticker: 'BUSD'
+    },
+    {
+      amount: 10,
+      ticker: 'USDT'
+    },
+    {
+      amount: 1000,
+      ticker: 'Matic'
+    },
+    {
+      amount: 100,
+      ticker: 'BUSD'
+    },
+    {
+      amount: 10,
+      ticker: 'USDT'
+    },
+    {
+      amount: 1000,
+      ticker: 'Matic'
+    },
+    {
+      amount: 100,
+      ticker: 'BUSD'
+    },
+    {
+      amount: 10,
+      ticker: 'USDT'
+    },
+    {
+      amount: 1000,
+      ticker: 'Matic'
+    },
+    {
+      amount: 100,
+      ticker: 'BUSD'
+    },
+    {
+      amount: 10,
+      ticker: 'USDT'
+    },
+    {
+      amount: 1000,
+      ticker: 'Matic'
+    },
+    {
+      amount: 100,
+      ticker: 'BUSD'
+    },
+    {
+      amount: 10,
+      ticker: 'USDT'
+    },
+    {
+      amount: 1000,
+      ticker: 'Matic'
+    }
+  ]
+}
+
 export default function Spaces(): JSX.Element {
   // const { name } = useSelector((state: RootStateType) => state.headerState)
 
-  let spaces: Array<Space> = [
+  let spaces: Array<Stat> = [
     {
-      name: 'Stat 1',
-      id: 1,
-      value: 100,
-      fleet_count: 10,
-      change: 10
+      title: 'Stat 1',
+      metric: 5,
+      delta: 0
     },
     {
-      name: 'Stat 2',
-      id: 2,
-      value: 200,
-      fleet_count: 20,
-      change: 20
+      title: 'Stat 2',
+      metric: 42,
+      delta: 6
     },
     {
-      name: 'Stat 3',
-      id: 3,
-      value: 300,
-      fleet_count: 30,
-      change: 30
+      title: 'Stat 3',
+      metric: 5,
+      delta: -2
     }
   ]
-
+  const [flip, setFlip] = useState(false)
+  function toggleFlip() {
+    setFlip(!flip)
+  }
+  const { toast } = useToast()
+  const data = getData()
   return (
     <ContextHeader isBot>
       <div className="mx-auto my-10 max-w-screen-xl px-10">
@@ -140,20 +211,26 @@ export default function Spaces(): JSX.Element {
           <TabsList>
             <TabsTrigger value="space">Space</TabsTrigger>
             <TabsTrigger value="wallet">Wallet</TabsTrigger>
-            <TabsTrigger value="fleet">Fleet</TabsTrigger>
+            <TabsTrigger value="fleets">Fleets</TabsTrigger>
           </TabsList>
           <TabsContent value="space">
             <div className="mx-auto my-10 grid max-w-screen-xl gap-6 lg:grid-cols-3">
               {spaces.map((space, index) => (
-                <ValuePanelCard
+                <StatCard
                   key={index}
-                  title={space.name}
-                  value={space.value}
-                  change={space.change}
-                  // tooltip={space.tooltip}
-                  onClick={() => {}}
-                  // badge={String(space.fleet_count) + ' fleets'}
+                  title={space.title}
+                  metric={space.metric}
+                  delta={space.delta}
                 />
+                // <ValuePanelCard
+                //   key={index}
+                //   title={space.name}
+                //   value={space.value}
+                //   delta={space.delta}
+                //   // tooltip={space.tooltip}
+                //   onClick={() => {}}
+                //   // badge={String(space.fleet_count) + ' fleets'}
+                // />
               ))}
             </div>
             <div className="mx-auto my-10 h-24 max-w-screen-xl justify-center">
@@ -161,55 +238,102 @@ export default function Spaces(): JSX.Element {
             </div>
           </TabsContent>
           <TabsContent value="wallet">
-            <div className="my-10 grid gap-6 md:grid-cols-2 lg:grid-cols-8">
-              <Card className="col-span-5">
-                <CardHeader>
-                  <CardTitle>prout title</CardTitle>
+            <div className="mx-auto my-10 grid max-w-screen-xl gap-6">
+              <Card className="">
+                <CardHeader className="mt-0 flex flex-row justify-between">
+                  <CardTitle className="">Transaction history</CardTitle>
+                  <Button
+                    className=""
+                    variant="outline"
+                    size="icon"
+                    onClick={toggleFlip}
+                  >
+                    FLIP
+                  </Button>
                 </CardHeader>
-                <CardContent>prout content</CardContent>
-              </Card>
-              {/* <div className="col-span-2 mx-6 flex flex-col justify-around gap-6">
-                <Button className="mt-6 flex-1" variant="outline">
-                  Button
-                </Button>
-                
-                  Button
-                </Button>
-              </div> */}
+                <CardContent className="grid grid-cols-8 justify-between gap-6">
+                  <div className="col-span-5">
+                    {/* <GraphCardComponent /> */}
 
-              <Card className="col-span-3">
-                <CardHeader>
-                  <CardTitle>Overview</CardTitle>
-                </CardHeader>
-                <CardContent className="pl-2">
-                  <DonutChart
-                    className="mt-6"
-                    data={cities}
-                    category="sales"
-                    index="name"
-                    valueFormatter={valueFormatter}
-                    colors={[
-                      'slate',
-                      'violet',
-                      'indigo',
-                      'rose',
-                      'cyan',
-                      'amber'
-                    ]}
-                  />
-                  <div className="mx-10 mt-10 flex flex-row justify-around gap-8">
-                    <Button className="flex-1" variant="secondary" size="lg">
-                      invest
-                    </Button>
-                    <Button className="flex-1" variant="secondary" size="lg">
-                      withdraw
-                    </Button>
+                    <div
+                      className={`preserve-3d relative h-full w-full duration-1000 ${
+                        flip ? 'flip-x-180' : ''
+                      }`}
+                    >
+                      <div className="backface-hidden absolute z-0 h-full w-full">
+                        <GraphCardComponent className="" />
+                      </div>
+                      <div className="flip-x-180 backface-hidden absolute h-full w-full">
+                        {/* <GraphCardComponent /> */}
+                        <div className="">
+                          <ScrollArea className=" h-[30rem] rounded-md border">
+                            <AssetsDataTable
+                              columns={getAssetColumns()}
+                              data={data}
+                            />
+                          </ScrollArea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-span-3">
+                    <Card className="py-8">
+                      <CardHeader>
+                        <CardTitle></CardTitle>
+                      </CardHeader>
+                      <CardContent className="">
+                        <DonutChart
+                          className="my-10"
+                          data={cities}
+                          category="sales"
+                          index="name"
+                          valueFormatter={valueFormatter}
+                          colors={[
+                            'slate',
+                            'violet',
+                            'indigo',
+                            'rose',
+                            'cyan',
+                            'amber'
+                          ]}
+                        />
+                        <div className="mx-10 mt-20 flex flex-row justify-between gap-8">
+                          <Button
+                            className="flex-1"
+                            variant="secondary"
+                            size="lg"
+                            onClick={() => {
+                              console.log('invest1')
+                              toast({
+                                title: 'Scheduled: Catch up',
+                                description:
+                                  'Friday, February 10, 2023 at 5:57 PM'
+                              })
+                              console.log('invest2')
+                            }}
+                          >
+                            Invest
+                          </Button>
+                          <Button
+                            className="flex-1"
+                            variant="secondary"
+                            size="lg"
+                            onClick={() => {
+                              console.log('withdraw')
+                            }}
+                          >
+                            Withdraw
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
                   </div>
                 </CardContent>
               </Card>
+              <OperationDataTable columns={getAssetColumns()} data={data} />
             </div>
           </TabsContent>
-          <TabsContent value="fleet">FLEET</TabsContent>
+          <TabsContent value="fleets">fleet </TabsContent>
         </Tabs>
       </div>
       {/* </div> */}

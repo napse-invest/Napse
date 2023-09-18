@@ -17,7 +17,7 @@ interface Space {
   id: number
   value: number
   fleet_count: number
-  change?: number
+  delta?: number
 }
 
 export default function Spaces(): JSX.Element {
@@ -48,7 +48,7 @@ export default function Spaces(): JSX.Element {
             key={index}
             title={space.name}
             value={space.value}
-            change={space.change}
+            delta={space.delta}
             // tooltip={space.tooltip}
             onClick={() => {
               router.push(`/spaces/${space.name}`).catch((err) => {
