@@ -8,32 +8,33 @@ import {
 } from '@/redux/reducers/headerStateSlice'
 import { useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import axios from '@/api/axios'
+import { AxiosResponse } from 'axios'
+
+interface Space {
+  name: string
+  id: number
+  value: number
+  fleet_count: number
+  delta?: number
+}
 
 export default function Spaces(): JSX.Element {
-  const spaces = [
-    {
-      name: 'Space Jam',
-      bots: 3,
-      value: 1.01,
-      change: 20.6,
-      tooltip: 'test'
-    },
-    {
-      name: 'Space Mountain',
-      bots: 152,
-      value: 152163231.89,
-      change: 0,
-      tooltip: 'test'
-    },
-    {
-      name: 'Zero Space',
-      bots: 8,
-      value: 45621.89,
-      change: -6.468,
-      tooltip: 'test'
+  const [spaces, setSpaces] = useState<Space[]>([])
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response: AxiosResponse<Space[]> = await axios.get('/space/')
+        setSpaces(response.data)
+      } catch (error) {
+        console.error(error)
+        setSpaces([])
+      }
     }
-  ]
+    fetchData()
+  }, [])
+
   const dispatch = useDispatch()
   const router = useRouter()
   useEffect(() => {
@@ -47,8 +48,8 @@ export default function Spaces(): JSX.Element {
             key={index}
             title={space.name}
             value={space.value}
-            change={space.change}
-            tooltip={space.tooltip}
+            delta={space.delta}
+            // tooltip={space.tooltip}
             onClick={() => {
               router.push(`/spaces/${space.name}`).catch((err) => {
                 console.error(err)
@@ -57,7 +58,7 @@ export default function Spaces(): JSX.Element {
               dispatch(SET_TAB('Spaces'))
               dispatch(SET_NAME(space.name))
             }}
-            badge={space.bots + ' bots'}
+            badge={String(space.fleet_count) + ' fleets'}
           />
         ))}
       </div>
