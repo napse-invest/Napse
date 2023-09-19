@@ -1,0 +1,14 @@
+version: 2
+updates:
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    target-branch: "dev"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "npm"
+    directory: "/desktop-app/"
+    target-branch: "dev"
+    schedule:
+      interval: "daily"
