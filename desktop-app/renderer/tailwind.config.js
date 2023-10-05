@@ -1,37 +1,36 @@
 /** @type {import('tailwindcss').Config} */
-const plugin = require("tailwindcss/plugin");
+const plugin = require('tailwindcss/plugin')
 
 const FlipPlugin = plugin(function ({ addUtilities }) {
   addUtilities({
-    ".flip-y-180": {
-      transform: "rotateY(180deg)",
+    '.flip-y-180': {
+      transform: 'rotateY(180deg)'
     },
-    ".flip-x-180": {
-      transform: "rotateX(180deg)",
+    '.flip-x-180': {
+      transform: 'rotateX(180deg)'
     },
-    ".preserve-3d": {
-      transformStyle: "preserve-3d",
+    '.preserve-3d': {
+      transformStyle: 'preserve-3d'
     },
-    ".perspective": {
-      perspective: "1000px",
+    '.perspective': {
+      perspective: '1000px'
     },
-    ".backface-hidden": {
-      backfaceVisibility: "hidden",
-    },
-  });
-});
-
+    '.backface-hidden': {
+      backfaceVisibility: 'hidden'
+    }
+  })
+})
 
 module.exports = {
   content: [
     './renderer/pages/**/*.{js,ts,jsx,tsx}',
     './renderer/components/**/*.{js,ts,jsx,tsx}',
-    './node_modules/@tremor/**/*.{js,ts,jsx,tsx}', // Tremor module
+    './node_modules/@tremor/**/*.{js,ts,jsx,tsx}' // Tremor module
   ],
   darkMode: ['class'],
   theme: {
-    transparent: "transparent",
-    current: "currentColor",
+    transparent: 'transparent',
+    current: 'currentColor',
     container: {
       center: true,
       padding: '2rem',
@@ -77,84 +76,88 @@ module.exports = {
         // light mode
         tremor: {
           brand: {
-            faint: "#eff6ff", // blue-50
-            muted: "#bfdbfe", // blue-200
-            subtle: "#60a5fa", // blue-400
-            DEFAULT: "#3b82f6", // blue-500
-            emphasis: "#1d4ed8", // blue-700
-            inverted: "#ffffff", // white
+            faint: '#eff6ff', // blue-50
+            muted: '#bfdbfe', // blue-200
+            subtle: '#60a5fa', // blue-400
+            DEFAULT: '#3b82f6', // blue-500
+            emphasis: '#1d4ed8', // blue-700
+            inverted: '#ffffff' // white
           },
           background: {
-            muted: "#f9fafb", // gray-50
-            subtle: "#f3f4f6", // gray-100
-            DEFAULT: "#ffffff", // white
-            emphasis: "#374151", // gray-700
+            muted: '#f9fafb', // gray-50
+            subtle: '#f3f4f6', // gray-100
+            DEFAULT: '#ffffff', // white
+            emphasis: '#374151' // gray-700
           },
           border: {
-            DEFAULT: "#e5e7eb", // gray-200
+            DEFAULT: '#e5e7eb' // gray-200
           },
           ring: {
-            DEFAULT: "#e5e7eb", // gray-200
+            DEFAULT: '#e5e7eb' // gray-200
           },
           content: {
-            subtle: "#9ca3af", // gray-400
-            DEFAULT: "#6b7280", // gray-500
-            emphasis: "#374151", // gray-700
-            strong: "#111827", // gray-900
-            inverted: "#ffffff", // white
-          },
+            subtle: '#9ca3af', // gray-400
+            DEFAULT: '#6b7280', // gray-500
+            emphasis: '#374151', // gray-700
+            strong: '#111827', // gray-900
+            inverted: '#ffffff' // white
+          }
         },
         // dark mode
-        "dark-tremor": {
+        'dark-tremor': {
           brand: {
-            faint: "#0B1229", // custom
-            muted: "#172554", // blue-950
-            subtle: "#1e40af", // blue-800
-            DEFAULT: "#3b82f6", // blue-500
-            emphasis: "#60a5fa", // blue-400
-            inverted: "#030712", // gray-950
+            faint: '#0B1229', // custom
+            muted: '#172554', // blue-950
+            subtle: '#1e40af', // blue-800
+            DEFAULT: '#3b82f6', // blue-500
+            emphasis: '#60a5fa', // blue-400
+            inverted: '#030712' // gray-950
           },
           background: {
-            muted: "#131A2B", // custom
-            subtle: "#1f2937", // gray-800
-            DEFAULT: "#111827", // gray-900
-            emphasis: "#d1d5db", // gray-300
+            muted: '#131A2B', // custom
+            subtle: '#1f2937', // gray-800
+            DEFAULT: '#111827', // gray-900
+            emphasis: '#d1d5db' // gray-300
           },
           border: {
-            DEFAULT: "#1f2937", // gray-800
+            DEFAULT: '#1f2937' // gray-800
           },
           ring: {
-            DEFAULT: "#1f2937", // gray-800
+            DEFAULT: '#1f2937' // gray-800
           },
           content: {
-            subtle: "#4b5563", // gray-600
-            DEFAULT: "#6b7280", // gray-500
-            emphasis: "#e5e7eb", // gray-200
-            strong: "#f9fafb", // gray-50
-            inverted: "#000000", // black
-          },
-        },
+            subtle: '#4b5563', // gray-600
+            DEFAULT: '#6b7280', // gray-500
+            emphasis: '#e5e7eb', // gray-200
+            strong: '#f9fafb', // gray-50
+            inverted: '#000000' // black
+          }
+        }
       },
       boxShadow: {
         // light
-        "tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        "tremor-card": "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
-        "tremor-dropdown": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+        'tremor-input': '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+        'tremor-card':
+          '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+        'tremor-dropdown':
+          '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
         // dark
-        "dark-tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        "dark-tremor-card": "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
-        "dark-tremor-dropdown": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+        'dark-tremor-input': '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+        'dark-tremor-card':
+          '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+        'dark-tremor-dropdown':
+          '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
       },
       fontSize: {
-        "tremor-label": ["0.75rem"],
-        "tremor-default": ["0.875rem", { lineHeight: "1.25rem" }],
-        "tremor-title": ["1.125rem", { lineHeight: "1.75rem" }],
-        "tremor-metric": ["1.875rem", { lineHeight: "2.25rem" }],
+        'tremor-label': ['0.75rem'],
+        'tremor-default': ['0.875rem', { lineHeight: '1.25rem' }],
+        'tremor-title': ['1.125rem', { lineHeight: '1.75rem' }],
+        'tremor-metric': ['1.875rem', { lineHeight: '2.25rem' }]
       },
       borderRadius: {
-        "tremor-small": "0.375rem",
-        "tremor-default": "0.5rem",
-        "tremor-full": "0.1rem",
+        'tremor-small': '0.375rem',
+        'tremor-default': '0.5rem',
+        'tremor-full': '0.1rem',
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)'
@@ -179,35 +182,34 @@ module.exports = {
     {
       pattern:
         /^(bg-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/,
-      variants: ["hover", "ui-selected"],
+      variants: ['hover', 'ui-selected']
     },
     {
       pattern:
         /^(text-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/,
-      variants: ["hover", "ui-selected"],
+      variants: ['hover', 'ui-selected']
     },
     {
       pattern:
         /^(border-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/,
-      variants: ["hover", "ui-selected"],
+      variants: ['hover', 'ui-selected']
     },
     {
       pattern:
-        /^(ring-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/,
+        /^(ring-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/
     },
     {
       pattern:
-        /^(stroke-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/,
+        /^(stroke-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/
     },
     {
       pattern:
-        /^(fill-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/,
-    },
+        /^(fill-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/
+    }
   ],
-  plugins: [require("@headlessui/tailwindcss"), require('tailwindcss-animate'), FlipPlugin]
+  plugins: [
+    require('@headlessui/tailwindcss'),
+    require('tailwindcss-animate'),
+    FlipPlugin
+  ]
 }
-
-
-
-
-
