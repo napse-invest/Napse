@@ -1,3 +1,25 @@
+# [1.1.0](https://github.com/napse-invest/Napse/compare/v1.0.0...v1.1.0) (2023-09-25)
+
+
+### Bug Fixes
+
+* **exchangge account:** connect list display to api ([936604e](https://github.com/napse-invest/Napse/commit/936604eb1493f80e4b82285b2bfbf7e6a8a8db64))
+* **merge:** conflicts resolved ([e180917](https://github.com/napse-invest/Napse/commit/e180917a616e1ebef8d1971e4d7d353d84bba204))
+* **merge:** fixed conflicts ([1e9f880](https://github.com/napse-invest/Napse/commit/1e9f88062ebff6b7b0bf4163ef7144f94cd53168))
+* **next-13:** Images ([d06f4ce](https://github.com/napse-invest/Napse/commit/d06f4ceeb73a2c6dec19464aee34c8319ad04ec7))
+* **next-13:** Link ([68368f5](https://github.com/napse-invest/Napse/commit/68368f5f85b7f0daa9286091bba330f8269428d5))
+* **panelCard:** edge case on badge ([0c22623](https://github.com/napse-invest/Napse/commit/0c22623a1879a88ebcb6e3bd84122c1028f2279c))
+* **panel:** fix panel card with tooltips ([733e0d6](https://github.com/napse-invest/Napse/commit/733e0d64c8a3f4d19100396f4acd12f193371158))
+* **space:** design on sapce ([ec2fcf0](https://github.com/napse-invest/Napse/commit/ec2fcf0d37477211a51bceb169e3252cf25ebdfd))
+* **space:** space list is now connected to API ([e982a04](https://github.com/napse-invest/Napse/commit/e982a0429f0b17f360eb5f060210fab6ae8a5aaa))
+* **spaces:** setup experiment base for space's container mode ([5d24272](https://github.com/napse-invest/Napse/commit/5d2427290e920765349387ce12c0b9c7a370b98e))
+
+
+### Features
+
+* **desktop-app:** redux + new routing system ([49d8135](https://github.com/napse-invest/Napse/commit/49d8135d31ea808c3e81f6e0dbbf1a396d50bb80))
+* **server:** setup quick server selector ([f1090d7](https://github.com/napse-invest/Napse/commit/f1090d7534f50b4a1e90d131a6ff166d4e32928e))
+
 # 1.0.0 (2023-08-31)
 
 
