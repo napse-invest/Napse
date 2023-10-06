@@ -78,3 +78,8 @@ export function AssetsDataTable<TData, TValue>({
     </div>
   )
 }
+
+export default function Todo(): JSX.Element {
+  // TODO: implement or move this file
+  return <></>
+}

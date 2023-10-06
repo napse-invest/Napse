@@ -2,8 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
-import { useToast } from '@/components/ui/use-toast'
-import { Toast } from '@/components/ui/toast'
+import { toast } from '@/components/ui/use-toast'
 import { useState } from 'react'
 
 export type Currency = {
@@ -13,9 +12,9 @@ export type Currency = {
 
 function currencyDeleteAlert() {}
 
-export function getAssetColumns(): ColumnDef<Currency>[] {
-  const { toast } = useToast()
-
+export function getAssetColumns(
+  toastFunction: typeof toast
+): ColumnDef<Currency>[] {
   return [
     {
       accessorKey: 'ticker',
@@ -47,7 +46,7 @@ export function getAssetColumns(): ColumnDef<Currency>[] {
               size="icon"
               onClick={() => {
                 console.log(row)
-                toast({
+                toastFunction({
                   // description: ticker + "have been deleted"
                   description: (
                     <div>
@@ -65,4 +64,9 @@ export function getAssetColumns(): ColumnDef<Currency>[] {
       }
     }
   ]
+}
+
+export default function Todo(): JSX.Element {
+  // TODO: implement or move this file
+  return <></>
 }

@@ -111,6 +111,8 @@ const GraphCardComponent = React.forwardRef<
   )
 })
 
+GraphCardComponent.displayName = 'GraphCardComponent'
+
 function getData(): Currency[] {
   return [
     {
@@ -268,7 +270,7 @@ export default function Spaces(): JSX.Element {
                         <div className="">
                           <ScrollArea className=" h-[30rem] rounded-md border">
                             <AssetsDataTable
-                              columns={getAssetColumns()}
+                              columns={getAssetColumns(toast)}
                               data={data}
                             />
                           </ScrollArea>
@@ -330,7 +332,10 @@ export default function Spaces(): JSX.Element {
                   </div>
                 </CardContent>
               </Card>
-              <OperationDataTable columns={getAssetColumns()} data={data} />
+              <OperationDataTable
+                columns={getAssetColumns(toast)}
+                data={data}
+              />
             </div>
           </TabsContent>
           <TabsContent value="fleets">fleet </TabsContent>

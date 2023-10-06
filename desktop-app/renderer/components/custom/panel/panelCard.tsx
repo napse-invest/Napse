@@ -61,6 +61,8 @@ function PanelCard({
     )
   })
 
+  CardComponent.displayName = 'Card'
+
   return tooltip ? (
     <TooltipProvider>
       <Tooltip>
