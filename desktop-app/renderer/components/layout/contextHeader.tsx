@@ -48,7 +48,7 @@ export default function ContextHeader({
               })
             }}
           >
-            <Image src="/images/logo.svg" alt="Napse Logo" fill priority />
+            <Image src="/images/logo.svg" alt="Napse logo" fill priority />
           </Button>
           <Separator className="relative h-2/3" orientation="vertical" />
         </div>
