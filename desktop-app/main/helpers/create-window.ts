@@ -5,10 +5,10 @@ import {
 } from 'electron'
 import Store from 'electron-store'
 
-export default (
+export default function Main(
   windowName: string,
   options: BrowserWindowConstructorOptions
-): BrowserWindow => {
+): BrowserWindow {
   const key = 'window-state'
   const name = `window-state-${windowName}`
   const store = new Store({ name })

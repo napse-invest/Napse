@@ -39,7 +39,7 @@ export default function Spaces(): JSX.Element {
   const router = useRouter()
   useEffect(() => {
     dispatch(SET_SPACE_NAMES(spaces.map((space) => space.name)))
-  }, [])
+  }, [spaces, dispatch])
   return (
     <ContextHeader isBot>
       <div className="mx-auto my-10 grid max-w-screen-xl gap-6 px-24 lg:grid-cols-3">

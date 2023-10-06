@@ -9,4 +9,9 @@ files:
     filter:
       - package.json
       - app
+
+linux:
+  target: deb
+  icon: renderer/public/images/icon.svg
+
 publish: null

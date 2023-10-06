@@ -1,5 +1,4 @@
 import PanelCard from '@/components/custom/panel/panelCard'
-import { string } from 'prop-types'
 import React from 'react'
 
 type MinimalistPanelCardProps = {

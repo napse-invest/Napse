@@ -1,3 +1,7 @@
 {
-    "extends": "next/core-web-vitals"
+    "extends": [
+        "plugin:react/recommended",
+        "plugin:tailwindcss/recommended",
+        "next/core-web-vitals"
+    ]
 }

@@ -78,6 +78,8 @@ function StatCard({
     )
   })
 
+  StatCardComponent.displayName = 'StatCard'
+
   return tooltip ? (
     <TooltipProvider>
       <Tooltip>

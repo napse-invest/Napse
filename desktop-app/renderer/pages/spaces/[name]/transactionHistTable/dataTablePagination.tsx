@@ -24,7 +24,7 @@ export function DataTablePagination<TData>({
 }: DataTablePaginationProps<TData>) {
   useEffect(() => {
     table.setPageSize(5)
-  }, [])
+  }, [table])
   return (
     <div className="flex items-center justify-between px-2">
       <div className="text-muted-foreground flex-1 text-sm">
@@ -97,4 +97,9 @@ export function DataTablePagination<TData>({
       </div>
     </div>
   )
+}
+
+export default function Todo(): JSX.Element {
+  // TODO: implement or move this file
+  return <></>
 }
