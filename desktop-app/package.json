@@ -53,12 +53,12 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
-    "@types/node": "^18.11.18",
+    "@types/node": "^20.8.2",
     "@types/prop-types": "^15.7.8",
     "@types/react": "^18.0.26",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "autoprefixer": "^10.4.7",
-    "electron": "^21.3.3",
+    "electron": "^26.3.0",
     "electron-builder": "^23.6.0",
     "eslint": "^8.48.0",
     "eslint-config-next": "13.4.19",
