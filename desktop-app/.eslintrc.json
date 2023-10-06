@@ -1,19 +1,23 @@
 {
+    "$schema": "https://json.schemastore.org/eslintrc",
+    "root": true,
     "env": {
         "browser": true,
         "es2021": true
     },
     "extends": [
-        "standard-with-typescript",
-        "plugin:react/recommended"
+        // "standard-with-typescript",
+        "plugin:react/recommended",
+        "plugin:tailwindcss/recommended",
+        "next/core-web-vitals"
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
-        "sourceType": "module",
-        "project": "./tsconfig.json"
+        "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "tailwindcss"
     ],
     "rules": {
         "react/react-in-jsx-scope": "off",
@@ -28,6 +32,33 @@
         ],
         "@typescript-eslint/space-before-function-paren": "off",
         "@typescript-eslint/indent": "off",
-        "multiline-ternary": "off"
-    }
+        "multiline-ternary": "off",
+        //custom rules
+        "@next/next/no-html-link-for-pages": "off",
+        "tailwindcss/no-custom-classname": "off",
+        "tailwindcss/classnames-order": "error"
+    },
+    "settings": {
+        "tailwindcss": {
+            "callees": [
+                "cn",
+                "cva"
+            ],
+            "config": "tailwind.config.cjs"
+        },
+        "next": {
+            "rootDir": [
+                "apps/*/"
+            ]
+        }
+    },
+    "overrides": [
+        {
+            "files": [
+                "*.ts",
+                "*.tsx"
+            ],
+            "parser": "@typescript-eslint/parser"
+        }
+    ]
 }
