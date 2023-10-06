@@ -2347,7 +2347,7 @@
     semver "^7.5.4"
     ts-api-utils "^1.0.1"
 
-"@typescript-eslint/parser@^5.4.2 || ^6.0.0", "@typescript-eslint/parser@^6.1.0":
+"@typescript-eslint/parser@^5.4.2 || ^6.0.0", "@typescript-eslint/parser@^6.4.0":
   version "6.7.4"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-6.7.4.tgz#23d1dd4fe5d295c7fa2ab651f5406cd9ad0bd435"
   integrity sha512-I5zVZFY+cw4IMZUeNCU7Sh2PO5O57F7Lr0uyhgCJmhN/BuTlnc55KxPonR4+EM3GBdfiCyGZye6DgMjtubQkmA==
@@ -4218,12 +4218,12 @@ eslint-config-next@13.4.19:
     eslint-plugin-react "^7.31.7"
     eslint-plugin-react-hooks "^4.5.0 || 5.0.0-canary-7118f5dd7-20230705"
 
-eslint-config-standard-with-typescript@^38.0.0:
-  version "38.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-standard-with-typescript/-/eslint-config-standard-with-typescript-38.1.0.tgz#26e981539db7fcd4728caf88694ffc9e24a3e0cc"
-  integrity sha512-sdgN8Gf7BMVhVKlY7/mB426yO/MozU1zV7TKnh0z1wIoPq4lD0CHQ+b/UkgqKfiZ4Io0j3xIY1j+lHhVXQck0g==
+eslint-config-standard-with-typescript@^39.1.0:
+  version "39.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-standard-with-typescript/-/eslint-config-standard-with-typescript-39.1.0.tgz#7a6a5a1b31eced3027edf0d729bae5784d9bda33"
+  integrity sha512-5+SPKis3yr6T1X6wSA7HhDuumTRMrTDMcsTrIWhdZuI+sX3e8SPGZYzuJxVxdc239Yo718dEVEVyJhHI6jUjrQ==
   dependencies:
-    "@typescript-eslint/parser" "^6.1.0"
+    "@typescript-eslint/parser" "^6.4.0"
     eslint-config-standard "17.1.0"
 
 eslint-config-standard@17.1.0:
