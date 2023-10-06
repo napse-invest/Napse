@@ -27,8 +27,8 @@ export default function Servers(): JSX.Element {
             title={server.name}
             tooltip={server.url}
             onClick={() => {
-              dispatch(SET_SERVER_NAME(server.name)),
-                dispatch(SET_SERVER_URL(server.url))
+              dispatch(SET_SERVER_NAME(server.name))
+              dispatch(SET_SERVER_URL(server.url))
             }}
           />
         ))}

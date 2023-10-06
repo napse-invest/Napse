@@ -39,11 +39,11 @@ function PanelCard({
       <Card {...props} ref={ref} className="hover:shadow-lg" onClick={onClick}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 p-5">
           {typeof title === 'string' ? (
-            <CardTitle className="text-sm font-medium">{title}</CardTitle>
+            <CardTitle className="text-sm font-normal">{title}</CardTitle>
           ) : (
             title
           )}
-          {typeof title === 'string' ? (
+          {typeof badge === 'string' ? (
             <div className="text-xs italic">{badge}</div>
           ) : (
             badge
@@ -60,6 +60,8 @@ function PanelCard({
       </Card>
     )
   })
+
+  CardComponent.displayName = 'Card'
 
   return tooltip ? (
     <TooltipProvider>
