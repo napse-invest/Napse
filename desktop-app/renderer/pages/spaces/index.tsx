@@ -1,11 +1,6 @@
 import ContextHeader from '@/components/layout/contextHeader'
 import ValuePanelCard from '@/components/custom/panel/valuePanelCard'
-import {
-  SET_SPACE_NAMES,
-  SET_TAB,
-  SET_NAME,
-  SET_CONTAINER_STATE
-} from '@/redux/reducers/headerStateSlice'
+
 import { useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -37,9 +32,9 @@ export default function Spaces(): JSX.Element {
 
   const dispatch = useDispatch()
   const router = useRouter()
-  useEffect(() => {
-    dispatch(SET_SPACE_NAMES(spaces.map((space) => space.name)))
-  }, [spaces, dispatch])
+  // useEffect(() => {
+  //   dispatch(SET_SPACE_NAMES(spaces.map((space) => space.name)))
+  // }, [spaces, dispatch])
   return (
     <ContextHeader isBot>
       <div className="mx-auto my-10 grid max-w-screen-xl gap-6 px-24 lg:grid-cols-3">
@@ -54,9 +49,6 @@ export default function Spaces(): JSX.Element {
               router.push(`/spaces/${space.name}`).catch((err) => {
                 console.error(err)
               })
-              dispatch(SET_CONTAINER_STATE(true))
-              dispatch(SET_TAB('Spaces'))
-              dispatch(SET_NAME(space.name))
             }}
             badge={String(space.fleet_count) + ' fleets'}
           />

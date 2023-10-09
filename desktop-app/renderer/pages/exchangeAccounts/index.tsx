@@ -1,26 +1,21 @@
-import ContextHeader from '@/components/layout/contextHeader'
-import axios from '@/api/axios'
-import { AxiosResponse } from 'axios'
 import InfoPanelCard from '@/components/custom/panel/infoPanelCard'
+import ContextHeader from '@/components/layout/contextHeader'
+import { standardUrlPartial } from '@/lib/queryParams'
+import { ExchangeAccount, list } from 'api/exchangeAccounts/exchangeAccount'
+import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-
-interface ExchangeAccount {
-  id: number
-  exchange_name: string
-  name: string
-  testing: boolean
-}
 
 export default function ExchangeAccounts(): JSX.Element {
   const [exchangeAccounts, setExchangeAccounts] = useState<ExchangeAccount[]>(
     []
   )
-
+  const searchParams = useSearchParams()
+  const router = useRouter()
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response: AxiosResponse<ExchangeAccount[]> =
-          await axios.get('/exchange_account/')
+        const response = await list(searchParams)
         setExchangeAccounts(response.data)
       } catch (error) {
         console.error(error)
@@ -28,7 +23,7 @@ export default function ExchangeAccounts(): JSX.Element {
       }
     }
     fetchData()
-  }, [])
+  }, [searchParams])
 
   return (
     <ContextHeader isBot>
@@ -39,6 +34,21 @@ export default function ExchangeAccounts(): JSX.Element {
             title={exchangeAccount.name}
             category={exchangeAccount.exchange_name.toLowerCase()}
             badge={exchangeAccount.testing ? 'testing' : ''}
+            onClick={() => {
+              router.push(
+                standardUrlPartial(
+                  '/exchangeAccounts/',
+                  exchangeAccount.uuid,
+                  {
+                    exchangeAccount: exchangeAccount.uuid,
+                    space: '',
+                    fleet: '',
+                    bot: ''
+                  },
+                  searchParams
+                )
+              )
+            }}
           />
         ))}
       </div>

@@ -1,12 +1,15 @@
-import HeaderPopover from '@/components/custom/headerPopover'
+import HeaderButton from '@/components/custom/headerButton'
+import ServerPopover from '@/components/custom/headerPopover'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import type { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { ThemeButton } from '../custom/themeButton'
-import { useSelector } from 'react-redux'
-import type { RootStateType } from '@/redux/store'
+
+import BreadcrumbLayout from '@/components/layout/breadcrumb'
+import { standardUrlPartial } from '@/lib/queryParams'
+import { useSearchParams } from 'next/navigation'
 
 export default function ContextHeader({
   children,
@@ -28,13 +31,7 @@ export default function ContextHeader({
   isSpace = isSpace || isFleet || isBot
   isFleet = isFleet || isBot
   const router = useRouter()
-  const { spaceNames } = useSelector(
-    (state: RootStateType) => state.headerState
-  )
-  // Define type in the store
-  const { serverName, serverUrl } = useSelector(
-    (state: RootStateType) => state.serverState
-  )
+  const searchParams = useSearchParams()
   return (
     <>
       <div className="container flex h-20 flex-row items-center justify-between space-y-0 py-4">
@@ -52,31 +49,60 @@ export default function ContextHeader({
           </Button>
           <Separator className="relative h-2/3" orientation="vertical" />
         </div>
-        <div className="flex w-full justify-start space-x-2">
+        <div className="flex w-full justify-start  space-x-6">
           {isExchangeAccount && (
-            <HeaderPopover
+            <HeaderButton
               title="Exchange Accounts"
-              route="/exchangeAccounts"
+              route={standardUrlPartial(
+                '/exchangeAccounts/',
+                null,
+                { exchangeAccount: '', space: '', fleet: '', bot: '' },
+                searchParams
+              )}
             />
           )}
           {isSpace && (
-            <HeaderPopover title="Spaces" route="/spaces" names={spaceNames} />
-          )}
-          {isFleet && <HeaderPopover title="Fleets" route="/fleets" />}
-          {isBot && <HeaderPopover title="Bots" route="/bots" />}
-        </div>
-        <div className="flex  justify-start space-x-2">
-          {isServer && (
-            <HeaderPopover
-              title={serverName}
-              route="/servers"
-              names={['AWS - Tom JEANNESSON', serverName]}
+            <HeaderButton
+              title="Spaces"
+              route={standardUrlPartial(
+                '/spaces/',
+                null,
+                { exchangeAccount: '', space: '', fleet: '', bot: '' },
+                searchParams
+              )}
             />
           )}
+          {isFleet && (
+            <HeaderButton
+              title="Fleets"
+              route={standardUrlPartial(
+                '/fleets/',
+                null,
+                { exchangeAccount: '', space: '', fleet: '', bot: '' },
+                searchParams
+              )}
+            />
+          )}
+          {isBot && (
+            <HeaderButton
+              title="Bots"
+              route={standardUrlPartial(
+                '/bots/',
+                null,
+                { exchangeAccount: '', space: '', fleet: '', bot: '' },
+                searchParams
+              )}
+            />
+          )}
+        </div>
+        <div className="flex justify-start space-x-2">
+          {isServer && <ServerPopover />}
           <ThemeButton />
         </div>
       </div>
       <Separator className="h-[1px]" />
+      <BreadcrumbLayout />
+
       <div>{children}</div>
     </>
   )
