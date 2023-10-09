@@ -7454,10 +7454,10 @@ set-function-name@^2.0.0, set-function-name@^2.0.1:
     functions-have-names "^1.2.3"
     has-property-descriptors "^1.0.0"
 
-shadcn-ui@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/shadcn-ui/-/shadcn-ui-0.3.0.tgz#bcb1464c1486f4048afec6a32181bc3949e23363"
-  integrity sha512-il58BF1iKc5Np8lcXJWWh2F5G+yW8FXLO1UvzlU8kxK7AOjAo4vdgsDIuF+ypaJAN3hY2rpLcoZoDxCF4imuNA==
+shadcn-ui@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/shadcn-ui/-/shadcn-ui-0.4.1.tgz#4c4eef03aa8354a9cfec989bab942e5c8ec9d897"
+  integrity sha512-6SMlEzoJzbkPFZ1zP01bOi90reiV8yYnBeTmqys37YJPfnNKDk8mtPq3jtoYGDLIEcmLdcI/vY12qxzxDCTKkw==
   dependencies:
     "@antfu/ni" "^0.21.4"
     "@babel/core" "^7.22.1"
