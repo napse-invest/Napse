@@ -1471,10 +1471,10 @@
   resolved "https://registry.yarnpkg.com/@next/env/-/env-13.5.4.tgz#777c3af16de2cf2f611b6c8126910062d13d222c"
   integrity sha512-LGegJkMvRNw90WWphGJ3RMHMVplYcOfRWf2Be3td3sUa+1AaxmsYyANsA+znrGCBjXJNi4XAQlSoEfUxs/4kIQ==
 
-"@next/eslint-plugin-next@13.4.19":
-  version "13.4.19"
-  resolved "https://registry.yarnpkg.com/@next/eslint-plugin-next/-/eslint-plugin-next-13.4.19.tgz#93d130c37b47fd120f6d111aee36a60611148df1"
-  integrity sha512-N/O+zGb6wZQdwu6atMZHbR7T9Np5SUFUjZqCbj0sXm+MwQO35M8TazVB4otm87GkXYs2l6OPwARd3/PUWhZBVQ==
+"@next/eslint-plugin-next@13.5.4":
+  version "13.5.4"
+  resolved "https://registry.yarnpkg.com/@next/eslint-plugin-next/-/eslint-plugin-next-13.5.4.tgz#ec70af509f07dc4e545df25834ac94d2c341c36a"
+  integrity sha512-vI94U+D7RNgX6XypSyjeFrOzxGlZyxOplU0dVE5norIfZGn/LDjJYPHdvdsR5vN1eRtl6PDAsOHmycFEOljK5A==
   dependencies:
     glob "7.1.7"
 
@@ -1650,18 +1650,6 @@
   dependencies:
     "@babel/runtime" "^7.13.10"
 
-"@radix-ui/react-dismissable-layer@1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@radix-ui/react-dismissable-layer/-/react-dismissable-layer-1.0.4.tgz#883a48f5f938fa679427aa17fcba70c5494c6978"
-  integrity sha512-7UpBa/RKMoHJYjie1gkF1DlK8l1fdU/VKDpoS3rCCo8YBJR294GwcEHyxHw72yvphJ7ld0AXEcSLAzY2F/WyCg==
-  dependencies:
-    "@babel/runtime" "^7.13.10"
-    "@radix-ui/primitive" "1.0.1"
-    "@radix-ui/react-compose-refs" "1.0.1"
-    "@radix-ui/react-primitive" "1.0.3"
-    "@radix-ui/react-use-callback-ref" "1.0.1"
-    "@radix-ui/react-use-escape-keydown" "1.0.3"
-
 "@radix-ui/react-dismissable-layer@1.0.5":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-dismissable-layer/-/react-dismissable-layer-1.0.5.tgz#3f98425b82b9068dfbab5db5fff3df6ebf48b9d4"
@@ -1694,16 +1682,6 @@
   integrity sha512-Rect2dWbQ8waGzhMavsIbmSVCgYxkXLxxR3ZvCX79JOglzdEy4JXMb98lq4hPxUbLr77nP0UOGf4rcMU+s1pUA==
   dependencies:
     "@babel/runtime" "^7.13.10"
-
-"@radix-ui/react-focus-scope@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@radix-ui/react-focus-scope/-/react-focus-scope-1.0.3.tgz#9c2e8d4ed1189a1d419ee61edd5c1828726472f9"
-  integrity sha512-upXdPfqI4islj2CslyfUBNlaJCPybbqRHAi1KER7Isel9Q2AtSJ0zRBZv8mWQiFXD2nyAJ4BhC3yXgZ6kMBSrQ==
-  dependencies:
-    "@babel/runtime" "^7.13.10"
-    "@radix-ui/react-compose-refs" "1.0.1"
-    "@radix-ui/react-primitive" "1.0.3"
-    "@radix-ui/react-use-callback-ref" "1.0.1"
 
 "@radix-ui/react-focus-scope@1.0.4":
   version "1.0.4"
@@ -1783,23 +1761,6 @@
     aria-hidden "^1.1.1"
     react-remove-scroll "2.5.5"
 
-"@radix-ui/react-popper@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@radix-ui/react-popper/-/react-popper-1.1.2.tgz#4c0b96fcd188dc1f334e02dba2d538973ad842e9"
-  integrity sha512-1CnGGfFi/bbqtJZZ0P/NQY20xdG3E0LALJaLUEoKwPLwl6PPPfbeiCqMVQnhoFRAxjJj4RpBRJzDmUgsex2tSg==
-  dependencies:
-    "@babel/runtime" "^7.13.10"
-    "@floating-ui/react-dom" "^2.0.0"
-    "@radix-ui/react-arrow" "1.0.3"
-    "@radix-ui/react-compose-refs" "1.0.1"
-    "@radix-ui/react-context" "1.0.1"
-    "@radix-ui/react-primitive" "1.0.3"
-    "@radix-ui/react-use-callback-ref" "1.0.1"
-    "@radix-ui/react-use-layout-effect" "1.0.1"
-    "@radix-ui/react-use-rect" "1.0.1"
-    "@radix-ui/react-use-size" "1.0.1"
-    "@radix-ui/rect" "1.0.1"
-
 "@radix-ui/react-popper@1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-popper/-/react-popper-1.1.3.tgz#24c03f527e7ac348fabf18c89795d85d21b00b42"
@@ -1816,14 +1777,6 @@
     "@radix-ui/react-use-rect" "1.0.1"
     "@radix-ui/react-use-size" "1.0.1"
     "@radix-ui/rect" "1.0.1"
-
-"@radix-ui/react-portal@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@radix-ui/react-portal/-/react-portal-1.0.3.tgz#ffb961244c8ed1b46f039e6c215a6c4d9989bda1"
-  integrity sha512-xLYZeHrWoPmA5mEKEfZZevoVRK/Q43GfzRXkWV6qawIWWK8t6ifIiLQdd7rmQ4Vk1bmI21XhqF9BN3jWf+phpA==
-  dependencies:
-    "@babel/runtime" "^7.13.10"
-    "@radix-ui/react-primitive" "1.0.3"
 
 "@radix-ui/react-portal@1.0.4":
   version "1.0.4"
@@ -1891,10 +1844,10 @@
     "@radix-ui/react-use-callback-ref" "1.0.1"
     "@radix-ui/react-use-layout-effect" "1.0.1"
 
-"@radix-ui/react-select@^1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@radix-ui/react-select/-/react-select-1.2.2.tgz#caa981fa0d672cf3c1b2a5240135524e69b32181"
-  integrity sha512-zI7McXr8fNaSrUY9mZe4x/HC0jTLY9fWNhO1oLWYMQGDXuV4UCivIGTxwioSzO0ZCYX9iSLyWmAh/1TOmX3Cnw==
+"@radix-ui/react-select@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-select/-/react-select-2.0.0.tgz#a3511792a51a7018d6559357323a7f52e0e38887"
+  integrity sha512-RH5b7af4oHtkcHS7pG6Sgv5rk5Wxa7XI8W5gvB1N/yiuDGZxko1ynvOiVhFM7Cis2A8zxF9bTOUVbRDzPepe6w==
   dependencies:
     "@babel/runtime" "^7.13.10"
     "@radix-ui/number" "1.0.1"
@@ -1903,12 +1856,12 @@
     "@radix-ui/react-compose-refs" "1.0.1"
     "@radix-ui/react-context" "1.0.1"
     "@radix-ui/react-direction" "1.0.1"
-    "@radix-ui/react-dismissable-layer" "1.0.4"
+    "@radix-ui/react-dismissable-layer" "1.0.5"
     "@radix-ui/react-focus-guards" "1.0.1"
-    "@radix-ui/react-focus-scope" "1.0.3"
+    "@radix-ui/react-focus-scope" "1.0.4"
     "@radix-ui/react-id" "1.0.1"
-    "@radix-ui/react-popper" "1.1.2"
-    "@radix-ui/react-portal" "1.0.3"
+    "@radix-ui/react-popper" "1.1.3"
+    "@radix-ui/react-portal" "1.0.4"
     "@radix-ui/react-primitive" "1.0.3"
     "@radix-ui/react-slot" "1.0.2"
     "@radix-ui/react-use-callback-ref" "1.0.1"
@@ -2066,7 +2019,7 @@
     redux-thunk "^2.4.2"
     reselect "^4.1.8"
 
-"@rushstack/eslint-patch@^1.1.3":
+"@rushstack/eslint-patch@^1.3.3":
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.5.1.tgz#5f1b518ec5fa54437c0b7c4a821546c64fed6922"
   integrity sha512-6i/8UoL0P5y4leBIGzvkZdS85RDMG9y1ihZzmTZQ5LdHUYmZ7pKFoj8X0236s3lusPs1Fa5HTQUpwI+UfTcmeA==
@@ -2090,17 +2043,17 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@tanstack/react-table@^8.9.11":
-  version "8.10.4"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-table/-/react-table-8.10.4.tgz#5ba5384836e3fd3d55835d23af33cd170ed765f7"
-  integrity sha512-t3VE77XotxEw1DdRc+b1f7wrD6Dr17CPcl9FVby4HFmfrC5zUIPhzAxPBYcm2WgS2g09n/hnITIQ5zh2zzu1hg==
+"@tanstack/react-table@^8.10.6":
+  version "8.10.6"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-table/-/react-table-8.10.6.tgz#a8c03cc06ac890bce4404739b9356059c4259dd4"
+  integrity sha512-D0VEfkIYnIKdy6SHiBNEaMc4SxO+MV7ojaPhRu8jP933/gbMi367+Wul2LxkdovJ5cq6awm0L1+jgxdS/unzIg==
   dependencies:
-    "@tanstack/table-core" "8.10.4"
+    "@tanstack/table-core" "8.10.6"
 
-"@tanstack/table-core@8.10.4":
-  version "8.10.4"
-  resolved "https://registry.yarnpkg.com/@tanstack/table-core/-/table-core-8.10.4.tgz#a983665c4a8680d346dc70b7f3f4f75b228e9883"
-  integrity sha512-1eJu8hY8U+bM/dkn+ldr/KtDqjcj3Wmn8u3n6rZsrb/wd88k8qmGTFcc+BA/fojGTqCRX1gKc8zMzuk2nauBEA==
+"@tanstack/table-core@8.10.6":
+  version "8.10.6"
+  resolved "https://registry.yarnpkg.com/@tanstack/table-core/-/table-core-8.10.6.tgz#c79d145dfc3dc9947a2b1cdac82cd4ec4cef822a"
+  integrity sha512-9t8brthhAmCBIjzk7fCDa/kPKoLQTtA31l9Ir76jYxciTlHU61r/6gYm69XF9cbg9n88gVL5y7rNpeJ2dc1AFA==
 
 "@toastdotdev/lib-darwin-arm64@0.0.1":
   version "0.0.1"
@@ -4174,19 +4127,19 @@ escape-string-regexp@^4.0.0:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz#14ba83a5d373e3d311e5afca29cf5bfad965bf34"
   integrity sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==
 
-eslint-config-next@13.4.19:
-  version "13.4.19"
-  resolved "https://registry.yarnpkg.com/eslint-config-next/-/eslint-config-next-13.4.19.tgz#f46be9d4bd9e52755f846338456132217081d7f8"
-  integrity sha512-WE8367sqMnjhWHvR5OivmfwENRQ1ixfNE9hZwQqNCsd+iM3KnuMc1V8Pt6ytgjxjf23D+xbesADv9x3xaKfT3g==
+eslint-config-next@13.5.4:
+  version "13.5.4"
+  resolved "https://registry.yarnpkg.com/eslint-config-next/-/eslint-config-next-13.5.4.tgz#e50bb157d8346b63426f4b36bf53c2e46ccbc938"
+  integrity sha512-FzQGIj4UEszRX7fcRSJK6L1LrDiVZvDFW320VVntVKh3BSU8Fb9kpaoxQx0cdFgf3MQXdeSbrCXJ/5Z/NndDkQ==
   dependencies:
-    "@next/eslint-plugin-next" "13.4.19"
-    "@rushstack/eslint-patch" "^1.1.3"
+    "@next/eslint-plugin-next" "13.5.4"
+    "@rushstack/eslint-patch" "^1.3.3"
     "@typescript-eslint/parser" "^5.4.2 || ^6.0.0"
     eslint-import-resolver-node "^0.3.6"
     eslint-import-resolver-typescript "^3.5.2"
-    eslint-plugin-import "^2.26.0"
-    eslint-plugin-jsx-a11y "^6.5.1"
-    eslint-plugin-react "^7.31.7"
+    eslint-plugin-import "^2.28.1"
+    eslint-plugin-jsx-a11y "^6.7.1"
+    eslint-plugin-react "^7.33.2"
     eslint-plugin-react-hooks "^4.5.0 || 5.0.0-canary-7118f5dd7-20230705"
 
 eslint-config-standard-with-typescript@^39.1.0:
@@ -4248,7 +4201,7 @@ eslint-plugin-es-x@^7.1.0:
     "@eslint-community/eslint-utils" "^4.1.2"
     "@eslint-community/regexpp" "^4.6.0"
 
-eslint-plugin-import@^2.25.2, eslint-plugin-import@^2.26.0:
+eslint-plugin-import@^2.25.2, eslint-plugin-import@^2.28.1:
   version "2.28.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.28.1.tgz#63b8b5b3c409bfc75ebaf8fb206b07ab435482c4"
   integrity sha512-9I9hFlITvOV55alzoKBI+K9q74kv0iKMeY6av5+umsNwayt59fz692daGyjR+oStBQgx6nwR9rXldDev3Clw+A==
@@ -4271,7 +4224,7 @@ eslint-plugin-import@^2.25.2, eslint-plugin-import@^2.26.0:
     semver "^6.3.1"
     tsconfig-paths "^3.14.2"
 
-eslint-plugin-jsx-a11y@^6.5.1:
+eslint-plugin-jsx-a11y@^6.7.1:
   version "6.7.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-jsx-a11y/-/eslint-plugin-jsx-a11y-6.7.1.tgz#fca5e02d115f48c9a597a6894d5bcec2f7a76976"
   integrity sha512-63Bog4iIethyo8smBklORknVjB0T2dwB8Mr/hIC+fBS0uyHdYYpzM/Ed+YC8VxTjlXHEWFOdmgwcDn1U2L9VCA==
@@ -4318,7 +4271,7 @@ eslint-plugin-promise@^6.0.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-4.6.0.tgz#4c3e697ad95b77e93f8646aaa1630c1ba607edd3"
   integrity sha512-oFc7Itz9Qxh2x4gNHStv3BqJq54ExXmfC+a1NjAta66IAN87Wu0R/QArgIS9qKzX3dXKPI9H5crl9QchNMY9+g==
 
-eslint-plugin-react@^7.31.7, eslint-plugin-react@^7.33.2:
+eslint-plugin-react@^7.33.2:
   version "7.33.2"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.33.2.tgz#69ee09443ffc583927eafe86ffebb470ee737608"
   integrity sha512-73QQMKALArI8/7xGLNI/3LylrEYrlKZSb5C9+q3OtOewTnMQi5cT+aE9E41sLCmli3I9PGGmD1yiZydyo4FEPw==
@@ -7480,10 +7433,10 @@ set-function-name@^2.0.0, set-function-name@^2.0.1:
     functions-have-names "^1.2.3"
     has-property-descriptors "^1.0.0"
 
-shadcn-ui@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/shadcn-ui/-/shadcn-ui-0.3.0.tgz#bcb1464c1486f4048afec6a32181bc3949e23363"
-  integrity sha512-il58BF1iKc5Np8lcXJWWh2F5G+yW8FXLO1UvzlU8kxK7AOjAo4vdgsDIuF+ypaJAN3hY2rpLcoZoDxCF4imuNA==
+shadcn-ui@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/shadcn-ui/-/shadcn-ui-0.4.1.tgz#4c4eef03aa8354a9cfec989bab942e5c8ec9d897"
+  integrity sha512-6SMlEzoJzbkPFZ1zP01bOi90reiV8yYnBeTmqys37YJPfnNKDk8mtPq3jtoYGDLIEcmLdcI/vY12qxzxDCTKkw==
   dependencies:
     "@antfu/ni" "^0.21.4"
     "@babel/core" "^7.22.1"
