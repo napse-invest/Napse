@@ -30,7 +30,7 @@
     "@radix-ui/react-tooltip": "^1.0.6",
     "@reduxjs/toolkit": "^1.9.5",
     "@tanstack/react-table": "^8.10.6",
-    "@tremor/react": "^3.7.7",
+    "@tremor/react": "^3.9.2",
     "add": "^2.0.6",
     "axios": "^1.5.0",
     "class-variance-authority": "^0.7.0",
