@@ -2,8 +2,6 @@ import ContextHeader from '@/components/layout/contextHeader'
 import { Server, getServer } from '@/lib/localStorage'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import SelectedAPIKey from './selectedAPIKey'
-import SelectedServer from './selectedServer'
 export default function Servers(): JSX.Element {
   const searchParams = useSearchParams()
   const [server, setServer] = useState<Server>(
@@ -21,10 +19,6 @@ export default function Servers(): JSX.Element {
           Settings - Servers
         </h1>
         <p className="text-xl">Here is where you can manage your servers.</p>
-        <div className="flex flex-row space-x-10 pt-12">
-          <SelectedServer server={server} setServer={setServer} />
-          <SelectedAPIKey server={server} />
-        </div>
       </div>
     </ContextHeader>
   )

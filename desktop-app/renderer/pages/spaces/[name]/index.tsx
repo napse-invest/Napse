@@ -1,19 +1,16 @@
 import ContextHeader from '@/components/layout/contextHeader'
-import React from 'react'
-import ValuePanelCard from '@/components/custom/panel/valuePanelCard'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { DonutChart, AreaChart } from '@tremor/react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
-import { useToast } from '@/components/ui/use-toast'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useToast } from '@/components/ui/use-toast'
+import { AreaChart, DonutChart } from '@tremor/react'
+import React, { useState } from 'react'
 
+import StatCard from '@/components/custom/statCard'
 import { Currency, getAssetColumns } from './assetsTable/columns'
 import { AssetsDataTable } from './assetsTable/data-table'
-import { Operation, columns } from './transactionHistTable/columns'
 import { OperationDataTable } from './transactionHistTable/data-table'
-import StatCard from '@/components/custom/statCard'
 
 const cities = [
   {
@@ -216,7 +213,7 @@ export default function Spaces(): JSX.Element {
             <TabsTrigger value="fleets">Fleets</TabsTrigger>
           </TabsList>
           <TabsContent value="space">
-            <div className="mx-auto my-10 grid max-w-screen-xl gap-6 lg:grid-cols-3">
+            <div className="my-10 grid max-w-screen-xl gap-6 lg:grid-cols-3">
               {spaces.map((space, index) => (
                 <StatCard
                   key={index}
@@ -235,12 +232,12 @@ export default function Spaces(): JSX.Element {
                 // />
               ))}
             </div>
-            <div className="mx-auto my-10 h-24 max-w-screen-xl justify-center">
+            <div className=" my-10 h-24 max-w-screen-xl justify-center">
               <GraphCardComponent />
             </div>
           </TabsContent>
           <TabsContent value="wallet">
-            <div className="mx-auto my-10 grid max-w-screen-xl gap-6">
+            <div className=" my-10 grid max-w-screen-xl gap-6">
               <Card className="">
                 <CardHeader className="mt-0 flex flex-row justify-between">
                   <CardTitle className="">Transaction history</CardTitle>
@@ -281,7 +278,7 @@ export default function Spaces(): JSX.Element {
                   <div className="col-span-3">
                     <Card className="py-8">
                       <CardHeader>
-                        <CardTitle></CardTitle>
+                        <CardTitle />
                       </CardHeader>
                       <CardContent className="">
                         <DonutChart

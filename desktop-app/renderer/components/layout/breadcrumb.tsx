@@ -1,4 +1,8 @@
-import { ExchangeAccount, get } from '@/api/exchangeAccounts/exchangeAccount'
+import {
+  ExchangeAccount,
+  getExchangeAccount
+} from '@/api/exchangeAccounts/exchangeAccount'
+import { NapseSpace, getSpace } from '@/api/spaces/spaces'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,7 +17,7 @@ export default function BreadcrumbLayout() {
   const searchParams = useSearchParams()
   const serverID = searchParams.get('server') || ''
   const exchangeAccountID = searchParams.get('exchangeAccount') || ''
-  const space = searchParams.get('space') || ''
+  const spaceID = searchParams.get('space') || ''
   const fleet = searchParams.get('fleet') || ''
   const bot = searchParams.get('bot') || ''
   const server = getServer(serverID)
@@ -22,7 +26,10 @@ export default function BreadcrumbLayout() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await get(searchParams, exchangeAccountID)
+        const response = await getExchangeAccount(
+          searchParams,
+          exchangeAccountID
+        )
         setExchangeAccount(response.data)
       } catch (error) {
         console.error(error)
@@ -31,81 +38,96 @@ export default function BreadcrumbLayout() {
     exchangeAccountID && fetchData()
   }, [exchangeAccountID, searchParams])
 
+  const [space, setSpace] = useState<NapseSpace>()
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getSpace(searchParams, spaceID)
+        setSpace(response.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    spaceID && fetchData()
+  }, [spaceID, searchParams])
+
   return (
-    <div className="mx-24 my-10">
-      <Breadcrumb separator="/">
-        {serverID && (
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              href={standardUrlPartial(
-                '/servers/',
-                serverID,
-                {
-                  server: serverID,
-                  exchangeAccount: '',
-                  space: '',
-                  fleet: '',
-                  bot: ''
-                },
-                searchParams
-              )}
-            >
-              {server.url}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        )}
-        {exchangeAccountID && (
-          <BreadcrumbItem isCurrentPage={!space && !fleet && !bot}>
-            <BreadcrumbLink
-              href={standardUrlPartial(
-                '/exchangeAccounts/',
-                exchangeAccountID,
-                { space: '', fleet: '', bot: '' },
-                searchParams
-              )}
-            >
-              {exchangeAccount?.name}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        )}
-        {space && (
-          <BreadcrumbItem isCurrentPage={!fleet && !bot}>
-            <BreadcrumbLink
-              href={standardUrlPartial(
-                '/space/',
-                space,
-                { fleet: '', bot: '' },
-                searchParams
-              )}
-            >
-              {space}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        )}
-        {fleet && (
-          <BreadcrumbItem isCurrentPage={!bot}>
-            <BreadcrumbLink
-              href={standardUrlPartial(
-                '/fleets/',
-                fleet,
-                { bot: '' },
-                searchParams
-              )}
-            >
-              {exchangeAccountID}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        )}
-        {bot && (
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink
-              href={standardUrlPartial('/bots/', bot, {}, searchParams)}
-            >
-              {exchangeAccountID}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        )}
-      </Breadcrumb>
+    <div className="container items-center">
+      <div className=" py-3">
+        <Breadcrumb separator="/">
+          {serverID && (
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                href={standardUrlPartial(
+                  '/servers/',
+                  serverID,
+                  {
+                    server: serverID,
+                    exchangeAccount: '',
+                    space: '',
+                    fleet: '',
+                    bot: ''
+                  },
+                  searchParams
+                )}
+              >
+                {server.name}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          )}
+          {exchangeAccountID && (
+            <BreadcrumbItem isCurrentPage={!space && !fleet && !bot}>
+              <BreadcrumbLink
+                href={standardUrlPartial(
+                  '/exchangeAccounts/',
+                  exchangeAccountID,
+                  { space: '', fleet: '', bot: '' },
+                  searchParams
+                )}
+              >
+                {exchangeAccount?.name}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          )}
+          {spaceID && (
+            <BreadcrumbItem isCurrentPage={!fleet && !bot}>
+              <BreadcrumbLink
+                href={standardUrlPartial(
+                  '/space/',
+                  spaceID,
+                  { fleet: '', bot: '' },
+                  searchParams
+                )}
+              >
+                {space?.name}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          )}
+          {fleet && (
+            <BreadcrumbItem isCurrentPage={!bot}>
+              <BreadcrumbLink
+                href={standardUrlPartial(
+                  '/fleets/',
+                  fleet,
+                  { bot: '' },
+                  searchParams
+                )}
+              >
+                {exchangeAccountID}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          )}
+          {bot && (
+            <BreadcrumbItem isCurrentPage>
+              <BreadcrumbLink
+                href={standardUrlPartial('/bots/', bot, {}, searchParams)}
+              >
+                {exchangeAccountID}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          )}
+        </Breadcrumb>
+      </div>
     </div>
   )
 }
