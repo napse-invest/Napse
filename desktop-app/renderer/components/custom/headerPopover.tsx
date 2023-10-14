@@ -19,7 +19,8 @@ import { ToastAction } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/use-toast'
 import { addServer, getServers, removeServer } from '@/lib/localStorage'
 import { standardUrlPartial } from '@/lib/queryParams'
-import { PlusCircledIcon } from '@radix-ui/react-icons'
+import { PlusIcon } from '@radix-ui/react-icons'
+import { Settings } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -28,11 +29,16 @@ export default function ServerPopover(): JSX.Element {
   const { toast } = useToast()
   const defaultServerName = 'Localhost'
   const defaultServerURL = 'http://localhost:8000'
+  const defaulAPIToken = 'xxxxxxxx.xxxxxx.xxxxxxxxx'
   const [newServerName, setNewServerName] = useState(defaultServerName)
   const [newServerURL, setNewServerURL] = useState(defaultServerURL)
+  const [newServerToken, setNewServerToken] = useState(defaulAPIToken)
   const [servers, setServers] = useState(getServers())
   const router = useRouter()
   const searchParams = useSearchParams()
+  const currentURL = router.asPath
+  const urlBase = currentURL.split('?')[0].split('/')[1]
+  const urlId = currentURL.split('?')[0].split('/')[2]
   return (
     <>
       <Popover>
@@ -43,40 +49,78 @@ export default function ServerPopover(): JSX.Element {
           <div className="flex flex-col items-stretch space-y-3">
             {Object.entries(servers).map(([key, server], index) => {
               return (
-                <div key={index + 1} className="flex flex-row space-x-5">
+                <div key={index + 1} className="flex flex-row space-x-1">
                   <Button
                     onClick={() => {
-                      router.push(
-                        standardUrlPartial(
-                          '/servers/',
-                          server.id,
-                          {
-                            server: server.id,
-                            exchangeAccount: '',
-                            space: '',
-                            fleet: '',
-                            bot: ''
-                          },
-                          searchParams
-                        )
-                      )
+                      if (currentURL === '/') {
+                        router
+                          .push(
+                            standardUrlPartial(
+                              '/exchangeAccounts/',
+                              null,
+                              {
+                                server: server.id,
+                                exchangeAccount: '',
+                                space: '',
+                                fleet: '',
+                                bot: ''
+                              },
+                              searchParams
+                            )
+                          )
+                          .catch((err) => {
+                            console.error(err)
+                          })
+                      } else {
+                        router
+                          .push(
+                            standardUrlPartial(
+                              `/${urlBase}/`,
+                              urlId,
+                              {
+                                server: server.id,
+                                exchangeAccount: '',
+                                space: '',
+                                fleet: '',
+                                bot: ''
+                              },
+                              searchParams
+                            )
+                          )
+                          .catch((err) => {
+                            console.error(err)
+                          })
+                      }
                     }}
                     variant="ghost"
-                    className="w-full"
+                    className="w-full space-x-5"
                   >
                     {server.name}
                   </Button>
                   <Button
                     onClick={() => {
-                      removeServer(key)
-                      setServers(getServers())
+                      router
+                        .push(
+                          standardUrlPartial(
+                            '/servers/',
+                            server.id,
+                            {
+                              server: server.id,
+                              exchangeAccount: '',
+                              space: '',
+                              fleet: '',
+                              bot: ''
+                            },
+                            searchParams
+                          )
+                        )
+                        .catch((err) => {
+                          console.error(err)
+                        })
                     }}
-                    variant="default"
+                    variant="outline"
                   >
-                    <div className="flex flex-row ">
-                      {/* <MinusCircledIcon className="mr-2 h-5 w-5" /> */}
-                      <div>Remove</div>
-                    </div>
+                    <Settings className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all " />
                   </Button>
                 </div>
               )
@@ -84,7 +128,7 @@ export default function ServerPopover(): JSX.Element {
             <Dialog key={0}>
               <DialogTrigger asChild>
                 <Button variant="outline" className="">
-                  <PlusCircledIcon className="mr-2 h-5 w-5" />
+                  <PlusIcon className="mr-2 h-5 w-5" />
                   Add new
                 </Button>
               </DialogTrigger>
@@ -111,15 +155,28 @@ export default function ServerPopover(): JSX.Element {
                     />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="username" className="text-right">
+                    <Label htmlFor="url" className="text-right">
                       URL
                     </Label>
                     <Input
-                      id="username"
+                      id="url"
                       defaultValue={defaultServerURL}
                       className="col-span-3"
                       onChange={(e) => {
                         setNewServerURL(e.currentTarget.value)
+                      }}
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="token" className="text-right">
+                      API Token
+                    </Label>
+                    <Input
+                      id="token"
+                      defaultValue={defaulAPIToken}
+                      className="col-span-3"
+                      onChange={(e) => {
+                        setNewServerToken(e.currentTarget.value)
                       }}
                     />
                   </div>
@@ -128,7 +185,11 @@ export default function ServerPopover(): JSX.Element {
                   <Button
                     type="submit"
                     onClick={() => {
-                      const id = addServer(newServerName, newServerURL)
+                      const id = addServer(
+                        newServerName,
+                        newServerURL,
+                        newServerToken
+                      )
                       setServers(getServers())
                       setNewServerName(defaultServerName)
                       setNewServerURL(defaultServerURL)

@@ -10,9 +10,11 @@ import { ThemeButton } from '../custom/themeButton'
 import BreadcrumbLayout from '@/components/layout/breadcrumb'
 import { standardUrlPartial } from '@/lib/queryParams'
 import { useSearchParams } from 'next/navigation'
+import { SettingsButton } from '../custom/settingsButton'
 
 export default function ContextHeader({
   children,
+  isBreadcrumb = true,
   isServer = false,
   isExchangeAccount = false,
   isSpace = false,
@@ -20,6 +22,7 @@ export default function ContextHeader({
   isBot = false
 }: {
   children: ReactNode
+  isBreadcrumb?: boolean
   isServer?: boolean
   isExchangeAccount?: boolean
   isSpace?: boolean
@@ -49,7 +52,7 @@ export default function ContextHeader({
           </Button>
           <Separator className="relative h-2/3" orientation="vertical" />
         </div>
-        <div className="flex w-full justify-start  space-x-6">
+        <div className="flex w-full justify-start space-x-6">
           {isExchangeAccount && (
             <HeaderButton
               title="Exchange Accounts"
@@ -98,10 +101,16 @@ export default function ContextHeader({
         <div className="flex justify-start space-x-2">
           {isServer && <ServerPopover />}
           <ThemeButton />
+          <SettingsButton />
         </div>
       </div>
       <Separator className="h-[1px]" />
-      <BreadcrumbLayout />
+      {isBreadcrumb && (
+        <>
+          <BreadcrumbLayout />
+          {/* <Separator className="h-[1px] w-2/3" /> */}
+        </>
+      )}
 
       <div>{children}</div>
     </>

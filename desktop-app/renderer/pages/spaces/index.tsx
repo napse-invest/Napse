@@ -1,26 +1,21 @@
-import ContextHeader from '@/components/layout/contextHeader'
 import ValuePanelCard from '@/components/custom/panel/valuePanelCard'
+import ContextHeader from '@/components/layout/contextHeader'
 
-import { useDispatch } from 'react-redux'
+import { NapseSpace, listSpace } from '@/api/spaces/spaces'
+import { standardUrlPartial } from '@/lib/queryParams'
+import { AxiosResponse } from 'axios'
+import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import axios from '@/api/axios'
-import { AxiosResponse } from 'axios'
-
-interface Space {
-  name: string
-  id: number
-  value: number
-  fleet_count: number
-  delta?: number
-}
 
 export default function Spaces(): JSX.Element {
-  const [spaces, setSpaces] = useState<Space[]>([])
+  const [spaces, setSpaces] = useState<NapseSpace[]>([])
+  const searchParams = useSearchParams()
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response: AxiosResponse<Space[]> = await axios.get('/space/')
+        const response: AxiosResponse<NapseSpace[]> =
+          await listSpace(searchParams)
         setSpaces(response.data)
       } catch (error) {
         console.error(error)
@@ -28,13 +23,10 @@ export default function Spaces(): JSX.Element {
       }
     }
     fetchData()
-  }, [])
+  }, [searchParams])
 
-  const dispatch = useDispatch()
   const router = useRouter()
-  // useEffect(() => {
-  //   dispatch(SET_SPACE_NAMES(spaces.map((space) => space.name)))
-  // }, [spaces, dispatch])
+
   return (
     <ContextHeader isBot>
       <div className="mx-auto my-10 grid max-w-screen-xl gap-6 px-24 lg:grid-cols-3">
@@ -46,9 +38,21 @@ export default function Spaces(): JSX.Element {
             delta={space.delta}
             // tooltip={space.tooltip}
             onClick={() => {
-              router.push(`/spaces/${space.name}`).catch((err) => {
-                console.error(err)
-              })
+              router
+                .push(
+                  standardUrlPartial(
+                    '/spaces/',
+                    space.uuid,
+                    {
+                      exchangeAccount: space.exchange_account,
+                      space: space.uuid
+                    },
+                    searchParams
+                  )
+                )
+                .catch((err) => {
+                  console.error(err)
+                })
             }}
             badge={String(space.fleet_count) + ' fleets'}
           />

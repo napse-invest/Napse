@@ -1,7 +1,10 @@
 import InfoPanelCard from '@/components/custom/panel/infoPanelCard'
 import ContextHeader from '@/components/layout/contextHeader'
 import { standardUrlPartial } from '@/lib/queryParams'
-import { ExchangeAccount, list } from 'api/exchangeAccounts/exchangeAccount'
+import {
+  ExchangeAccount,
+  listExchangeAccount
+} from 'api/exchangeAccounts/exchangeAccount'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -15,7 +18,7 @@ export default function ExchangeAccounts(): JSX.Element {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await list(searchParams)
+        const response = await listExchangeAccount(searchParams)
         setExchangeAccounts(response.data)
       } catch (error) {
         console.error(error)

@@ -12,7 +12,6 @@ export function buildURLQuery(baseUrl: string, params: Record<string, string>) {
     baseUrl = baseUrl + '/'
   }
   baseUrl = baseUrl + '?'
-
   const existingParams = baseUrl.split('?')[1]
   if (existingParams) {
     params = {

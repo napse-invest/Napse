@@ -1,22 +1,29 @@
 import { getServer } from '@/lib/localStorage'
-import axios from 'axios'
+import axios, { AxiosHeaders } from 'axios'
 import { useSearchParams } from 'next/navigation'
 
 export function request(
   searchParams: ReturnType<typeof useSearchParams>,
   method: string,
   url: string,
-  ...args: any[]
+  data: Object | null = null,
+  headers: AxiosHeaders | null = null
 ) {
   const serverID = searchParams.get('server')
   if (!serverID) {
     throw new Error('No server selected')
   }
-  const serverUrl = getServer(serverID).url
+  const server = getServer(serverID)
+  const serverUrl = server.url
+  const token = server.token
   return axios({
     method: method,
     url: url,
     baseURL: serverUrl,
-    ...args
+    headers: {
+      Authorization: 'Api-Key ' + token,
+      ...headers
+    },
+    data: data || {}
   })
 }
