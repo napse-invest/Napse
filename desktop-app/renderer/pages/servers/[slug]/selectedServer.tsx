@@ -33,7 +33,7 @@ export default function SelectedServer({
   return (
     <Card className="w-[450px]">
       <CardHeader>
-        <CardTitle>Selected Server: {server?.name}</CardTitle>
+        <CardTitle>Selected Server: {server.name}</CardTitle>
         <CardDescription>
           You can view/edit your server properties here.
         </CardDescription>
@@ -44,9 +44,9 @@ export default function SelectedServer({
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="name">Name</Label>
               <Input
-                key={server?.id}
+                key={server.id}
                 id="name"
-                defaultValue={server?.name}
+                defaultValue={server.name}
                 onChange={(e) => {
                   setServer({ ...server, name: e.currentTarget.value })
                 }}
@@ -55,9 +55,9 @@ export default function SelectedServer({
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="framework">URL</Label>
               <Input
-                key={server?.id}
+                key={server.id}
                 id="url"
-                defaultValue={server?.url}
+                defaultValue={server.url}
                 onChange={(e) => {
                   setServer({ ...server, url: e.currentTarget.value })
                 }}
@@ -66,9 +66,9 @@ export default function SelectedServer({
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="token">API Token</Label>
               <Input
-                key={server?.id}
+                key={server.id}
                 id="token"
-                defaultValue={server?.token}
+                defaultValue={server.token}
                 onChange={(e) => {
                   setServer({ ...server, token: e.currentTarget.value })
                 }}
@@ -84,7 +84,7 @@ export default function SelectedServer({
             setServer({ ...server })
             toast({
               title: `Successfully edited server !`,
-              description: `${server?.name} updated`
+              description: `${server.name} updated`
             })
           }}
         >
@@ -93,7 +93,7 @@ export default function SelectedServer({
         <Button
           variant="destructive"
           onClick={() => {
-            removeServer(server?.id)
+            removeServer(server.id)
             router
               .push(
                 standardUrlPartial(
@@ -114,7 +114,7 @@ export default function SelectedServer({
               })
             toast({
               title: `Successfully deleted server !`,
-              description: `${server?.name} deleted`
+              description: `${server.name} deleted`
             })
           }}
         >
