@@ -28,7 +28,7 @@ export default function SelectedServer({
   const router = useRouter()
   const { toast } = useToast()
   if (!server) {
-    return <></>
+    return <div>Loading</div>
   }
   return (
     <Card className="w-[450px]">
