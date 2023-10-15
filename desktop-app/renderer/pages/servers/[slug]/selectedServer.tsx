@@ -1,5 +1,3 @@
-'use client'
-
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -29,6 +27,9 @@ export default function SelectedServer({
   const searchParams = useSearchParams()
   const router = useRouter()
   const { toast } = useToast()
+  if (!server) {
+    return <></>
+  }
   return (
     <Card className="w-[450px]">
       <CardHeader>
