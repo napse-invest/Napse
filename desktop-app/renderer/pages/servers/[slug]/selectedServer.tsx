@@ -1,6 +1,17 @@
-import { Card } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { useToast } from '@/components/ui/use-toast'
-import { Server } from '@/lib/localStorage'
+import { Server, removeServer, updateServer } from '@/lib/localStorage'
+import { standardUrlPartial } from '@/lib/queryParams'
 import { useSearchParams } from 'next/navigation'
 
 import { useRouter } from 'next/router'
@@ -21,7 +32,7 @@ export default function SelectedServer({
   }
   return (
     <Card className="w-[450px]">
-      {/* <CardHeader>
+      <CardHeader>
         <CardTitle>Selected Server: {server.name}</CardTitle>
         <CardDescription>
           You can view/edit your server properties here.
@@ -109,7 +120,7 @@ export default function SelectedServer({
         >
           Delete
         </Button>
-      </CardFooter> */}
+      </CardFooter>
     </Card>
   )
 }
