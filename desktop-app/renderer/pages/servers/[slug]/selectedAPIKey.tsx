@@ -178,13 +178,8 @@ export default function SelectedAPIKey({
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="framework">Master Key ?</Label>
-                <Input
-                  key={key.prefix}
-                  id="prefix"
-                  value={key.is_master_key ? 'Yes' : 'No'}
-                  disabled
-                />
+                <Label htmlFor="framework">Master Key</Label>
+                <Switch checked={key.is_master_key} disabled />
               </div>
               {key.permissions.length > 0 && (
                 <div className="flex flex-col space-y-1.5">

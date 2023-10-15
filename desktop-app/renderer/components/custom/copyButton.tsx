@@ -7,9 +7,10 @@ import { cn } from '@/lib/utils'
 interface CopyButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   value: string
   src?: string
+  copyTrigger: () => void
 }
 
-export async function copyToClipboardWithMeta(value: string, event?: Event) {
+export async function copyToClipboardWithMeta(value: string) {
   navigator.clipboard.writeText(value)
 }
 
@@ -17,6 +18,7 @@ export default function CopyButton({
   value,
   className,
   src,
+  copyTrigger,
   ...props
 }: CopyButtonProps) {
   const [hasCopied, setHasCopied] = React.useState(false)
@@ -38,6 +40,7 @@ export default function CopyButton({
       onClick={() => {
         copyToClipboardWithMeta(value)
         setHasCopied(true)
+        copyTrigger()
       }}
       {...props}
     >

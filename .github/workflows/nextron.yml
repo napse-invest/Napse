@@ -11,6 +11,7 @@ jobs:
       - run: true
 
   build:
+    needs: authorize
     name: Build
     runs-on: ubuntu-latest
     steps:
