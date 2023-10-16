@@ -1,13 +1,5 @@
 import PanelCard from '@/components/custom/panel/panelCard'
-import React from 'react'
-
-type InfoPanelCardProps = {
-  title: string | React.ReactNode
-  badge?: string | React.ReactNode
-  category?: string | React.ReactNode
-  tooltip?: string
-  onClick?: () => void
-}
+import { ReactNode } from 'react'
 
 function InfoPanelCard({
   title = '',
@@ -15,16 +7,22 @@ function InfoPanelCard({
   category = '',
   tooltip = '',
   onClick = () => {}
-}: InfoPanelCardProps): JSX.Element {
+}: {
+  title: ReactNode
+  badge?: ReactNode
+  category?: ReactNode
+  tooltip?: ReactNode
+  onClick?: () => void
+}): JSX.Element {
   return (
     <PanelCard
       title={category}
       badge={badge}
-      // description={<p className="text-sm"></p>}
-      content={<div className="text-2xl font-bold">{title}</div>}
       tooltip={tooltip}
       onClick={onClick}
-    />
+    >
+      <div className="text-2xl font-bold">{title}</div>
+    </PanelCard>
   )
 }
 

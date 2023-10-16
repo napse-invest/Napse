@@ -1,11 +1,11 @@
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
-  CardTitle,
-  CardDescription
+  CardTitle
 } from '@/components/ui/card'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 import {
   Tooltip,
@@ -14,29 +14,19 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 
-type PanelCardProps = {
+interface CardComponentProps {
+  children: React.ReactNode
   title?: string | React.ReactNode
   badge?: string | React.ReactNode
-  content: string | React.ReactNode
   description?: string | React.ReactNode
   tooltip?: string
   onClick?: () => void
 }
 
-function PanelCard({
-  title = '',
-  badge = '',
-  content = '',
-  description = '',
-  tooltip = '',
-  onClick = () => {}
-}: PanelCardProps): JSX.Element {
-  const CardComponent = React.forwardRef<
-    HTMLDivElement,
-    React.HTMLAttributes<HTMLDivElement>
-  >(({ ...props }, ref) => {
+const CardComponent = React.forwardRef<HTMLDivElement, CardComponentProps>(
+  ({ children, title, badge, description, onClick }, ref) => {
     return (
-      <Card {...props} ref={ref} className="hover:shadow-lg" onClick={onClick}>
+      <Card className="hover:shadow-sm" onClick={onClick} ref={ref}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 p-5">
           {typeof title === 'string' ? (
             <CardTitle className="text-sm font-normal">{title}</CardTitle>
@@ -50,7 +40,7 @@ function PanelCard({
           )}
         </CardHeader>
         <CardContent>
-          {content}
+          {children}
           {typeof description === 'string' ? (
             <CardDescription>{description}</CardDescription>
           ) : (
@@ -59,23 +49,46 @@ function PanelCard({
         </CardContent>
       </Card>
     )
-  })
+  }
+)
 
-  CardComponent.displayName = 'Card'
-
+export default function PanelCard({
+  children,
+  title = '',
+  badge = '',
+  description = '',
+  tooltip = '',
+  onClick = () => {}
+}: {
+  children: ReactNode
+  title?: ReactNode
+  badge?: ReactNode
+  description?: ReactNode
+  tooltip?: ReactNode
+  onClick?: () => void
+}): JSX.Element {
   return tooltip ? (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <CardComponent />
-          {/* {CardComponent()} */}
+          <CardComponent
+            title={title}
+            badge={badge}
+            onClick={onClick}
+            children={children}
+            description={description}
+          />
         </TooltipTrigger>
         <TooltipContent>{tooltip}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   ) : (
-    <CardComponent />
+    <CardComponent
+      title={title}
+      badge={badge}
+      onClick={onClick}
+      children={children}
+      description={description}
+    />
   )
 }
-
-export default PanelCard
