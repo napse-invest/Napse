@@ -1,3 +1,21 @@
+# [1.3.0](https://github.com/napse-invest/Napse/compare/v1.2.0...v1.3.0) (2023-10-16)
+
+
+### Bug Fixes
+
+* **build:** server. => server? ([7f73202](https://github.com/napse-invest/Napse/commit/7f732023c7138fae1ff777167fcf3be7fc59961c))
+* **eslint:** babel import ([a7bebce](https://github.com/napse-invest/Napse/commit/a7bebce1a44a9dd0548b76ecc06aa05ffa2549ee))
+* **keys:** upgrades to the interface & theme rework & tables ([11d754c](https://github.com/napse-invest/Napse/commit/11d754c2517963f8744d58fe7f350217bb046e50))
+* **layout:** default layout added ([04b27b9](https://github.com/napse-invest/Napse/commit/04b27b9b49768cadcc3e69652c45550500ff81b6))
+* **package.json:** electron must stay at v21 ([5c5ddb9](https://github.com/napse-invest/Napse/commit/5c5ddb9916632fc7b3a02c84de7eaf0a09fc39b9))
+
+
+### Features
+
+* **servers-&&-keys:** basic interface ([a751d6c](https://github.com/napse-invest/Napse/commit/a751d6cdd7d24c849c271f4e1cd10e01a995927e))
+* **servers-&&-keys:** fulls integrated ([830d6f1](https://github.com/napse-invest/Napse/commit/830d6f17d53acc12ef6d5b605c4a16ccb7976dee))
+* **ux:** routing rework & server setup ([7f8541f](https://github.com/napse-invest/Napse/commit/7f8541fb2b8793e3a0e0fe578b9917373c8c4685))
+
 # [1.2.0](https://github.com/napse-invest/Napse/compare/v1.1.0...v1.2.0) (2023-10-06)
 
 
