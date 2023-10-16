@@ -50,12 +50,11 @@ function ValuePanelCard({
           {formatChangeValue(delta)}
         </p>
       }
-      content={
-        <div className="text-2xl font-bold">{formatCurrencyValue(value)}</div>
-      }
       tooltip={tooltip}
       onClick={onClick}
-    />
+    >
+      <div className="text-2xl font-bold">{formatCurrencyValue(value)}</div>
+    </PanelCard>
   )
 }
 

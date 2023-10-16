@@ -10,5 +10,4 @@ module.exports = {
     loader: 'akamai',
     path: 'public/images'
   }
-  // output: 'export'
 }

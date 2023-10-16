@@ -9,7 +9,8 @@ import React, { useState } from 'react'
 
 import StatCard from '@/components/custom/statCard'
 import { Currency, getAssetColumns } from './assetsTable/columns'
-import { AssetsDataTable } from './assetsTable/data-table'
+
+import CustomTable from '@/components/custom/table'
 import { OperationDataTable } from './transactionHistTable/data-table'
 
 const cities = [
@@ -264,14 +265,12 @@ export default function Spaces(): JSX.Element {
                       </div>
                       <div className="flip-x-180 backface-hidden absolute h-full w-full">
                         {/* <GraphCardComponent /> */}
-                        <div className="">
-                          <ScrollArea className=" h-[30rem] rounded-md border">
-                            <AssetsDataTable
-                              columns={getAssetColumns(toast)}
-                              data={data}
-                            />
-                          </ScrollArea>
-                        </div>
+                        <ScrollArea className=" h-[30rem] rounded-md border">
+                          <CustomTable
+                            columns={getAssetColumns(toast)}
+                            data={data}
+                          />
+                        </ScrollArea>
                       </div>
                     </div>
                   </div>

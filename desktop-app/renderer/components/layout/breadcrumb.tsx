@@ -53,7 +53,7 @@ export default function BreadcrumbLayout() {
 
   return (
     <div className="container items-center">
-      <div className=" py-3">
+      <div className="py-3">
         <Breadcrumb separator="/">
           {serverID && (
             <BreadcrumbItem>

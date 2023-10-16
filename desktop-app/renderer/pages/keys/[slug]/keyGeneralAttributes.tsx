@@ -105,7 +105,7 @@ export default function KeyGeneralAttributes(): JSX.Element {
                 <Label htmlFor="active">Active</Label>
                 <Switch
                   checked={!key.revoked}
-                  disabled={revoked}
+                  disabled={revoked || key.is_master_key}
                   onClick={() => {
                     setKey({ ...key, revoked: !key.revoked })
                   }}
