@@ -1,3 +1,4 @@
+import { connectKey } from '@/api/key/key'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -19,6 +20,7 @@ import { ToastAction } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/use-toast'
 import { addServer, getServers, removeServer } from '@/lib/localStorage'
 import { standardUrlPartial } from '@/lib/queryParams'
+import { DialogClose } from '@radix-ui/react-dialog'
 import { PlusIcon } from '@radix-ui/react-icons'
 import { Settings } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
@@ -39,6 +41,7 @@ export default function ServerPopover(): JSX.Element {
   const currentURL = router.asPath
   const urlBase = currentURL.split('?')[0].split('/')[1]
   const urlId = currentURL.split('?')[0].split('/')[2]
+  const [openDialog, setOpenDialog] = useState(false)
   return (
     <>
       <Popover>
@@ -127,7 +130,7 @@ export default function ServerPopover(): JSX.Element {
             })}
             <Dialog key={0}>
               <DialogTrigger asChild>
-                <Button variant="outline" className="">
+                <Button variant="outline">
                   <PlusIcon className="mr-2 h-5 w-5" />
                   Add new
                 </Button>
@@ -184,15 +187,60 @@ export default function ServerPopover(): JSX.Element {
                 <DialogFooter>
                   <Button
                     type="submit"
-                    onClick={() => {
+                    onClick={async () => {
+                      try {
+                        await connectKey(newServerURL, newServerToken)
+                      } catch (err) {
+                        console.error(err)
+                        toast({
+                          title: `Unable Added new server: ${newServerName}`,
+                          description: (
+                            <>
+                              You werent able to connect to {newServerURL} with
+                              the API token {newServerToken}.
+                              <br />
+                              <br />
+                              Please check the URL and the API token and try
+                              again.
+                              <br />
+                              <br />
+                              If the problem persists, check if the server is
+                              running.
+                            </>
+                          )
+                        })
+                        return
+                      }
                       const id = addServer(
                         newServerName,
                         newServerURL,
                         newServerToken
                       )
+                      if (!id) {
+                        return
+                      }
                       setServers(getServers())
                       setNewServerName(defaultServerName)
                       setNewServerURL(defaultServerURL)
+                      router
+                        .push(
+                          standardUrlPartial(
+                            '/servers/',
+                            id.toString(),
+                            {
+                              server: id.toString(),
+                              exchangeAccount: '',
+                              space: '',
+                              fleet: '',
+                              bot: ''
+                            },
+                            searchParams
+                          )
+                        )
+                        .catch((err) => {
+                          console.error(err)
+                        })
+                      document.getElementById('close-button')?.click()
                       toast({
                         title: `Added new server: ${newServerName}`,
                         description: `You are now able to connect to ${newServerURL}`,
@@ -202,14 +250,30 @@ export default function ServerPopover(): JSX.Element {
                             onClick={() => {
                               Object.entries(getServers()).map(
                                 ([key, server]) => {
-                                  console.log(server.id, id?.toString())
                                   if (server.id === id?.toString()) {
                                     removeServer(server.id)
-                                    console.log('removed')
                                   }
                                 }
                               )
                               setServers(getServers())
+                              router
+                                .push(
+                                  standardUrlPartial(
+                                    '/servers/',
+                                    null,
+                                    {
+                                      server: '',
+                                      exchangeAccount: '',
+                                      space: '',
+                                      fleet: '',
+                                      bot: ''
+                                    },
+                                    searchParams
+                                  )
+                                )
+                                .catch((err) => {
+                                  console.error(err)
+                                })
                             }}
                           >
                             Remove
@@ -222,6 +286,7 @@ export default function ServerPopover(): JSX.Element {
                   </Button>
                 </DialogFooter>
               </DialogContent>
+              <DialogClose id="close-button" />
             </Dialog>
           </div>
         </PopoverContent>

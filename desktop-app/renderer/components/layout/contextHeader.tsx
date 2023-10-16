@@ -4,11 +4,12 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { ThemeButton } from '../custom/themeButton'
 
 import BreadcrumbLayout from '@/components/layout/breadcrumb'
 import { standardUrlPartial } from '@/lib/queryParams'
+import { useTheme } from 'next-themes'
 import { useSearchParams } from 'next/navigation'
 import { SettingsButton } from '../custom/settingsButton'
 
@@ -35,20 +36,39 @@ export default function ContextHeader({
   isFleet = isFleet || isBot
   const router = useRouter()
   const searchParams = useSearchParams()
+  const theme = useTheme()
+  const [imageSrc, setImageSrc] = useState<string>(
+    '/images/NapseInvest-Logo-Light.svg'
+  )
+  useEffect(() => {
+    if (theme.resolvedTheme === 'dark') {
+      setImageSrc('/images/NapseInvest-Logo-Light.svg')
+    } else {
+      setImageSrc('/images/NapseInvest-Logo-Dark.svg')
+    }
+  }, [theme.resolvedTheme])
   return (
     <>
       <div className="container flex h-20 flex-row items-center justify-between space-y-0 py-4">
         <div className="flex h-16 flex-row items-center justify-start space-x-12 pr-8">
           <Button
             variant={'ghost'}
-            className="relative h-16 w-16 rounded-full"
+            className="hover:bg-transparent"
+            tabIndex={-1}
             onClick={() => {
               router.push('/').catch((err) => {
                 console.error(err)
               })
             }}
           >
-            <Image src="/images/logo.svg" alt="Napse logo" fill priority />
+            <Image
+              src={imageSrc}
+              alt="Napse logo"
+              fill={false}
+              width={300}
+              height={300}
+              priority
+            />
           </Button>
           <Separator className="relative h-2/3" orientation="vertical" />
         </div>
@@ -105,12 +125,7 @@ export default function ContextHeader({
         </div>
       </div>
       <Separator className="h-[1px]" />
-      {isBreadcrumb && (
-        <>
-          <BreadcrumbLayout />
-          {/* <Separator className="h-[1px] w-2/3" /> */}
-        </>
-      )}
+      {isBreadcrumb && <BreadcrumbLayout />}
 
       <div>{children}</div>
     </>

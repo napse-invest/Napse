@@ -1,9 +1,8 @@
 'use client'
 
-import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
-import { useState } from 'react'
+import { ColumnDef } from '@tanstack/react-table'
 
 export type Currency = {
   ticker: string

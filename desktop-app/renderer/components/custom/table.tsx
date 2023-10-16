@@ -1,12 +1,10 @@
-'use client'
-
 import {
   ColumnDef,
+  Row,
   flexRender,
   getCoreRowModel,
   useReactTable
 } from '@tanstack/react-table'
-
 import {
   Table,
   TableBody,
@@ -14,32 +12,36 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/components/ui/table'
-import { ScrollArea } from '@/components/ui/scroll-area'
+} from '../ui/table'
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-}
-
-export function AssetsDataTable<TData, TValue>({
+export default function CustomTable<TData, TValue>({
+  data,
   columns,
-  data
-}: DataTableProps<TData, TValue>) {
+  clickCallback,
+  className
+}: {
+  data: TData[]
+  columns: ColumnDef<TData, TValue>[]
+  clickCallback?: (row: Row<TData>) => void
+  className?: string
+}): JSX.Element {
   const table = useReactTable({
-    data,
-    columns,
+    data: data,
+    columns: columns,
     getCoreRowModel: getCoreRowModel()
   })
   return (
-    <div className="rounded-md border">
+    <div className={className}>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    className="bg-background sticky top-0 z-[0]"
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -52,12 +54,16 @@ export function AssetsDataTable<TData, TValue>({
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody className="h-30">
+
+        <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && 'selected'}
+                onClick={() => {
+                  clickCallback && clickCallback(row)
+                }}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -77,9 +83,4 @@ export function AssetsDataTable<TData, TValue>({
       </Table>
     </div>
   )
-}
-
-export default function Todo(): JSX.Element {
-  // TODO: implement or move this file
-  return <></>
 }

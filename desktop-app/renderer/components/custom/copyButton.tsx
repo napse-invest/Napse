@@ -1,8 +1,9 @@
 import { CheckIcon, CopyIcon } from '@radix-ui/react-icons'
-import * as React from 'react'
 
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
 
 interface CopyButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   value: string
@@ -20,10 +21,10 @@ export default function CopyButton({
   src,
   copyTrigger,
   ...props
-}: CopyButtonProps) {
-  const [hasCopied, setHasCopied] = React.useState(false)
-
-  React.useEffect(() => {
+}: CopyButtonProps): JSX.Element {
+  const theme = useTheme()
+  const [hasCopied, setHasCopied] = useState(false)
+  useEffect(() => {
     setTimeout(() => {
       setHasCopied(false)
     }, 2000)
@@ -33,10 +34,7 @@ export default function CopyButton({
     <Button
       size="icon"
       variant="ghost"
-      className={cn(
-        'bg-foreground relative z-10 h-6 w-6 text-zinc-50',
-        className
-      )}
+      className={cn('bg-foreground relative z-10 h-6 w-6 ', className)}
       onClick={() => {
         copyToClipboardWithMeta(value)
         setHasCopied(true)
@@ -46,9 +44,9 @@ export default function CopyButton({
     >
       <span className="sr-only">Copy</span>
       {hasCopied ? (
-        <CheckIcon className="h-3 w-3" />
+        <CheckIcon className="h-3 w-3" color="background" />
       ) : (
-        <CopyIcon className="h-3 w-3" />
+        <CopyIcon className="h-3 w-3" color="background" />
       )}
     </Button>
   )

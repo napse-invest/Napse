@@ -11,7 +11,7 @@ export default function Servers(): JSX.Element {
   const servers = getServers()
   const searchParams = useSearchParams()
   return (
-    <ContextHeader isBot>
+    <ContextHeader isServer>
       <div className="mx-auto my-10 grid max-w-screen-xl gap-6 px-24 lg:grid-cols-3">
         {Object.entries(servers).map(([id, server], index) => (
           <MinimalistPanelCard

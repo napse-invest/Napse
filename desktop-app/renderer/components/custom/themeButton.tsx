@@ -1,6 +1,5 @@
 'use client'
 
-import * as React from 'react'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 
@@ -14,7 +13,6 @@ export function ThemeButton(): JSX.Element {
       variant="outline"
       size="icon"
       onClick={() => {
-        console.log(theme)
         theme === 'dark' ? setTheme('light') : setTheme('dark')
       }}
     >

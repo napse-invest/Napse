@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import SelectedAPIKey from './selectedAPIKey'
 import SelectedServer from './selectedServer'
+
 export default function Servers(): JSX.Element {
   const searchParams = useSearchParams()
   const [server, setServer] = useState<Server>(

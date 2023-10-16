@@ -12,6 +12,6 @@ files:
 
 linux:
   target: deb
-  icon: renderer/public/images/icon.png
+  icon: renderer/public/images/logo.svg
 
 publish: null
