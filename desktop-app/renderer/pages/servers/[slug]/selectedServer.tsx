@@ -13,6 +13,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { Server, removeServer, updateServer } from '@/lib/localStorage'
 import { standardUrlPartial } from '@/lib/queryParams'
 import { useSearchParams } from 'next/navigation'
+
 import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction } from 'react'
 
@@ -26,6 +27,9 @@ export default function SelectedServer({
   const searchParams = useSearchParams()
   const router = useRouter()
   const { toast } = useToast()
+  if (!server) {
+    return <div>Loading</div>
+  }
   return (
     <Card className="w-[450px]">
       <CardHeader>
@@ -52,7 +56,7 @@ export default function SelectedServer({
               <Label htmlFor="framework">URL</Label>
               <Input
                 key={server.id}
-                id="name"
+                id="url"
                 defaultValue={server.url}
                 onChange={(e) => {
                   setServer({ ...server, url: e.currentTarget.value })
@@ -60,10 +64,10 @@ export default function SelectedServer({
               />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="framework">API Token</Label>
+              <Label htmlFor="token">API Token</Label>
               <Input
                 key={server.id}
-                id="name"
+                id="token"
                 defaultValue={server.token}
                 onChange={(e) => {
                   setServer({ ...server, token: e.currentTarget.value })

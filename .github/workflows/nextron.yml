@@ -11,10 +11,13 @@ jobs:
       - run: true
 
   build:
+    needs: authorize
     name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
       - name: Set Node.js 18.x
         uses: actions/setup-node@v3
