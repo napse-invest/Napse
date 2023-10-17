@@ -136,10 +136,11 @@ export default function ServerPopover(): JSX.Element {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle>Add New Server</DialogTitle>
+                <DialogTitle>Add a new Server</DialogTitle>
                 <DialogDescription>
-                  Add a new server will allow you to connect to it. You just
-                  have to provide the server name and the server URL.
+                  Adding a new server will allow you to connect to it. You just
+                  have to provide the server name, the server URL and a valid
+                  API key.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">

@@ -1,6 +1,6 @@
 import PanelCard from '@/components/custom/panel/panelCard'
 
-function MinimalistPanelCard({
+export default function MinimalistPanelCard({
   title,
   tooltip,
   onClick = () => {}
@@ -15,5 +15,3 @@ function MinimalistPanelCard({
     </PanelCard>
   )
 }
-
-export default MinimalistPanelCard

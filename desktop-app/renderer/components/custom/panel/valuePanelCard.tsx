@@ -24,15 +24,6 @@ function formatCurrencyValue(value: number): string {
   }).format(value)
 }
 
-type valuePanelCardProps = {
-  title: string | React.ReactNode
-  badge?: string | React.ReactNode
-  value: number
-  delta?: number
-  tooltip?: string
-  onClick?: () => void
-}
-
 function ValuePanelCard({
   title = '',
   badge = '',
@@ -40,7 +31,14 @@ function ValuePanelCard({
   delta = 0,
   tooltip = '',
   onClick = () => {}
-}: valuePanelCardProps): JSX.Element {
+}: {
+  title: string | React.ReactNode
+  badge?: string | React.ReactNode
+  value: number
+  delta?: number
+  tooltip?: string
+  onClick?: () => void
+}): JSX.Element {
   return (
     <PanelCard
       title={title}

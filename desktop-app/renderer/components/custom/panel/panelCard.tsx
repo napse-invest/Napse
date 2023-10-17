@@ -7,15 +7,18 @@ import {
 } from '@/components/ui/card'
 import React, { ReactNode } from 'react'
 
+import { Badge } from '@/components/ui/badge'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
+import { cn } from '@/lib/utils'
 
 interface CardComponentProps {
   children: React.ReactNode
+  className?: string
   title?: string | React.ReactNode
   badge?: string | React.ReactNode
   description?: string | React.ReactNode
@@ -24,28 +27,33 @@ interface CardComponentProps {
 }
 
 const CardComponent = React.forwardRef<HTMLDivElement, CardComponentProps>(
-  ({ children, title, badge, description, onClick }, ref) => {
+  ({ children, className, title, badge, description, onClick }, ref) => {
     return (
-      <Card className="hover:shadow-sm" onClick={onClick} ref={ref}>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 p-5">
-          {typeof title === 'string' ? (
+      <Card
+        className={cn(
+          'hover:bg-secondary space-y-2 flex flex-col justify-center',
+          className
+        )}
+        onClick={onClick}
+        ref={ref}
+      >
+        {(title || badge) && (
+          <CardHeader className="flex flex-row items-end justify-between space-y-0 ">
             <CardTitle className="text-sm font-normal">{title}</CardTitle>
-          ) : (
-            title
-          )}
-          {typeof badge === 'string' ? (
-            <div className="text-xs italic">{badge}</div>
-          ) : (
-            badge
-          )}
-        </CardHeader>
-        <CardContent>
+            {badge && (
+              <Badge className="text-xs italic hover:bg-foreground">
+                {badge}
+              </Badge>
+            )}
+          </CardHeader>
+        )}
+        <CardContent
+          className={
+            'flex flex-col items-center' + (title || badge ? '' : ' pt-6')
+          }
+        >
           {children}
-          {typeof description === 'string' ? (
-            <CardDescription>{description}</CardDescription>
-          ) : (
-            description
-          )}
+          {description && <CardDescription>{description}</CardDescription>}
         </CardContent>
       </Card>
     )
@@ -54,6 +62,7 @@ const CardComponent = React.forwardRef<HTMLDivElement, CardComponentProps>(
 
 export default function PanelCard({
   children,
+  className = '',
   title = '',
   badge = '',
   description = '',
@@ -61,6 +70,7 @@ export default function PanelCard({
   onClick = () => {}
 }: {
   children: ReactNode
+  className?: string
   title?: ReactNode
   badge?: ReactNode
   description?: ReactNode
@@ -70,8 +80,9 @@ export default function PanelCard({
   return tooltip ? (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger asChild>
+        <TooltipTrigger>
           <CardComponent
+            className={className}
             title={title}
             badge={badge}
             onClick={onClick}
@@ -84,6 +95,7 @@ export default function PanelCard({
     </TooltipProvider>
   ) : (
     <CardComponent
+      className={className}
       title={title}
       badge={badge}
       onClick={onClick}
