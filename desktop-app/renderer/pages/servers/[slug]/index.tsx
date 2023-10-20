@@ -1,11 +1,21 @@
+import SelectedObject from '@/components/custom/selectedObject/selectedObject'
+import TabsLayout from '@/components/custom/selectedObject/tabs'
 import ContextHeader from '@/components/layout/contextHeader'
-import { Server, getServer } from '@/lib/localStorage'
+import DefaultPageLayout from '@/components/layout/defaultPageLayout'
+import {
+  Server,
+  getServer,
+  removeServer,
+  updateServer
+} from '@/lib/localStorage'
+import { standardUrlPartial } from '@/lib/queryParams'
 import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import SelectedAPIKey from './selectedAPIKey'
-import SelectedServer from './selectedServer'
 
 export default function Servers(): JSX.Element {
+  const router = useRouter()
   const searchParams = useSearchParams()
   const [server, setServer] = useState<Server>(
     getServer(searchParams.get('server') || '')
@@ -17,16 +27,62 @@ export default function Servers(): JSX.Element {
 
   return (
     <ContextHeader isBot isBreadcrumb={false}>
-      <div className="container mt-12 space-y-6 align-middle">
-        <h1 className="text-5xl font-bold leading-tight tracking-tighter">
-          Settings - Servers
-        </h1>
-        <p className="text-xl">Here is where you can manage your servers.</p>
-        <div className="flex flex-row space-x-10 pt-12">
-          <SelectedServer server={server} setServer={setServer} />
-          <SelectedAPIKey server={server} />
-        </div>
-      </div>
+      <DefaultPageLayout
+        header={'Server'}
+        description={'Here is where you can manage your server.'}
+      >
+        <TabsLayout
+          settingsTab={
+            <div className="flex flex-row space-x-10">
+              <SelectedObject
+                objectName="Server"
+                objectIdentifier="name"
+                object={server}
+                setObject={setServer}
+                updateOnClick={() => {
+                  updateServer(server)
+                }}
+                deleteOnClick={() => {
+                  removeServer(server.id)
+                  router
+                    .push(
+                      standardUrlPartial(
+                        '/servers/',
+                        null,
+                        {
+                          server: '',
+                          exchangeAccount: '',
+                          space: '',
+                          fleet: '',
+                          bot: ''
+                        },
+                        searchParams
+                      )
+                    )
+                    .catch((err) => {
+                      console.error(err)
+                    })
+                }}
+                inputs={[
+                  { label: 'Name', key: 'name', type: 'input' },
+                  {
+                    label: 'URL',
+                    key: 'url',
+                    type: 'input'
+                  },
+                  {
+                    label: 'API Token',
+                    key: 'token',
+                    type: 'input'
+                  }
+                ]}
+              />
+
+              <SelectedAPIKey server={server} />
+            </div>
+          }
+        />
+      </DefaultPageLayout>
     </ContextHeader>
   )
 }

@@ -1,13 +1,16 @@
 import {
   RetreivedExchangeAccount,
-  getExchangeAccount
+  deleteExchangeAccount,
+  getExchangeAccount,
+  updateExchangeAccount
 } from '@/api/exchangeAccounts/exchangeAccount'
+import SelectedObject from '@/components/custom/selectedObject/selectedObject'
+import TabsLayout from '@/components/custom/selectedObject/tabs'
 import ContextHeader from '@/components/layout/contextHeader'
 import DefaultPageLayout from '@/components/layout/defaultPageLayout'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-
 const defaultExchangeAccount: RetreivedExchangeAccount = {
   uuid: '',
   name: '',
@@ -39,19 +42,57 @@ export default function ExchangeAccount(): JSX.Element {
       fetchExchangeAccount()
     }
   }, [searchParams, router.query.slug])
-
   return (
     <ContextHeader isBot>
       <DefaultPageLayout
-        header={
-          'Exchange Account' +
-          (exchangeAccount.name && ' - ' + exchangeAccount.name)
-        }
+        header={'Exchange Account'}
         description={
           'Here is an overview of your exchange account. An exchange account reprents a connection to an exchange/broker.'
         }
       >
-        <div></div>
+        <TabsLayout
+          settingsTab={
+            <SelectedObject
+              objectName="Exchange Account"
+              objectIdentifier="name"
+              object={exchangeAccount}
+              setObject={setExchangeAccount}
+              updateOnClick={() => {
+                updateExchangeAccount(
+                  searchParams,
+                  router.query.slug as string,
+                  {
+                    name: exchangeAccount.name,
+                    description: exchangeAccount.description
+                  }
+                )
+              }}
+              deleteOnClick={() => {
+                deleteExchangeAccount(searchParams, router.query.slug as string)
+              }}
+              inputs={[
+                { label: 'Name', key: 'name', type: 'input' },
+                {
+                  label: 'Description',
+                  key: 'description',
+                  type: 'input'
+                },
+                {
+                  label: 'Exchange',
+                  key: 'exchange',
+                  type: 'input',
+                  disabled: true
+                },
+                {
+                  label: 'Testing',
+                  key: 'testing',
+                  type: 'switch',
+                  disabled: true
+                }
+              ]}
+            />
+          }
+        />
       </DefaultPageLayout>
     </ContextHeader>
   )

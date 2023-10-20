@@ -18,7 +18,7 @@ function InfoPanelCard({
 }): JSX.Element {
   return (
     <PanelCard
-      className="h-32 w-80"
+      className="h-32 w-80 min-w-fit"
       title={title}
       badge={badge}
       description={description}

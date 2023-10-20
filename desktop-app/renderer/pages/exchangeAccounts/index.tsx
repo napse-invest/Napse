@@ -41,7 +41,7 @@ export default function ExchangeAccounts(): JSX.Element {
           'Here is an overview of all your exchange accounts. An exchange account reprents a connection to an exchange/broker.'
         }
       >
-        <div className="my-10 grid max-w-screen-xl gap-6 grid-cols-3">
+        <div className="my-10 grid max-w-screen-xl grid-cols-3 gap-6">
           {exchangeAccounts.map((exchangeAccount, index) => (
             <InfoPanelCard
               key={index}

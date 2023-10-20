@@ -31,17 +31,17 @@ const CardComponent = React.forwardRef<HTMLDivElement, CardComponentProps>(
     return (
       <Card
         className={cn(
-          'hover:bg-secondary space-y-2 flex flex-col justify-center',
+          'hover:bg-secondary flex flex-col justify-center space-y-2',
           className
         )}
         onClick={onClick}
         ref={ref}
       >
         {(title || badge) && (
-          <CardHeader className="flex flex-row items-end justify-between space-y-0 ">
-            <CardTitle className="text-sm font-normal">{title}</CardTitle>
+          <CardHeader className="flex flex-row items-end justify-between space-y-0">
+            <CardTitle className="px-3 text-sm font-normal">{title}</CardTitle>
             {badge && (
-              <Badge className="text-xs italic hover:bg-foreground">
+              <Badge className="hover:bg-foreground text-xs italic">
                 {badge}
               </Badge>
             )}
@@ -59,6 +59,7 @@ const CardComponent = React.forwardRef<HTMLDivElement, CardComponentProps>(
     )
   }
 )
+CardComponent.displayName = 'CardComponent'
 
 export default function PanelCard({
   children,
@@ -86,9 +87,10 @@ export default function PanelCard({
             title={title}
             badge={badge}
             onClick={onClick}
-            children={children}
             description={description}
-          />
+          >
+            {children}
+          </CardComponent>
         </TooltipTrigger>
         <TooltipContent>{tooltip}</TooltipContent>
       </Tooltip>
@@ -99,8 +101,9 @@ export default function PanelCard({
       title={title}
       badge={badge}
       onClick={onClick}
-      children={children}
       description={description}
-    />
+    >
+      {children}
+    </CardComponent>
   )
 }
