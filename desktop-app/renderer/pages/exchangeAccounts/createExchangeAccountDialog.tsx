@@ -1,3 +1,4 @@
+'use client'
 import AllInputs from '@/components/custom/selectedObject/inputs'
 import { Button } from '@/components/ui/button'
 import {
@@ -28,27 +29,17 @@ const defaultExchangeAccount: ExchangeAccount = {
 
 export default function CreateExchangeAccountDialog({
   exchangeAccounts,
-  setExchangeAccounts
+  setExchangeAccounts,
+  disabledButton
 }: {
   exchangeAccounts: RetreivedExchangeAccount[]
   setExchangeAccounts: React.Dispatch<
     React.SetStateAction<RetreivedExchangeAccount[]>
   >
+  disabledButton?: boolean
 }): JSX.Element {
   const searchParams = useSearchParams()
-  const defaultExchangeAccountName = 'My Exchange Account'
-  const defaultExchangeAccountDescription = 'My Exchange Account Description'
-  const [newExchangeAccountName, setNewExchangeAccountName] = useState(
-    defaultExchangeAccountName
-  )
-  const [newExchangeAccountDescription, setNewExchangeAccountDescription] =
-    useState(defaultExchangeAccountDescription)
-
-  const [newExchangeAccountTesting, setNewExchangeAccountTesting] =
-    useState(true)
-
   const [possibleExchanges, setPossibleExchanges] = useState<string[]>([])
-  const [selectedExchange, setSelectedExchange] = useState<string>('')
   const [exchangeAccount, setExchangeAccount] = useState<ExchangeAccount>(
     defaultExchangeAccount
   )
@@ -57,7 +48,6 @@ export default function CreateExchangeAccountDialog({
       try {
         const response = await getPossibleExchanges(searchParams)
         setPossibleExchanges(response.data)
-        setSelectedExchange(response.data[0])
       } catch (error) {
         console.error(error)
         setPossibleExchanges([])
@@ -68,10 +58,15 @@ export default function CreateExchangeAccountDialog({
       fetchPossibleExchanges()
     }
   }, [searchParams])
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" className="h-32 w-72">
+        <Button
+          variant="ghost"
+          className={'h-32 w-80'}
+          disabled={disabledButton}
+        >
           <PlusIcon className="mr-2 h-5 w-5" />
           Add new
         </Button>

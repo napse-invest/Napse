@@ -10,6 +10,7 @@ export function request(
   headers: AxiosHeaders | null = null
 ) {
   const serverID = searchParams.get('server')
+
   if (!serverID) {
     throw new Error('No server selected')
   }

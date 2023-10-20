@@ -1,3 +1,4 @@
+import { getServer } from '@/lib/localStorage'
 import { request } from 'api/request'
 import axios, { AxiosResponse } from 'axios'
 import { useSearchParams } from 'next/navigation'
@@ -102,4 +103,16 @@ export async function connectKey(serverUrl: string, token: string) {
     }
   })
   return response as AxiosResponse<null>
+}
+
+export async function getCurrentKey(
+  searchParams: ReturnType<typeof useSearchParams>,
+  space: string | null = null
+): Promise<Key> {
+  const serverID = searchParams.get('server')
+  if (!serverID) {
+    throw new Error('No server selected')
+  }
+  const server = getServer(serverID)
+  return (await getKey(searchParams, server.token.split('.')[0], space)).data
 }

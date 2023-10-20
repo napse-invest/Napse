@@ -33,7 +33,7 @@ function ValuePanelCard({
   onClick = () => {}
 }: {
   title: string | React.ReactNode
-  badge?: string | React.ReactNode
+  badge?: string
   value: number
   delta?: number
   tooltip?: string
@@ -43,11 +43,8 @@ function ValuePanelCard({
     <PanelCard
       title={title}
       badge={badge}
-      description={
-        <p className={`text-sm ${changeValueColor(delta)}`}>
-          {formatChangeValue(delta)}
-        </p>
-      }
+      description={formatChangeValue(delta)}
+      descriptionClassName={`text-sm ${changeValueColor(delta)}`}
       tooltip={tooltip}
       onClick={onClick}
     >
