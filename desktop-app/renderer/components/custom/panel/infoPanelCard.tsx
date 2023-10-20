@@ -1,4 +1,4 @@
-import PanelCard from '@/components/custom/panel/panelCard'
+import PanelCard, { CardType } from '@/components/custom/panel/panelCard'
 import { ReactNode } from 'react'
 
 function InfoPanelCard({
@@ -6,13 +6,15 @@ function InfoPanelCard({
   badge = '',
   textContent = '',
   description = '',
+  cardType = 'button',
   tooltip = '',
   onClick = () => {}
 }: {
   title?: ReactNode
-  badge?: ReactNode
+  badge?: string
   textContent: ReactNode
-  description?: ReactNode
+  description?: string
+  cardType?: CardType
   tooltip?: ReactNode
   onClick?: () => void
 }): JSX.Element {
@@ -22,10 +24,18 @@ function InfoPanelCard({
       title={title}
       badge={badge}
       description={description}
+      cardType={cardType}
       tooltip={tooltip}
       onClick={onClick}
     >
-      <div className="text-2xl font-bold">{textContent}</div>
+      <div
+        className={
+          'text-center text-2xl font-bold' +
+          (cardType === 'disabledButton' ? ' cursor-not-allowed' : '')
+        }
+      >
+        {textContent}
+      </div>
     </PanelCard>
   )
 }

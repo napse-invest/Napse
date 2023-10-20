@@ -20,11 +20,38 @@ import { Server, addServer, getServers, removeServer } from '@/lib/localStorage'
 import { standardUrlPartial } from '@/lib/queryParams'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { PlusIcon } from '@radix-ui/react-icons'
+import { Close } from '@radix-ui/react-popover'
 import { Settings } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import AllInputs from './selectedObject/inputs'
+
+async function tryConnection(
+  server: Server,
+  toast: ReturnType<typeof useToast>['toast']
+) {
+  try {
+    await connectKey(server.url, server.token)
+    return true
+  } catch (error) {
+    toast({
+      title: `Unable to connect to server: ${server.name}`,
+      description: (
+        <>
+          You werent able to connect to {server.url}.
+          <br />
+          <br />
+          Please check the URL and the API token and try again.
+          <br />
+          <br />
+          If the problem persists, check if the server is running.
+        </>
+      )
+    })
+    return false
+  }
+}
 
 export default function ServerPopover(): JSX.Element {
   const { toast } = useToast()
@@ -53,7 +80,8 @@ export default function ServerPopover(): JSX.Element {
             return (
               <div key={index + 1} className="flex flex-row space-x-1">
                 <Button
-                  onClick={() => {
+                  onClick={async () => {
+                    if (!(await tryConnection(server, toast))) return
                     if (currentURL === '/') {
                       router
                         .push(
@@ -74,6 +102,29 @@ export default function ServerPopover(): JSX.Element {
                           console.error(err)
                         })
                     } else if (currentURL.startsWith('/servers')) {
+                      router
+                        .push(
+                          standardUrlPartial(
+                            `/servers/`,
+                            server.id,
+                            {
+                              server: server.id,
+                              exchangeAccount: '',
+                              space: '',
+                              fleet: '',
+                              bot: ''
+                            },
+                            searchParams
+                          )
+                        )
+                        .catch((err) => {
+                          console.error(err)
+                        })
+                    } else if (currentURL.startsWith('/keys/')) {
+                      if (searchParams.get('server') === server.id) {
+                        document.getElementById('close-popover')?.click()
+                        return
+                      }
                       router
                         .push(
                           standardUrlPartial(
@@ -119,7 +170,8 @@ export default function ServerPopover(): JSX.Element {
                   {server.name}
                 </Button>
                 <Button
-                  onClick={() => {
+                  onClick={async () => {
+                    if (!(await tryConnection(server, toast))) return
                     router
                       .push(
                         standardUrlPartial(
@@ -188,29 +240,9 @@ export default function ServerPopover(): JSX.Element {
                 <Button
                   type="submit"
                   onClick={async () => {
-                    try {
-                      await connectKey(server.url, server.token)
-                    } catch (err) {
-                      console.error(err)
-                      toast({
-                        title: `Unable Added new server: ${server.name}`,
-                        description: (
-                          <>
-                            You werent able to connect to {server.url} with the
-                            API token {server.token}.
-                            <br />
-                            <br />
-                            Please check the URL and the API token and try
-                            again.
-                            <br />
-                            <br />
-                            If the problem persists, check if the server is
-                            running.
-                          </>
-                        )
-                      })
+                    if (!(await tryConnection({ ...server, id: '' }, toast)))
                       return
-                    }
+
                     const id = addServer(server.name, server.url, server.token)
                     if (!id && id !== 0) {
                       console.log('Unable to add server')
@@ -284,6 +316,7 @@ export default function ServerPopover(): JSX.Element {
           </Dialog>
         </div>
       </PopoverContent>
+      <Close id="close-popover" />
     </Popover>
   )
 }
