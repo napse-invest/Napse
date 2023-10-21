@@ -4,12 +4,13 @@ import { useSearchParams } from 'next/navigation'
 
 export function request(
   searchParams: ReturnType<typeof useSearchParams>,
-  method: string,
+  method: 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH',
   url: string,
   data: Object | null = null,
   headers: AxiosHeaders | null = null
 ) {
   const serverID = searchParams.get('server')
+
   if (!serverID) {
     throw new Error('No server selected')
   }

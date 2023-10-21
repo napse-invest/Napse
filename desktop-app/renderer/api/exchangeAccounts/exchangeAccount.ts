@@ -12,13 +12,6 @@ export interface RetreivedExchangeAccount extends ExchangeAccount {
   uuid: string
 }
 
-export async function listExchangeAccount(
-  searchParams: ReturnType<typeof useSearchParams>
-): Promise<AxiosResponse<RetreivedExchangeAccount[]>> {
-  const response = await request(searchParams, 'GET', '/api/exchange_account/')
-  return response as AxiosResponse<RetreivedExchangeAccount[]>
-}
-
 export async function getExchangeAccount(
   searchParams: ReturnType<typeof useSearchParams>,
   id: string
@@ -31,6 +24,13 @@ export async function getExchangeAccount(
   return response as AxiosResponse<RetreivedExchangeAccount>
 }
 
+export async function listExchangeAccount(
+  searchParams: ReturnType<typeof useSearchParams>
+): Promise<AxiosResponse<RetreivedExchangeAccount[]>> {
+  const response = await request(searchParams, 'GET', '/api/exchange_account/')
+  return response as AxiosResponse<RetreivedExchangeAccount[]>
+}
+
 export async function createExchangeAccount(
   searchParams: ReturnType<typeof useSearchParams>,
   data: ExchangeAccount
@@ -39,6 +39,32 @@ export async function createExchangeAccount(
     searchParams,
     'POST',
     '/api/exchange_account/',
+    data
+  )
+  return response as AxiosResponse<RetreivedExchangeAccount>
+}
+
+export async function deleteExchangeAccount(
+  searchParams: ReturnType<typeof useSearchParams>,
+  id: string
+): Promise<AxiosResponse<null>> {
+  const response = await request(
+    searchParams,
+    'DELETE',
+    `/api/exchange_account/${id}/`
+  )
+  return response as AxiosResponse<null>
+}
+
+export async function updateExchangeAccount(
+  searchParams: ReturnType<typeof useSearchParams>,
+  id: string,
+  data: { name: string; description: string }
+): Promise<AxiosResponse<RetreivedExchangeAccount>> {
+  const response = await request(
+    searchParams,
+    'PATCH',
+    `/api/exchange_account/${id}/`,
     data
   )
   return response as AxiosResponse<RetreivedExchangeAccount>

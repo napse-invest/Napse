@@ -12,7 +12,7 @@ export default function Spaces(): JSX.Element {
   const [spaces, setSpaces] = useState<NapseSpace[]>([])
   const searchParams = useSearchParams()
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchServers = async () => {
       try {
         const response: AxiosResponse<NapseSpace[]> =
           await listSpace(searchParams)
@@ -22,11 +22,12 @@ export default function Spaces(): JSX.Element {
         setSpaces([])
       }
     }
-    fetchData()
+    if (searchParams.get('server')) {
+      fetchServers()
+    }
   }, [searchParams])
 
   const router = useRouter()
-
   return (
     <ContextHeader isBot>
       <div className="mx-auto my-10 grid max-w-screen-xl gap-6 px-24 lg:grid-cols-3">

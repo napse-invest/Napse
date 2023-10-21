@@ -1,3 +1,4 @@
+import { Key, getCurrentKey } from '@/api/key/key'
 import InfoPanelCard from '@/components/custom/panel/infoPanelCard'
 import ContextHeader from '@/components/layout/contextHeader'
 import DefaultPageLayout from '@/components/layout/defaultPageLayout'
@@ -17,6 +18,7 @@ export default function ExchangeAccounts(): JSX.Element {
   const [exchangeAccounts, setExchangeAccounts] = useState<
     RetreivedExchangeAccount[]
   >([])
+  const [currentKey, setCurrentKey] = useState<Key>()
 
   useEffect(() => {
     const fetchExchangeAccounts = async () => {
@@ -28,9 +30,19 @@ export default function ExchangeAccounts(): JSX.Element {
         setExchangeAccounts([])
       }
     }
+    const fetchCurrentKey = async () => {
+      try {
+        const response = await getCurrentKey(searchParams)
+        setCurrentKey(response)
+      } catch (error) {
+        console.error(error)
+        setCurrentKey(undefined)
+      }
+    }
 
     if (searchParams.get('server')) {
       fetchExchangeAccounts()
+      fetchCurrentKey()
     }
   }, [searchParams])
   return (
@@ -41,13 +53,14 @@ export default function ExchangeAccounts(): JSX.Element {
           'Here is an overview of all your exchange accounts. An exchange account reprents a connection to an exchange/broker.'
         }
       >
-        <div className="my-10 grid max-w-screen-xl gap-6 grid-cols-3">
+        <div className="my-10 grid max-w-screen-xl grid-cols-3 gap-6">
           {exchangeAccounts.map((exchangeAccount, index) => (
             <InfoPanelCard
               key={index}
+              cardType="button"
               title={'Exchange : ' + exchangeAccount.exchange}
               textContent={exchangeAccount.name}
-              badge={exchangeAccount.testing ? 'testing' : null}
+              badge={exchangeAccount.testing ? 'testing' : ''}
               onClick={() => {
                 router.push(
                   standardUrlPartial(
@@ -66,11 +79,16 @@ export default function ExchangeAccounts(): JSX.Element {
             />
           ))}
           <InfoPanelCard
-            title=""
+            cardType={currentKey?.is_master_key ? 'button' : 'disabledButton'}
+            tooltip={
+              !currentKey?.is_master_key &&
+              'You do not have the permission to create an exchange account.'
+            }
             textContent={
               <CreateExchangeAccountDialog
                 exchangeAccounts={exchangeAccounts}
                 setExchangeAccounts={setExchangeAccounts}
+                disabledButton={currentKey?.is_master_key ? false : true}
               />
             }
           />

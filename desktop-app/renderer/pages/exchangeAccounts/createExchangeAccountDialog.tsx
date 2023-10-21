@@ -1,3 +1,5 @@
+'use client'
+import AllInputs from '@/components/custom/selectedObject/inputs'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -7,21 +9,10 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { PlusIcon } from '@radix-ui/react-icons'
 import {
+  ExchangeAccount,
   RetreivedExchangeAccount,
   createExchangeAccount,
   getPossibleExchanges
@@ -29,36 +20,34 @@ import {
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+const defaultExchangeAccount: ExchangeAccount = {
+  name: 'My Exchange Account',
+  description: 'My Exchange Account Description',
+  testing: true,
+  exchange: 'BINANCE'
+}
+
 export default function CreateExchangeAccountDialog({
   exchangeAccounts,
-  setExchangeAccounts
+  setExchangeAccounts,
+  disabledButton
 }: {
   exchangeAccounts: RetreivedExchangeAccount[]
   setExchangeAccounts: React.Dispatch<
     React.SetStateAction<RetreivedExchangeAccount[]>
   >
+  disabledButton?: boolean
 }): JSX.Element {
   const searchParams = useSearchParams()
-  const defaultExchangeAccountName = 'My Exchange Account'
-  const defaultExchangeAccountDescription = 'My Exchange Account Description'
-  const [newExchangeAccountName, setNewExchangeAccountName] = useState(
-    defaultExchangeAccountName
-  )
-  const [newExchangeAccountDescription, setNewExchangeAccountDescription] =
-    useState(defaultExchangeAccountDescription)
-
-  const [newExchangeAccountTesting, setNewExchangeAccountTesting] =
-    useState(true)
-
   const [possibleExchanges, setPossibleExchanges] = useState<string[]>([])
-  const [selectedExchange, setSelectedExchange] = useState<string>('')
-
+  const [exchangeAccount, setExchangeAccount] = useState<ExchangeAccount>(
+    defaultExchangeAccount
+  )
   useEffect(() => {
     const fetchPossibleExchanges = async () => {
       try {
         const response = await getPossibleExchanges(searchParams)
         setPossibleExchanges(response.data)
-        setSelectedExchange(response.data[0])
       } catch (error) {
         console.error(error)
         setPossibleExchanges([])
@@ -69,10 +58,15 @@ export default function CreateExchangeAccountDialog({
       fetchPossibleExchanges()
     }
   }, [searchParams])
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" className="h-32 w-80">
+        <Button
+          variant="ghost"
+          className={'h-32 w-80'}
+          disabled={disabledButton}
+        >
           <PlusIcon className="mr-2 h-5 w-5" />
           Add new
         </Button>
@@ -85,73 +79,34 @@ export default function CreateExchangeAccountDialog({
             provide the server name and the server URL.
           </DialogDescription>
         </DialogHeader>
-        <form>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
-                Name
-              </Label>
-              <Input
-                id="name"
-                defaultValue={defaultExchangeAccountName}
-                className="col-span-3"
-                onChange={(e) => {
-                  setNewExchangeAccountName(e.currentTarget.value)
-                }}
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="description" className="text-right">
-                Description
-              </Label>
-              <Input
-                id="description"
-                defaultValue={defaultExchangeAccountDescription}
-                className="col-span-3"
-                onChange={(e) => {
-                  setNewExchangeAccountDescription(e.currentTarget.value)
-                }}
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="exchange" className="text-right">
-                Exchange
-              </Label>
-              <Select
-                onValueChange={(exchange) => {
-                  setSelectedExchange(exchange)
-                }}
-                defaultValue={possibleExchanges[0]}
-              >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select - Exchange" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Space</SelectLabel>
-                    {possibleExchanges.map((exchange, index) => (
-                      <SelectItem key={index} value={exchange}>
-                        {exchange}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="testing" className="text-right">
-                Testing
-              </Label>
-              <Switch
-                id="testing"
-                checked={newExchangeAccountTesting}
-                onClick={() => {
-                  setNewExchangeAccountTesting(!newExchangeAccountTesting)
-                }}
-              />
-            </div>
-          </div>
-        </form>
+        <AllInputs
+          inputs={[
+            {
+              label: 'Name',
+              key: 'name',
+              type: 'input'
+            },
+            {
+              label: 'Description',
+              key: 'description',
+              type: 'input'
+            },
+            {
+              label: 'Exchange',
+              key: 'exchange',
+              type: 'select',
+              possibilities: possibleExchanges
+            },
+            {
+              label: 'Testing',
+              key: 'testing',
+              type: 'switch'
+            }
+          ]}
+          object={exchangeAccount}
+          setObject={setExchangeAccount}
+          objectName="Exchange Account"
+        />
         <div className="flex flex-col items-end">
           <Button
             className=""
@@ -160,10 +115,7 @@ export default function CreateExchangeAccountDialog({
             onClick={async () => {
               try {
                 const response = await createExchangeAccount(searchParams, {
-                  name: newExchangeAccountName,
-                  description: newExchangeAccountDescription,
-                  testing: newExchangeAccountTesting,
-                  exchange: selectedExchange
+                  ...exchangeAccount
                 })
                 setExchangeAccounts([...exchangeAccounts, response.data])
                 document.getElementById('close-button')?.click()

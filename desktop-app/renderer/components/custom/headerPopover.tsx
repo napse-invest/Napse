@@ -9,8 +9,6 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Popover,
   PopoverContent,
@@ -18,30 +16,59 @@ import {
 } from '@/components/ui/popover'
 import { ToastAction } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/use-toast'
-import { addServer, getServers, removeServer } from '@/lib/localStorage'
+import { Server, addServer, getServers, removeServer } from '@/lib/localStorage'
 import { standardUrlPartial } from '@/lib/queryParams'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { PlusIcon } from '@radix-ui/react-icons'
+import { Close } from '@radix-ui/react-popover'
 import { Settings } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import AllInputs from './selectedObject/inputs'
+
+async function tryConnection(
+  server: Server,
+  toast: ReturnType<typeof useToast>['toast']
+) {
+  try {
+    await connectKey(server.url, server.token)
+    return true
+  } catch (error) {
+    toast({
+      title: `Unable to connect to server: ${server.name}`,
+      description: (
+        <>
+          You werent able to connect to {server.url}.
+          <br />
+          <br />
+          Please check the URL and the API token and try again.
+          <br />
+          <br />
+          If the problem persists, check if the server is running.
+        </>
+      )
+    })
+    return false
+  }
+}
 
 export default function ServerPopover(): JSX.Element {
   const { toast } = useToast()
-  const defaultServerName = 'Localhost'
-  const defaultServerURL = 'http://localhost:8000'
-  const defaulAPIToken = 'xxxxxxxx.xxxxxx.xxxxxxxxx'
-  const [newServerName, setNewServerName] = useState(defaultServerName)
-  const [newServerURL, setNewServerURL] = useState(defaultServerURL)
-  const [newServerToken, setNewServerToken] = useState(defaulAPIToken)
+  const defaultServer: Omit<Server, 'id'> = {
+    name: 'Localhost',
+    url: 'http://localhost:8000',
+    token: 'xxxxxxxx.xxxxxx.xxxxxxxxx'
+  }
+
   const [servers, setServers] = useState(getServers())
   const router = useRouter()
   const searchParams = useSearchParams()
   const currentURL = router.asPath
   const urlBase = currentURL.split('?')[0].split('/')[1]
   const urlId = currentURL.split('?')[0].split('/')[2]
-  const [openDialog, setOpenDialog] = useState(false)
+
+  const [server, setServer] = useState(defaultServer)
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -49,17 +76,60 @@ export default function ServerPopover(): JSX.Element {
       </PopoverTrigger>
       <PopoverContent className="flex w-80 flex-col items-center">
         <div className="flex flex-col items-stretch space-y-3">
-          {Object.entries(servers).map(([key, server], index) => {
+          {Object.values(servers).map((server, index) => {
             return (
               <div key={index + 1} className="flex flex-row space-x-1">
                 <Button
-                  onClick={() => {
+                  onClick={async () => {
+                    if (!(await tryConnection(server, toast))) return
                     if (currentURL === '/') {
                       router
                         .push(
                           standardUrlPartial(
                             '/exchangeAccounts/',
                             null,
+                            {
+                              server: server.id,
+                              exchangeAccount: '',
+                              space: '',
+                              fleet: '',
+                              bot: ''
+                            },
+                            searchParams
+                          )
+                        )
+                        .catch((err) => {
+                          console.error(err)
+                        })
+                    } else if (currentURL.startsWith('/servers')) {
+                      router
+                        .push(
+                          standardUrlPartial(
+                            `/servers/`,
+                            server.id,
+                            {
+                              server: server.id,
+                              exchangeAccount: '',
+                              space: '',
+                              fleet: '',
+                              bot: ''
+                            },
+                            searchParams
+                          )
+                        )
+                        .catch((err) => {
+                          console.error(err)
+                        })
+                    } else if (currentURL.startsWith('/keys/')) {
+                      if (searchParams.get('server') === server.id) {
+                        document.getElementById('close-popover')?.click()
+                        return
+                      }
+                      router
+                        .push(
+                          standardUrlPartial(
+                            `/servers/`,
+                            server.id,
                             {
                               server: server.id,
                               exchangeAccount: '',
@@ -100,7 +170,8 @@ export default function ServerPopover(): JSX.Element {
                   {server.name}
                 </Button>
                 <Button
-                  onClick={() => {
+                  onClick={async () => {
+                    if (!(await tryConnection(server, toast))) return
                     router
                       .push(
                         standardUrlPartial(
@@ -127,7 +198,7 @@ export default function ServerPopover(): JSX.Element {
               </div>
             )
           })}
-          <Dialog key={0}>
+          <Dialog>
             <DialogTrigger asChild>
               <Button variant="outline">
                 <PlusIcon className="mr-2 h-5 w-5" />
@@ -143,86 +214,42 @@ export default function ServerPopover(): JSX.Element {
                   API key.
                 </DialogDescription>
               </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="name" className="text-right">
-                    Name
-                  </Label>
-                  <Input
-                    id="name"
-                    defaultValue={defaultServerName}
-                    className="col-span-3"
-                    onChange={(e) => {
-                      setNewServerName(e.currentTarget.value)
-                    }}
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="url" className="text-right">
-                    URL
-                  </Label>
-                  <Input
-                    id="url"
-                    defaultValue={defaultServerURL}
-                    className="col-span-3"
-                    onChange={(e) => {
-                      setNewServerURL(e.currentTarget.value)
-                    }}
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="token" className="text-right">
-                    API Token
-                  </Label>
-                  <Input
-                    id="token"
-                    defaultValue={defaulAPIToken}
-                    className="col-span-3"
-                    onChange={(e) => {
-                      setNewServerToken(e.currentTarget.value)
-                    }}
-                  />
-                </div>
-              </div>
+              <AllInputs
+                inputs={[
+                  {
+                    label: 'Name',
+                    key: 'name',
+                    type: 'input'
+                  },
+                  {
+                    label: 'URL',
+                    key: 'url',
+                    type: 'input'
+                  },
+                  {
+                    label: 'API Token',
+                    key: 'token',
+                    type: 'input'
+                  }
+                ]}
+                object={server}
+                setObject={setServer}
+                objectName="Server"
+              />
               <DialogFooter>
                 <Button
                   type="submit"
                   onClick={async () => {
-                    try {
-                      await connectKey(newServerURL, newServerToken)
-                    } catch (err) {
-                      console.error(err)
-                      toast({
-                        title: `Unable Added new server: ${newServerName}`,
-                        description: (
-                          <>
-                            You werent able to connect to {newServerURL} with
-                            the API token {newServerToken}.
-                            <br />
-                            <br />
-                            Please check the URL and the API token and try
-                            again.
-                            <br />
-                            <br />
-                            If the problem persists, check if the server is
-                            running.
-                          </>
-                        )
-                      })
+                    if (!(await tryConnection({ ...server, id: '' }, toast)))
                       return
-                    }
-                    const id = addServer(
-                      newServerName,
-                      newServerURL,
-                      newServerToken
-                    )
+
+                    const id = addServer(server.name, server.url, server.token)
                     if (!id && id !== 0) {
                       console.log('Unable to add server')
                       return
                     }
+                    setServer(defaultServer)
                     setServers(getServers())
-                    setNewServerName(defaultServerName)
-                    setNewServerURL(defaultServerURL)
                     router
                       .push(
                         standardUrlPartial(
@@ -241,21 +268,18 @@ export default function ServerPopover(): JSX.Element {
                       .catch((err) => {
                         console.error(err)
                       })
-                    document.getElementById('close-button')?.click()
                     toast({
-                      title: `Added new server: ${newServerName}`,
-                      description: `You are now able to connect to ${newServerURL}`,
+                      title: `Added new server: ${server.name}`,
+                      description: `You are now able to connect to ${server.url}`,
                       action: (
                         <ToastAction
                           altText="Goto schedule to undo"
                           onClick={() => {
-                            Object.entries(getServers()).map(
-                              ([key, server]) => {
-                                if (server.id === id?.toString()) {
-                                  removeServer(server.id)
-                                }
+                            Object.values(getServers()).map((server) => {
+                              if (server.id === id?.toString()) {
+                                removeServer(server.id)
                               }
-                            )
+                            })
                             setServers(getServers())
                             router
                               .push(
@@ -281,6 +305,7 @@ export default function ServerPopover(): JSX.Element {
                         </ToastAction>
                       )
                     })
+                    document.getElementById('close-button')?.click()
                   }}
                 >
                   Connect
@@ -291,6 +316,7 @@ export default function ServerPopover(): JSX.Element {
           </Dialog>
         </div>
       </PopoverContent>
+      <Close id="close-popover" />
     </Popover>
   )
 }
