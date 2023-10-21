@@ -22,7 +22,7 @@ interface CardComponentProps {
   children: React.ReactNode
   className?: string
   title?: ReactNode
-  badge?: string
+  badge?: ReactNode
   description?: string
   descriptionClassName?: string
   tooltip?: string
@@ -38,7 +38,6 @@ const CardComponent = React.forwardRef<HTMLDivElement, CardComponentProps>(
       title,
       badge,
       description,
-      descriptionClassName,
       cardType,
       onClick,
       ...props
@@ -59,11 +58,14 @@ const CardComponent = React.forwardRef<HTMLDivElement, CardComponentProps>(
         {(title || badge) && (
           <CardHeader className="flex flex-row items-end justify-between px-6">
             <CardTitle className="px-1 text-sm font-normal">{title}</CardTitle>
-            {badge && (
-              <Badge className="hover:bg-foreground text-xs italic">
-                {badge}
-              </Badge>
-            )}
+            {badge &&
+              (typeof badge === 'string' ? (
+                <Badge className="hover:bg-foreground text-xs italic">
+                  {badge}
+                </Badge>
+              ) : (
+                <React.Fragment>{badge}</React.Fragment>
+              ))}
           </CardHeader>
         )}
         <CardContent
@@ -73,11 +75,7 @@ const CardComponent = React.forwardRef<HTMLDivElement, CardComponentProps>(
           }
         >
           {children}
-          {description && (
-            <CardDescription className={descriptionClassName}>
-              {description}
-            </CardDescription>
-          )}
+          {description && <CardDescription>{description}</CardDescription>}
         </CardContent>
       </Card>
     )
@@ -91,7 +89,6 @@ export default function PanelCard({
   title = '',
   badge = '',
   description = '',
-  descriptionClassName = '',
   cardType = 'button',
   tooltip = '',
   onClick = () => {}
@@ -99,9 +96,8 @@ export default function PanelCard({
   children: ReactNode
   className?: string
   title?: ReactNode
-  badge?: string
+  badge?: ReactNode
   description?: string
-  descriptionClassName?: string
   cardType?: CardType
   tooltip?: ReactNode
   onClick?: () => void
@@ -116,7 +112,6 @@ export default function PanelCard({
             badge={badge}
             onClick={onClick}
             description={description}
-            descriptionClassName={descriptionClassName}
             cardType={cardType}
           >
             {children}
@@ -132,7 +127,6 @@ export default function PanelCard({
       badge={badge}
       onClick={onClick}
       description={description}
-      descriptionClassName={descriptionClassName}
       cardType={cardType}
     >
       {children}
