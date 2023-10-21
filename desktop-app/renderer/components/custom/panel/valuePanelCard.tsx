@@ -26,7 +26,7 @@ function formatCurrencyValue(value: number): string {
 function ValuePanelCard({
   title = '',
   value = 0,
-  delta = 2,
+  delta = 0,
   description = '',
   cardType = 'button',
   tooltip = '',

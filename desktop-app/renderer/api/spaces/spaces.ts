@@ -1,42 +1,50 @@
+import { RetreivedExchangeAccount } from 'api/exchangeAccounts/exchangeAccount'
 import { Fleet } from 'api/fleets/fleets'
 import { request } from 'api/request'
 import { Wallet } from 'api/wallets/wallets'
 import { AxiosResponse } from 'axios'
 import { useSearchParams } from 'next/navigation'
 
-export interface BaseNapseSpace{
+interface Statistics {
+  [Key: string]: number
+}
+
+interface History {
+  // TODO: Improve this
+  [Key: string]: number
+}
+export interface BaseNapseSpace {
   name: string
   description: string
   exchange_account: string
 }
 
-export interface NapseSpace extends BaseNapseSpace{
+export interface NapseSpace extends BaseNapseSpace {
   uuid: string
   value: number
   fleet_count: number
 }
 
-interface Statistics {
-  [Key: string]: number
-}
-
-interface History{
-  // TODO: Improve this
-  [Key: string]: number
-}
-
-export interface RetrievedNapseSpace extends BaseNapseSpace  {
+export interface RetrievedNapseSpace extends BaseNapseSpace {
   uuid: string
   exchange_account: string
   created_at: string
   statistics: Statistics
   wallet: Wallet
-  // history:
+  history: History
   fleets: Fleet[]
 }
 
-
-
+export async function getPossibleExchangeAccounts(
+  searchParams: ReturnType<typeof useSearchParams>
+): Promise<AxiosResponse<RetreivedExchangeAccount[]>> {
+  const response = await request(
+    searchParams,
+    'GET',
+    '/api/space/possible_exchange_accounts/'
+  )
+  return response as AxiosResponse<RetreivedExchangeAccount[]>
+}
 
 export async function listSpace(
   searchParams: ReturnType<typeof useSearchParams>
