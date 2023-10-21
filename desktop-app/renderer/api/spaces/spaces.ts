@@ -1,15 +1,42 @@
+import { Fleet } from 'api/fleets/fleets'
 import { request } from 'api/request'
+import { Wallet } from 'api/wallets/wallets'
 import { AxiosResponse } from 'axios'
 import { useSearchParams } from 'next/navigation'
 
-export interface NapseSpace {
+export interface BaseNapseSpace{
   name: string
+  description: string
+  exchange_account: string
+}
+
+export interface NapseSpace extends BaseNapseSpace{
   uuid: string
   value: number
   fleet_count: number
-  exchange_account: string
-  delta?: number
 }
+
+interface Statistics {
+  [Key: string]: number
+}
+
+interface History{
+  // TODO: Improve this
+  [Key: string]: number
+}
+
+export interface RetrievedNapseSpace extends BaseNapseSpace  {
+  uuid: string
+  exchange_account: string
+  created_at: string
+  statistics: Statistics
+  wallet: Wallet
+  // history:
+  fleets: Fleet[]
+}
+
+
+
 
 export async function listSpace(
   searchParams: ReturnType<typeof useSearchParams>
@@ -18,10 +45,10 @@ export async function listSpace(
   return response as AxiosResponse<NapseSpace[]>
 }
 
-export async function getSpace(
+export async function retrieveSpace(
   searchParams: ReturnType<typeof useSearchParams>,
   id: string
-): Promise<AxiosResponse<NapseSpace>> {
+): Promise<AxiosResponse<RetrievedNapseSpace>> {
   const response = await request(searchParams, 'GET', `/api/space/${id}/`)
-  return response as AxiosResponse<NapseSpace>
+  return response as AxiosResponse<RetrievedNapseSpace>
 }
