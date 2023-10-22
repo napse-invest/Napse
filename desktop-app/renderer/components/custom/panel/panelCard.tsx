@@ -64,7 +64,7 @@ const CardComponent = React.forwardRef<HTMLDivElement, CardComponentProps>(
                   {badge}
                 </Badge>
               ) : (
-                <React.Fragment>{badge}</React.Fragment>
+                <>{badge}</>
               ))}
           </CardHeader>
         )}

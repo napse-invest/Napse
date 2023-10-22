@@ -22,7 +22,7 @@ export interface BaseNapseSpace {
 export interface NapseSpace extends BaseNapseSpace {
   uuid: string
   value: number
-  fleet_count: number
+  delta: number
 }
 
 export interface RetrievedNapseSpace extends BaseNapseSpace {
@@ -57,6 +57,10 @@ export async function retrieveSpace(
   searchParams: ReturnType<typeof useSearchParams>,
   id: string
 ): Promise<AxiosResponse<RetrievedNapseSpace>> {
-  const response = await request(searchParams, 'GET', `/api/space/${id}/`)
+  const response = await request(
+    searchParams,
+    'GET',
+    `/api/space/${id}/?space=${id}`
+  )
   return response as AxiosResponse<RetrievedNapseSpace>
 }
