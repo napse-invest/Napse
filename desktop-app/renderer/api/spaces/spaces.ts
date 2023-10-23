@@ -64,3 +64,11 @@ export async function retrieveSpace(
   )
   return response as AxiosResponse<RetrievedNapseSpace>
 }
+
+export async function createSpace(
+  searchParams: ReturnType<typeof useSearchParams>,
+  data: BaseNapseSpace
+): Promise<AxiosResponse<NapseSpace>> {
+  const response = await request(searchParams, 'POST', '/api/space/', data)
+  return response as AxiosResponse<NapseSpace>
+}

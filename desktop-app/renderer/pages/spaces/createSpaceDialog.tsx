@@ -1,3 +1,4 @@
+import AllInputs from '@/components/custom/selectedObject/inputs'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -7,12 +8,14 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
+
 import { DialogClose } from '@radix-ui/react-dialog'
 import { PlusIcon } from '@radix-ui/react-icons'
 import { RetreivedExchangeAccount } from 'api/exchangeAccounts/exchangeAccount'
 import {
   BaseNapseSpace,
   NapseSpace,
+  createSpace,
   getPossibleExchangeAccounts
 } from 'api/spaces/spaces'
 import { useSearchParams } from 'next/navigation'
@@ -68,13 +71,13 @@ export default function CreateSpaceDialog({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add a new Exchange Account</DialogTitle>
+          <DialogTitle>Add a new Space</DialogTitle>
           <DialogDescription>
-            Add a new server will allow you to connect to it. You just have to
-            provide the server name and the server URL.
+            Add a new space will allow you to manage your money. You just have
+            to provide the name and the exchange account.
           </DialogDescription>
         </DialogHeader>
-        {/* <AllInputs
+        <AllInputs
           inputs={[
             {
               label: 'Name',
@@ -87,36 +90,30 @@ export default function CreateSpaceDialog({
               type: 'input'
             },
             {
-              label: 'Exchange',
-              key: 'exchange',
-              type: 'select',
-              possibilities: possibleExchangeAccounts
-            },
-            {
-              label: 'Testing',
-              key: 'testing',
-              type: 'switch'
+              label: 'Exchange Account',
+              key: 'exchange_account',
+              type: 'input'
             }
           ]}
-          object={exchangeAccount}
-          setObject={setExchangeAccount}
-          objectName="Exchange Account"
-        /> */}
+          object={space}
+          setObject={setSpace}
+          objectName="Space"
+        />
         <div className="flex flex-col items-end">
           <Button
             className=""
             type="submit"
             size="default"
             onClick={async () => {
-              // try {
-              //   const response = await createExchangeAccount(searchParams, {
-              //     ...exchangeAccount
-              //   })
-              //   setExchangeAccounts([...exchangeAccounts, response.data])
-              //   document.getElementById('close-button')?.click()
-              // } catch (error) {
-              //   console.log(error)
-              // }
+              try {
+                const response = await createSpace(searchParams, {
+                  ...space
+                })
+                setSpaces([...spaces, response.data])
+                document.getElementById('close-button')?.click()
+              } catch (error) {
+                console.log(error)
+              }
             }}
           >
             Create

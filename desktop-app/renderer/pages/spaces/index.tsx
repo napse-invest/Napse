@@ -56,8 +56,9 @@ export default function Spaces(): JSX.Element {
               key={index}
               title={space.name}
               value={space.value}
-              delta={666} // TODO: add delta to space
+              delta={space.delta}
               onClick={() => {
+                console.log('space', space.uuid)
                 router.push(
                   standardUrlPartial(
                     '/spaces/',
