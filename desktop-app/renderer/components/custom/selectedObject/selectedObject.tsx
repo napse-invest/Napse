@@ -26,15 +26,7 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { standardUrlPartial } from '@/lib/queryParams'
 import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction } from 'react'
-import AllInputs from './inputs'
-
-export interface InputType<T extends Object> {
-  label: string
-  key: keyof T
-  type: 'input' | 'switch' | 'select'
-  disabled?: boolean
-  possibilities?: string[]
-}
+import CustomForm, { InputType } from './inputs'
 
 export default function SelectedObject<T extends Object>({
   children,
@@ -53,7 +45,7 @@ export default function SelectedObject<T extends Object>({
   objectIdentifier: keyof T
   object: T
   setObject: Dispatch<SetStateAction<T>>
-  updateOnClick?: () => void
+  updateOnClick?: (values: { [x: string]: any }) => void
   deleteOnClick?: () => void
   noAutoRouteOnDelete?: boolean
   inputs: InputType<T>[]
@@ -84,88 +76,84 @@ export default function SelectedObject<T extends Object>({
       </CardHeader>
       <CardContent>
         {childrenPosition === 'startContent' && children}
-        <form>
-          <div className="grid w-full items-center gap-4">
-            <AllInputs
-              inputs={inputs}
-              object={object}
-              setObject={setObject}
-              objectName={objectName}
-            />
-          </div>
-        </form>
-        {childrenPosition === 'endContent' && children}
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        {childrenPosition === 'startFooter' && children}
-        <Button
-          onClick={async () => {
+        <CustomForm<typeof object>
+          inputs={inputs}
+          onSubmit={async (values) => {
             if (!updateOnClick) return
             try {
-              await updateOnClick()
+              await updateOnClick(values)
             } catch (error) {
               console.error(error)
             }
-            setObject({ ...object })
+            setObject({ ...object, ...values })
             toast({
               title: `Successfully edited ${objectName} !`,
               description: `${object[objectIdentifier]} updated`
             })
           }}
-        >
-          Update
-        </Button>
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="destructive">Delete</Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. Deleteing an {objectName} will
-                also delete all its children. Check the documentation for more
-                information.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction
-                className={buttonVariants({ variant: 'destructive' })}
-                onClick={async () => {
-                  if (!deleteOnClick) return
-                  await deleteOnClick()
-                  toast({
-                    title: `Successfully deleted ${objectName} !`,
-                    description: `${object[objectIdentifier]} deleted`
-                  })
-                  if (noAutoRouteOnDelete) return
-                  router
-                    .push(
-                      standardUrlPartial(
-                        `/${router.pathname.split('/')[1]}`,
-                        null,
-                        {
-                          exchangeAccount: '',
-                          space: '',
-                          fleet: '',
-                          bot: ''
-                        },
-                        searchParams
-                      )
-                    )
-                    .catch((err) => {
-                      console.error(err)
-                    })
-                }}
-              >
-                Detete
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-        {childrenPosition === 'endFooter' && children}
-      </CardFooter>
+          footer={
+            <CardFooter className="flex justify-between">
+              {childrenPosition === 'startFooter' && children}
+              <Button variant="default" type="submit">
+                Update
+              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive">Delete</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. Deleteing an {objectName}{' '}
+                      will also delete all its children. Check the documentation
+                      for more information.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      className={buttonVariants({ variant: 'destructive' })}
+                      onClick={async () => {
+                        if (!deleteOnClick) return
+                        await deleteOnClick()
+                        toast({
+                          title: `Successfully deleted ${objectName} !`,
+                          description: `${object[objectIdentifier]} deleted`
+                        })
+                        if (noAutoRouteOnDelete) return
+                        router
+                          .push(
+                            standardUrlPartial(
+                              `/${router.pathname.split('/')[1]}`,
+                              null,
+                              {
+                                exchangeAccount: '',
+                                space: '',
+                                fleet: '',
+                                bot: ''
+                              },
+                              searchParams
+                            )
+                          )
+                          .catch((err) => {
+                            console.error(err)
+                          })
+                      }}
+                    >
+                      Detete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              {childrenPosition === 'endFooter' && children}
+            </CardFooter>
+          }
+        />
+        {childrenPosition === 'endContent' && children}
+      </CardContent>
     </Card>
   )
 }

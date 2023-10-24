@@ -8,8 +8,8 @@ import { AxiosResponse } from 'axios'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import * as z from 'zod'
 import KeyPermissions from './keyPermissions'
-
 const defaultKey: Key = {
   name: '',
   prefix: '',
@@ -41,7 +41,7 @@ export default function Key(): JSX.Element {
     if (searchParams.get('server')) {
       fetchKey()
     }
-  }, [searchParams, router])
+  }, [searchParams, router, revoked])
   return (
     <ContextHeader isBot>
       <DefaultPageLayout
@@ -57,16 +57,17 @@ export default function Key(): JSX.Element {
                 object={key}
                 setObject={setKey}
                 noAutoRouteOnDelete
-                updateOnClick={() => {
+                updateOnClick={(values) => {
                   updateKey(
                     searchParams,
                     router.query.slug as string,
-                    key.name,
-                    key.description,
-                    key.revoked,
+                    values.name,
+                    values.description,
+                    values.revoked,
                     undefined,
                     undefined
                   )
+                  setRevoked(values.revoked)
                 }}
                 deleteOnClick={async () => {
                   await deleteKey(searchParams, router.query.slug as string)
@@ -89,29 +90,43 @@ export default function Key(): JSX.Element {
                     })
                 }}
                 inputs={[
-                  { label: 'Name', key: 'name', type: 'input' },
+                  {
+                    label: 'Name',
+                    key: 'name',
+                    type: 'input',
+                    zod: z.string(),
+                    value: key.name
+                  },
                   {
                     label: 'Description',
                     key: 'description',
-                    type: 'input'
+                    type: 'input',
+                    zod: z.string(),
+                    value: key.description
                   },
                   {
                     label: 'Prefix',
                     key: 'prefix',
                     type: 'input',
-                    disabled: true
+                    disabled: true,
+                    zod: z.string(),
+                    value: key.prefix
                   },
                   {
                     label: 'Master Key',
                     key: 'is_master_key',
                     type: 'switch',
-                    disabled: true
+                    disabled: true,
+                    zod: z.boolean(),
+                    value: key.is_master_key
                   },
                   {
                     label: 'Revoked',
                     key: 'revoked',
                     type: 'switch',
-                    disabled: key.is_master_key || revoked
+                    disabled: key.is_master_key || revoked,
+                    zod: z.boolean(),
+                    value: key.revoked
                   }
                 ]}
               />
