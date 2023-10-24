@@ -157,7 +157,7 @@ module.exports = {
       borderRadius: {
         'tremor-small': '0.375rem',
         'tremor-default': '0.5rem',
-        'tremor-full': '0.1rem',
+        'tremor-full': '9999px',
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)'
