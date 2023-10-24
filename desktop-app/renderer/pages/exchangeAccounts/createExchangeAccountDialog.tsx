@@ -1,5 +1,5 @@
 'use client'
-import AllInputs from '@/components/custom/selectedObject/inputs'
+import CustomForm from '@/components/custom/selectedObject/inputs'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -19,6 +19,7 @@ import {
 } from 'api/exchangeAccounts/exchangeAccount'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { z } from 'zod'
 
 const defaultExchangeAccount: ExchangeAccount = {
   name: 'My Exchange Account',
@@ -79,54 +80,52 @@ export default function CreateExchangeAccountDialog({
             provide the server name and the server URL.
           </DialogDescription>
         </DialogHeader>
-        <AllInputs
+        <CustomForm<ExchangeAccount>
           inputs={[
             {
               label: 'Name',
               key: 'name',
-              type: 'input'
+              type: 'input',
+              zod: z.string(),
+              default: defaultExchangeAccount.name
             },
             {
               label: 'Description',
               key: 'description',
-              type: 'input'
+              type: 'input',
+              zod: z.string(),
+              default: defaultExchangeAccount.description
             },
             {
               label: 'Exchange',
               key: 'exchange',
               type: 'select',
-              possibilities: possibleExchanges
+              possibilities: possibleExchanges,
+              zod: z.string(),
+              default: defaultExchangeAccount.exchange
             },
             {
               label: 'Testing',
               key: 'testing',
-              type: 'switch'
+              type: 'switch',
+              zod: z.boolean(),
+              default: defaultExchangeAccount.testing
             }
           ]}
-          object={exchangeAccount}
-          setObject={setExchangeAccount}
-          objectName="Exchange Account"
+          onSubmit={async (values) => {
+            try {
+              const response = await createExchangeAccount(searchParams, {
+                ...defaultExchangeAccount,
+                ...values
+              })
+              setExchangeAccounts([...exchangeAccounts, response.data])
+              document.getElementById('close-button')?.click()
+            } catch (error) {
+              console.log(error)
+            }
+          }}
+          buttonDescription="Create"
         />
-        <div className="flex flex-col items-end">
-          <Button
-            className=""
-            type="submit"
-            size="default"
-            onClick={async () => {
-              try {
-                const response = await createExchangeAccount(searchParams, {
-                  ...exchangeAccount
-                })
-                setExchangeAccounts([...exchangeAccounts, response.data])
-                document.getElementById('close-button')?.click()
-              } catch (error) {
-                console.log(error)
-              }
-            }}
-          >
-            Create
-          </Button>
-        </div>
       </DialogContent>
       <DialogClose id="close-button" />
     </Dialog>

@@ -12,8 +12,8 @@ import { standardUrlPartial } from '@/lib/queryParams'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import * as z from 'zod'
 import SelectedAPIKey from './selectedAPIKey'
-
 export default function Servers(): JSX.Element {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -64,16 +64,26 @@ export default function Servers(): JSX.Element {
                     })
                 }}
                 inputs={[
-                  { label: 'Name', key: 'name', type: 'input' },
+                  {
+                    label: 'Name',
+                    key: 'name',
+                    type: 'input',
+                    zod: z.string(),
+                    value: server.name
+                  },
                   {
                     label: 'URL',
                     key: 'url',
-                    type: 'input'
+                    type: 'input',
+                    zod: z.string(),
+                    value: server.url
                   },
                   {
                     label: 'API Token',
                     key: 'token',
-                    type: 'input'
+                    type: 'input',
+                    zod: z.string(),
+                    value: server.token
                   }
                 ]}
               />
