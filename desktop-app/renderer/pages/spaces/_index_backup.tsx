@@ -55,7 +55,7 @@ export default function Spaces(): JSX.Element {
                   console.error(err)
                 })
             }}
-            badge={String(space.fleet_count) + ' fleets'}
+            // badge={String(space.fleet_count) + ' fleets'}
           />
         ))}
       </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { toast, useToast } from '@/components/ui/use-toast'
+import { toast } from '@/components/ui/use-toast'
 import { ColumnDef } from '@tanstack/react-table'
 
 export type Currency = {
@@ -12,7 +12,7 @@ export type Currency = {
 function currencyDeleteAlert() {}
 
 export function getAssetColumns(
-  toastFunction: typeof toast // TODO: remove this toastFunction
+  toastFunction: typeof toast
 ): ColumnDef<Currency>[] {
   return [
     {
@@ -37,8 +37,6 @@ export function getAssetColumns(
       header: () => <div className="text-right">Delete</div>,
       cell: ({ row }) => {
         const ticker = row.original.ticker
-        const { toast } = useToast()
-
         return (
           <div className="text-right">
             <Button
@@ -47,7 +45,7 @@ export function getAssetColumns(
               size="icon"
               onClick={() => {
                 console.log(row)
-                toast({
+                toastFunction({
                   // description: ticker + "have been deleted"
                   description: (
                     <div>
