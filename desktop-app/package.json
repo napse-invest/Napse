@@ -42,7 +42,7 @@
     "date-fns": "^2.30.0",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.1.0",
-    "lucide-react": "^0.284.0",
+    "lucide-react": "^0.291.0",
     "next-themes": "^0.2.1",
     "react-day-picker": "^8.8.1",
     "react-hook-form": "^7.47.0",
