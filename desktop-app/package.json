@@ -36,7 +36,7 @@
     "@tanstack/react-table": "^8.10.6",
     "@tremor/react": "^3.9.2",
     "add": "^2.0.6",
-    "axios": "^1.5.0",
+    "axios": "^1.6.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
