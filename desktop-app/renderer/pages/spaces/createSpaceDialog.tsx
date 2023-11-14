@@ -20,6 +20,7 @@ import {
 } from 'api/spaces/spaces'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import * as z from 'zod'
 
 const defaultSpace: BaseNapseSpace = {
   name: 'My Space',
@@ -82,17 +83,23 @@ export default function CreateSpaceDialog({
             {
               label: 'Name',
               key: 'name',
-              type: 'input'
+              type: 'input',
+              zod: z.string(),
+              default: ''
             },
             {
               label: 'Description',
               key: 'description',
-              type: 'input'
+              type: 'input',
+              zod: z.string(),
+              default: ''
             },
             {
               label: 'Exchange Account',
               key: 'exchange_account',
-              type: 'input'
+              type: 'input',
+              zod: z.string(),
+              default: ''
             }
           ]}
           object={space}

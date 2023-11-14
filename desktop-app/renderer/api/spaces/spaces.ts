@@ -6,7 +6,7 @@ import { AxiosResponse } from 'axios'
 import { useSearchParams } from 'next/navigation'
 
 interface Statistics {
-  [Key: string]: number
+  [key: string]: number
 }
 
 interface History {
