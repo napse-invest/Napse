@@ -17,51 +17,24 @@ import {
   EllipsisHorizontalIcon,
   TicketIcon
 } from '@heroicons/react/24/outline'
-import { AreaChart, Icon, Metric, Card as TremorCard } from '@tremor/react'
+import {
+  AreaChart,
+  Color,
+  Icon,
+  Metric,
+  Card as TremorCard
+} from '@tremor/react'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
-import {
-  ForwardRefExoticComponent,
-  RefAttributes,
-  SVGProps,
-  useEffect,
-  useState
-} from 'react'
+import React$1, { useEffect, useState } from 'react'
 import { fakeDashboardData } from './fakeDashboardData'
+import WalletBoard from './walletBoard'
 
 type KpiData = {
   name: string
   value: string | number
-  icon: ForwardRefExoticComponent<
-    Omit<SVGProps<SVGSVGElement>, 'ref'> & {
-      title?: string | undefined
-      titleId?: string | undefined
-    } & RefAttributes<SVGSVGElement>
-  >
-  color:
-    | 'green'
-    | 'blue'
-    | 'orange'
-    | 'gray'
-    | 'slate'
-    | 'zinc'
-    | 'neutral'
-    | 'stone'
-    | 'red'
-    | 'amber'
-    | 'yellow'
-    | 'lime'
-    | 'emerald'
-    | 'teal'
-    | 'cyan'
-    | 'sky'
-    | 'indigo'
-    | 'violet'
-    | 'purple'
-    | 'fuchsia'
-    | 'pink'
-    | 'rose'
-    | undefined
+  icon: React$1.ElementType
+  color: Color
 }
 
 function getKeyData(key: string, value: number): KpiData {
@@ -135,10 +108,15 @@ export default function Space(): JSX.Element {
 
   console.log(space)
 
+  if (!space) {
+    console.log('No space')
+    return <></>
+  }
+
   return (
     <ContextHeader isBot>
       <DefaultPageLayout
-        header={space ? space.name : ''}
+        header={space.name}
         description={
           'Here is an overview of all your spaces. A space make it easy to manage your money.'
         }
@@ -146,9 +124,7 @@ export default function Space(): JSX.Element {
         <Tabs defaultValue="dashboard" className="w-full">
           <TabsList>
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="wallet" disabled>
-              Wallet
-            </TabsTrigger>
+            <TabsTrigger value="wallet">Wallet</TabsTrigger>
             <TabsTrigger value="operations" disabled>
               Operations
             </TabsTrigger>
@@ -162,7 +138,7 @@ export default function Space(): JSX.Element {
               <CardHeader>
                 <CardTitle>Dashboard</CardTitle>
               </CardHeader>
-              <CardContent className="flex-1">
+              <CardContent className="">
                 <AreaChart
                   className="mt-4 h-80"
                   data={fakeDashboardData}
@@ -179,21 +155,12 @@ export default function Space(): JSX.Element {
             <div className="grid grid-rows-3 gap-6">
               {Object.entries(space?.statistics || {}).map(
                 ([key, value], index) => (
-                  // <Card>
-                  //   {/* 'text-2xl font-semibold leading-none tracking-tight' */}
-                  //   <p className=" text-sm m-10 mb-0 text-muted-foreground">
-                  //     {key}
-                  //   </p>
-                  //   <CardContent className="ml-10 p-0">test</CardContent>
-                  // </Card>
                   <TremorCard
                     key={key}
                     decoration="top"
                     decorationColor={getKeyData(key, value).color}
                     className="flex flex-row justify-start gap-6 px-10"
                   >
-                    {/* <Flex className="justify-start mx-6 my-2 text-sm text-muted-foreground"> */}
-
                     <Icon
                       icon={getKeyData(key, value).icon}
                       color={getKeyData(key, value).color}
@@ -212,6 +179,9 @@ export default function Space(): JSX.Element {
                 )
               )}
             </div>
+          </TabsContent>
+          <TabsContent value="wallet" className="">
+            <WalletBoard className="" space={space} />
           </TabsContent>
         </Tabs>
       </DefaultPageLayout>

@@ -21,6 +21,16 @@ const FlipPlugin = plugin(function ({ addUtilities }) {
   })
 })
 
+
+const MiscellaneousPlugin = plugin(function ({ addUtilities }) {
+  addUtilities({
+    '.icon-md': {
+      transform: 'scale(1.5)'
+    },
+  })
+})
+
+
 module.exports = {
   content: [
     './renderer/pages/**/*.{js,ts,jsx,tsx}',
@@ -210,6 +220,7 @@ module.exports = {
   plugins: [
     require('@headlessui/tailwindcss'),
     require('tailwindcss-animate'),
-    FlipPlugin
+    FlipPlugin,
+    MiscellaneousPlugin
   ]
 }
