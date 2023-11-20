@@ -28,6 +28,7 @@ import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import React$1, { useEffect, useState } from 'react'
 import { fakeDashboardData } from './fakeDashboardData'
+import MoneyActionButtons from './moneyActionButtons'
 import WalletBoard from './walletBoard'
 
 type KpiData = {
@@ -110,6 +111,7 @@ export default function Space(): JSX.Element {
 
   if (!space) {
     console.log('No space')
+    console.log(searchParams.get('space'))
     return <></>
   }
 
@@ -122,17 +124,23 @@ export default function Space(): JSX.Element {
         }
       >
         <Tabs defaultValue="dashboard" className="w-full">
-          <TabsList>
-            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="wallet">Wallet</TabsTrigger>
-            <TabsTrigger value="operations" disabled>
-              Operations
-            </TabsTrigger>
-            <TabsTrigger value="fleets" disabled>
-              Fleets
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value="dashboard" className="grid grid-cols-3 gap-6">
+          <div className="flex flex-row justify-between">
+            <TabsList>
+              <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+              <TabsTrigger value="wallet">Wallet</TabsTrigger>
+              <TabsTrigger value="operations" disabled>
+                Operations
+              </TabsTrigger>
+              <TabsTrigger value="fleets" disabled>
+                Fleets
+              </TabsTrigger>
+            </TabsList>
+            <MoneyActionButtons />
+          </div>
+          <TabsContent
+            value="dashboard"
+            className="grid grid-cols-3 gap-6 mt-4"
+          >
             {/* Graph card */}
             <Card className="col-span-2">
               <CardHeader>
@@ -180,7 +188,7 @@ export default function Space(): JSX.Element {
               )}
             </div>
           </TabsContent>
-          <TabsContent value="wallet" className="">
+          <TabsContent value="wallet" className="mt-0">
             <WalletBoard className="" space={space} />
           </TabsContent>
         </Tabs>

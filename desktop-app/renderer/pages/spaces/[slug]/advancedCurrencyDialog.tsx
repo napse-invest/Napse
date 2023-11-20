@@ -23,7 +23,7 @@ export default function AdvancedCurrencyDataDialog({
   const currencies: Currency[] = space['wallet']['currencies']
   return (
     <Dialog>
-      <DialogTrigger>{trigger}</DialogTrigger>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="container">
         <DialogHeader>
           <DialogTitle>Currencies</DialogTitle>

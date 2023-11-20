@@ -25,7 +25,7 @@ const FlipPlugin = plugin(function ({ addUtilities }) {
 const MiscellaneousPlugin = plugin(function ({ addUtilities }) {
   addUtilities({
     '.icon-md': {
-      transform: 'scale(1.5)'
+      transform: 'scale(1.8)'
     },
   })
 })
