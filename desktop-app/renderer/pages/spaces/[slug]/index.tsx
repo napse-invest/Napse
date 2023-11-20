@@ -107,12 +107,12 @@ export default function Space(): JSX.Element {
     }
   }, [spaceID, searchParams])
 
-  console.log(space)
-
   if (!space) {
     console.log('No space')
     console.log(searchParams.get('space'))
     return <></>
+  } else {
+    console.log(space)
   }
 
   return (
@@ -137,10 +137,7 @@ export default function Space(): JSX.Element {
             </TabsList>
             <MoneyActionButtons />
           </div>
-          <TabsContent
-            value="dashboard"
-            className="grid grid-cols-3 gap-6 mt-4"
-          >
+          <TabsContent value="dashboard" className="grid grid-cols-3 gap-6">
             {/* Graph card */}
             <Card className="col-span-2">
               <CardHeader>
@@ -188,7 +185,7 @@ export default function Space(): JSX.Element {
               )}
             </div>
           </TabsContent>
-          <TabsContent value="wallet" className="mt-0">
+          <TabsContent value="wallet" className="">
             <WalletBoard className="" space={space} />
           </TabsContent>
         </Tabs>

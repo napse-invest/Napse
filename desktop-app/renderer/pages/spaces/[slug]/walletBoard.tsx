@@ -86,7 +86,7 @@ export default function WalletBoard({
                 </TabsTrigger>
               </TabsList>
             </div>
-            <div className="flex flex-row justify-between items-end py-4">
+            <div className="flex flex-row justify-between items-end py-5">
               <div>
                 <CardDescription className="">Total value</CardDescription>
                 <Metric className="text-2xl">
@@ -98,7 +98,7 @@ export default function WalletBoard({
                 {currencies.length > 1 ? 'currencies' : 'currency'}
               </p>
             </div>
-            <Separator className="mb-4" />
+            <Separator className="my-4" />
             <TabsContent value="chart" className="">
               <DonutChart
                 data={simpleCurrencies}
@@ -106,7 +106,7 @@ export default function WalletBoard({
                 category="value"
                 index="ticker"
                 valueFormatter={valueFormatter}
-                className="m-8 ml-0"
+                className="m-10 ml-0"
               />
             </TabsContent>
             <TabsContent value="list" className="">
