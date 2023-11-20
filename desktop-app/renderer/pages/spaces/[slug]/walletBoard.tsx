@@ -109,7 +109,7 @@ export default function WalletBoard({
                 className="m-10 ml-0"
               />
             </TabsContent>
-            <TabsContent value="list" className="">
+            <TabsContent value="list" className="my-4">
               <SimpleCurrencyDataTable data={simpleCurrencies} />
             </TabsContent>
           </Tabs>
