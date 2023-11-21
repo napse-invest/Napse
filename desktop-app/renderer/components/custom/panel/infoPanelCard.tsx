@@ -1,30 +1,42 @@
-import PanelCard from '@/components/custom/panel/panelCard'
-import React from 'react'
-
-type InfoPanelCardProps = {
-  title: string | React.ReactNode
-  badge?: string | React.ReactNode
-  category?: string | React.ReactNode
-  tooltip?: string
-  onClick?: () => void
-}
+import PanelCard, { CardType } from '@/components/custom/panel/panelCard'
+import { ReactNode } from 'react'
 
 function InfoPanelCard({
   title = '',
   badge = '',
-  category = '',
+  textContent = '',
+  description = '',
+  cardType = 'button',
   tooltip = '',
   onClick = () => {}
-}: InfoPanelCardProps): JSX.Element {
+}: {
+  title?: ReactNode
+  badge?: string
+  textContent: ReactNode
+  description?: string
+  cardType?: CardType
+  tooltip?: ReactNode
+  onClick?: () => void
+}): JSX.Element {
   return (
     <PanelCard
-      title={category}
+      className="h-32 w-80 min-w-fit"
+      title={title}
       badge={badge}
-      // description={<p className="text-sm"></p>}
-      content={<div className="text-2xl font-bold">{title}</div>}
+      description={description}
+      cardType={cardType}
       tooltip={tooltip}
       onClick={onClick}
-    />
+    >
+      <div
+        className={
+          'text-center text-2xl font-bold' +
+          (cardType === 'disabledButton' ? ' cursor-not-allowed' : '')
+        }
+      >
+        {textContent}
+      </div>
+    </PanelCard>
   )
 }
 

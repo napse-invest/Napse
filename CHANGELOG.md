@@ -1,3 +1,17 @@
+# [1.2.0](https://github.com/napse-invest/Napse/compare/v1.1.0...v1.2.0) (2023-10-06)
+
+
+### Bug Fixes
+
+* **build:** now works ([a7869f5](https://github.com/napse-invest/Napse/commit/a7869f588d18d40eb701034ca4c16cda8499aa12))
+* **ci:** workflow ([d0b53d4](https://github.com/napse-invest/Napse/commit/d0b53d4ee837ed601e0f78da8396d7e5a32547e0))
+* **ci:** workfow fix ([a760f0e](https://github.com/napse-invest/Napse/commit/a760f0ec10fa6a78571e80d3107fb800c11742ae))
+
+
+### Features
+
+* **ci:** build ([b09ba47](https://github.com/napse-invest/Napse/commit/b09ba470a09316bed4976074fbe2520854c099c2))
+
 # [1.1.0](https://github.com/napse-invest/Napse/compare/v1.0.0...v1.1.0) (2023-09-25)
 
 

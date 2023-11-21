@@ -1,61 +1,77 @@
-import PanelCard from '@/components/custom/panel/panelCard'
-import React from 'react'
+import PanelCard, { CardType } from '@/components/custom/panel/panelCard'
+import { BadgeDelta } from '@tremor/react'
+import { ReactNode } from 'react'
 
-function changeValueColor(value: number): string {
-  if (value > 0) {
-    return 'text-green-600'
-  } else if (value < 0) {
-    return 'text-red-500'
-  } else {
-    return 'text-muted-foreground'
+function getDeltaType({ delta }: { delta: number }): string {
+  // switch case on delta if delta is not defined
+  if (delta >= 5) {
+    return 'increase'
   }
-}
-
-function formatChangeValue(delta: number): string {
-  return `${delta >= 0 ? '+' : ''}${Intl.NumberFormat('us-US', {
-    maximumSignificantDigits: 3
-  }).format(delta)}%`
+  if (delta > 0 && delta < 5) {
+    return 'moderateIncrease'
+  }
+  if (delta === 0) {
+    return 'unchanged'
+  }
+  if (delta < 0 && delta > -5) {
+    return 'moderateDecrease'
+  }
+  return 'decrease'
 }
 
 function formatCurrencyValue(value: number): string {
-  return Intl.NumberFormat('us-US', {
-    style: 'currency',
-    currency: 'USD'
-  }).format(value)
-}
-
-type valuePanelCardProps = {
-  title: string | React.ReactNode
-  badge?: string | React.ReactNode
-  value: number
-  delta?: number
-  tooltip?: string
-  onClick?: () => void
+  return `$${value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
 }
 
 function ValuePanelCard({
   title = '',
-  badge = '',
   value = 0,
   delta = 0,
+  description = '',
+  cardType = 'button',
   tooltip = '',
   onClick = () => {}
-}: valuePanelCardProps): JSX.Element {
+}: {
+  title?: ReactNode
+  value: number
+  delta?: number
+  description?: string
+  cardType?: CardType
+  tooltip?: string
+  onClick?: () => void
+}): JSX.Element {
+  const badge = (
+    <BadgeDelta
+      className="rounded-tremor-full"
+      deltaType={getDeltaType({ delta })}
+      isIncreasePositive={true}
+      size="xs"
+    >
+      {delta >= 0
+        ? `+${delta.toFixed(delta % 1 == 0 ? 0 : 1)}`
+        : delta.toFixed(delta % 1 == 0 ? 0 : 1)}{' '}
+      %
+    </BadgeDelta>
+  )
   return (
     <PanelCard
+      className="h-32 w-80 min-w-fit"
       title={title}
       badge={badge}
-      description={
-        <p className={`text-sm ${changeValueColor(delta)}`}>
-          {formatChangeValue(delta)}
-        </p>
-      }
-      content={
-        <div className="text-2xl font-bold">{formatCurrencyValue(value)}</div>
-      }
+      description={description}
+      cardType={cardType}
       tooltip={tooltip}
       onClick={onClick}
-    />
+    >
+      <div
+        className={
+          'text-center text-2xl font-bold' +
+          (cardType === 'disabledButton' ? ' cursor-not-allowed' : '')
+        }
+      >
+        {formatCurrencyValue(value)}
+      </div>
+    </PanelCard>
   )
 }
 
