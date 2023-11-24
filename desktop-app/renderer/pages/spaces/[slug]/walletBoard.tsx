@@ -4,24 +4,17 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
-import {
-  ArrowUpRightIcon,
-  ChartPieIcon,
-  ListBulletIcon
-} from '@heroicons/react/24/outline'
-import { TabsContent } from '@radix-ui/react-tabs'
+import { ArrowUpRightIcon } from '@heroicons/react/24/outline'
 import { AreaChart, DonutChart, Icon, Metric } from '@tremor/react'
 import AdvancedCurrencyDataDialog from './advancedCurrencyDialog'
 import { fakeDashboardData } from './fakeDashboardData'
-import SimpleCurrencyDataTable, {
-  simpleCurrencyData
-} from './simpleCurrencyDataTable'
+import { simpleCurrencyData } from './simpleCurrencyDataTable'
 
 export default function WalletBoard({
   space,
@@ -43,8 +36,8 @@ export default function WalletBoard({
     `$${Intl.NumberFormat('us').format(number).toString()}`
 
   return (
-    <div className={cn('grid grid-cols-3 gap-6 mt-0', className)}>
-      <Card className="col-span-2">
+    <div className={cn('flex flex-row gap-6 ', className)}>
+      <Card className="h-[30rem] w-[55rem] grow-0">
         <CardHeader>
           <CardTitle>Wallet</CardTitle>
         </CardHeader>
@@ -62,74 +55,51 @@ export default function WalletBoard({
           />
         </CardContent>
       </Card>
-      <Card className="col-span-1">
-        <CardContent className="space-y-1.5 pt-6 pb-2 h-full flex flex-col justify-between">
-          <Tabs className="" defaultValue="chart">
-            <div className="flex flex-row items-center justify-between">
-              <CardTitle>Overview</CardTitle>
-              <TabsList>
-                <TabsTrigger value="chart">
-                  <Icon
-                    size="xs"
-                    icon={ChartPieIcon}
-                    variant="simple"
-                    className="icon-md"
-                  />
-                </TabsTrigger>
-                <TabsTrigger value="list">
-                  <Icon
-                    size="xs"
-                    icon={ListBulletIcon}
-                    variant="simple"
-                    className="icon-md"
-                  />
-                </TabsTrigger>
-              </TabsList>
+      <Card className="flex grow flex-col">
+        <CardHeader>
+          <CardTitle>Overview</CardTitle>
+        </CardHeader>
+        <CardContent className="">
+          <div className="flex flex-row items-end justify-between py-4">
+            <div>
+              <CardDescription className="">Total value</CardDescription>
+              <Metric className="text-2xl">
+                {valueFormatter(totalAmount)}
+              </Metric>
             </div>
-            <div className="flex flex-row justify-between items-end py-5">
-              <div>
-                <CardDescription className="">Total value</CardDescription>
-                <Metric className="text-2xl">
-                  {valueFormatter(totalAmount)}
-                </Metric>
-              </div>
-              <p className="text-md italic">
-                {currencies.length}{' '}
-                {currencies.length > 1 ? 'currencies' : 'currency'}
-              </p>
-            </div>
-            <Separator className="my-4" />
-            <TabsContent value="chart" className="">
-              <DonutChart
-                data={simpleCurrencies}
-                showAnimation={false}
-                category="value"
-                index="ticker"
-                valueFormatter={valueFormatter}
-                className="m-10 ml-0"
-              />
-            </TabsContent>
-            <TabsContent value="list" className="my-4">
-              <SimpleCurrencyDataTable data={simpleCurrencies} />
-            </TabsContent>
-          </Tabs>
+            <p className="text-md italic">
+              {currencies.length}{' '}
+              {currencies.length > 1 ? 'currencies' : 'currency'}
+            </p>
+          </div>
+          <Separator className="my-4" />
           <div className="flex flex-col items-center">
-            <AdvancedCurrencyDataDialog
-              trigger={
-                <Button variant="link" onClick={() => {}}>
-                  Details
-                  <Icon
-                    size="xs"
-                    icon={ArrowUpRightIcon}
-                    variant="simple"
-                    className="icon-md"
-                  />
-                </Button>
-              }
-              space={space}
+            <DonutChart
+              data={simpleCurrencies}
+              showAnimation={false}
+              category="value"
+              index="ticker"
+              valueFormatter={valueFormatter}
+              className="mt-8 w-44"
             />
           </div>
         </CardContent>
+        <CardFooter className="flex flex-col items-center">
+          <AdvancedCurrencyDataDialog
+            trigger={
+              <Button variant="ghost" onClick={() => {}}>
+                Details
+                <Icon
+                  size="xs"
+                  icon={ArrowUpRightIcon}
+                  variant="simple"
+                  className="icon-md"
+                />
+              </Button>
+            }
+            space={space}
+          />
+        </CardFooter>
       </Card>
     </div>
   )

@@ -9,7 +9,6 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useToast } from '@/components/ui/use-toast'
 import { standardUrlPartial } from '@/lib/queryParams'
 import {
   BanknotesIcon,
@@ -83,7 +82,6 @@ export default function Space(): JSX.Element {
   const spaceID: string = searchParams.get('space') || ''
   // const spaceID: string = 'wrongSpaceUUID'
   const [space, setSpace] = useState<RetrievedNapseSpace>()
-  const toast = useToast()
   useEffect(() => {
     const fetchSpace = async () => {
       try {
@@ -95,17 +93,12 @@ export default function Space(): JSX.Element {
         router.push(
           standardUrlPartial('/spaces/', null, { space: '' }, searchParams)
         )
-        toast.toast({
-          // variant: 'destructive',
-          title: 'Something went wrong...',
-          description: 'There was a problem with this space'
-        })
       }
     }
     if (searchParams.get('server')) {
       fetchSpace()
     }
-  }, [spaceID, searchParams])
+  }, [spaceID, searchParams, router])
 
   if (!space) {
     console.log('No space')
@@ -137,9 +130,9 @@ export default function Space(): JSX.Element {
             </TabsList>
             <MoneyActionButtons />
           </div>
-          <TabsContent value="dashboard" className="grid grid-cols-3 gap-6">
+          <TabsContent value="dashboard" className="mt-4 flex flex-row gap-6">
             {/* Graph card */}
-            <Card className="col-span-2">
+            <Card className="h-[30rem] w-[55rem] grow-0">
               <CardHeader>
                 <CardTitle>Dashboard</CardTitle>
               </CardHeader>
@@ -157,7 +150,7 @@ export default function Space(): JSX.Element {
               </CardContent>
             </Card>
             {/* 3 KPI Cards */}
-            <div className="grid grid-rows-3 gap-6">
+            <div className="flex grow flex-col gap-6">
               {Object.entries(space?.statistics || {}).map(
                 ([key, value], index) => (
                   <TremorCard
@@ -174,7 +167,7 @@ export default function Space(): JSX.Element {
                       size="lg"
                       className="my-6"
                     />
-                    <div className="flex flex-col mt-4">
+                    <div className="mt-4 flex flex-col">
                       <CardDescription>
                         {getKeyData(key, value).name}
                       </CardDescription>
@@ -185,7 +178,7 @@ export default function Space(): JSX.Element {
               )}
             </div>
           </TabsContent>
-          <TabsContent value="wallet" className="">
+          <TabsContent value="wallet" className="mt-0">
             <WalletBoard className="" space={space} />
           </TabsContent>
         </Tabs>

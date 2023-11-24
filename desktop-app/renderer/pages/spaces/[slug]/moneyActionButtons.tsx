@@ -29,7 +29,7 @@ export default function MoneyActionButtons(): JSX.Element {
                   })
                 }}
               >
-                <ArrowUpOnSquareIcon className="w-6 h-6" strokeWidth={1.2} />
+                <ArrowDownOnSquareIcon className="h-6 w-6" strokeWidth={1.2} />
               </Button>
             </div>
           </TooltipTrigger>
@@ -52,7 +52,7 @@ export default function MoneyActionButtons(): JSX.Element {
                   })
                 }}
               >
-                <ArrowDownOnSquareIcon className="w-6 h-6" strokeWidth={1.2} />
+                <ArrowUpOnSquareIcon className="h-6 w-6" strokeWidth={1.2} />
               </Button>
             </div>
           </TooltipTrigger>
