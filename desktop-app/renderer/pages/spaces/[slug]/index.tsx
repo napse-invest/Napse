@@ -26,8 +26,9 @@ import {
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import React$1, { useEffect, useState } from 'react'
-import { fakeDashboardData } from './fakeDashboardData'
+import { fakeDashboardData } from '../../../lib/fakeDashboardData'
 import MoneyActionButtons from './moneyActionButtons'
+import OperationDataTable from './operationDataTable'
 import WalletBoard from './walletBoard'
 
 type KpiData = {
@@ -121,9 +122,7 @@ export default function Space(): JSX.Element {
             <TabsList>
               <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
               <TabsTrigger value="wallet">Wallet</TabsTrigger>
-              <TabsTrigger value="operations" disabled>
-                Operations
-              </TabsTrigger>
+              <TabsTrigger value="operations">Operations</TabsTrigger>
               <TabsTrigger value="fleets" disabled>
                 Fleets
               </TabsTrigger>
@@ -180,6 +179,9 @@ export default function Space(): JSX.Element {
           </TabsContent>
           <TabsContent value="wallet" className="mt-0">
             <WalletBoard className="" space={space} />
+          </TabsContent>
+          <TabsContent value="operations" className="mt-0">
+            <OperationDataTable space={space} />
           </TabsContent>
         </Tabs>
       </DefaultPageLayout>

@@ -9,7 +9,7 @@ export interface Operation {
   amount: number
   ticker: string
   operation_type: string
-  created_at: string
+  created_at: Date
 }
 
 export interface Wallet {

@@ -17,7 +17,7 @@ export default function MoneyActionButtons(): JSX.Element {
     <div className="flex flex-row gap-4">
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger>
+          <TooltipTrigger asChild>
             <div>
               <Button
                 variant="outline"
@@ -40,7 +40,7 @@ export default function MoneyActionButtons(): JSX.Element {
       </TooltipProvider>
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger>
+          <TooltipTrigger asChild>
             <div>
               <Button
                 variant="outline"

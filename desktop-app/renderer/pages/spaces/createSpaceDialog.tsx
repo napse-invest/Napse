@@ -1,4 +1,4 @@
-import AllInputs from '@/components/custom/selectedObject/inputs'
+import CustomForm from '@/components/custom/selectedObject/inputs'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -11,7 +11,6 @@ import {
 
 import { DialogClose } from '@radix-ui/react-dialog'
 import { PlusIcon } from '@radix-ui/react-icons'
-import { RetreivedExchangeAccount } from 'api/exchangeAccounts/exchangeAccount'
 import {
   BaseNapseSpace,
   NapseSpace,
@@ -25,7 +24,7 @@ import * as z from 'zod'
 const defaultSpace: BaseNapseSpace = {
   name: 'My Space',
   description: 'My Space Description',
-  exchange_account: 'BINANCE'
+  exchange_account: '7bdd866e-f2a2-4ea9-a01e-02ddb77a80fe'
 }
 
 export default function CreateSpaceDialog({
@@ -39,7 +38,7 @@ export default function CreateSpaceDialog({
 }): JSX.Element {
   const searchParams = useSearchParams()
   const [possibleExchangeAccounts, setPossibleExchangeAccounts] = useState<
-    RetreivedExchangeAccount[]
+    string[]
   >([])
   const [space, setSpace] = useState<BaseNapseSpace>(defaultSpace)
 
@@ -48,6 +47,7 @@ export default function CreateSpaceDialog({
       try {
         const response = await getPossibleExchangeAccounts(searchParams)
         setPossibleExchangeAccounts(response.data)
+        console.log(response.data)
       } catch (error) {
         console.error(error)
         setPossibleExchangeAccounts([])
@@ -78,54 +78,46 @@ export default function CreateSpaceDialog({
             to provide the name and the exchange account.
           </DialogDescription>
         </DialogHeader>
-        <AllInputs
+        <CustomForm<BaseNapseSpace>
           inputs={[
             {
               label: 'Name',
               key: 'name',
               type: 'input',
               zod: z.string(),
-              default: ''
+              default: defaultSpace.name
             },
             {
               label: 'Description',
               key: 'description',
               type: 'input',
               zod: z.string(),
-              default: ''
+              default: defaultSpace.description
             },
             {
-              label: 'Exchange Account',
+              label: 'Exchange',
               key: 'exchange_account',
+              // type: 'select',
+              // possibilities: possibleExchangeAccounts,
               type: 'input',
               zod: z.string(),
-              default: ''
+              default: defaultSpace.exchange_account
             }
           ]}
-          object={space}
-          setObject={setSpace}
-          objectName="Space"
+          onSubmit={async (values) => {
+            try {
+              const response = await createSpace(searchParams, {
+                ...defaultSpace,
+                ...values
+              })
+              setSpaces([...spaces, response.data])
+              document.getElementById('close-button')?.click()
+            } catch (error) {
+              console.log(error)
+            }
+          }}
+          buttonDescription="Create"
         />
-        <div className="flex flex-col items-end">
-          <Button
-            className=""
-            type="submit"
-            size="default"
-            onClick={async () => {
-              try {
-                const response = await createSpace(searchParams, {
-                  ...space
-                })
-                setSpaces([...spaces, response.data])
-                document.getElementById('close-button')?.click()
-              } catch (error) {
-                console.log(error)
-              }
-            }}
-          >
-            Create
-          </Button>
-        </div>
       </DialogContent>
       <DialogClose id="close-button" />
     </Dialog>

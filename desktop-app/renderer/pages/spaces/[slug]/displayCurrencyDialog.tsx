@@ -9,18 +9,18 @@ import {
 } from '@/components/ui/dialog'
 import { Currency } from 'api/wallets/wallets'
 import { ReactNode } from 'react'
-import AdvancedCurrencyDataTable, {
+import DisplayCurrencyDataTable, {
   currencyColumns
-} from './advancedCurrencyDataTable'
+} from './displayCurrencyDataTable'
 
-export default function AdvancedCurrencyDataDialog({
+export default function DisplayCurrencyDataDialog({
   trigger,
   space
 }: {
   trigger: ReactNode
   space: RetrievedNapseSpace
 }): JSX.Element {
-  const currencies: Currency[] = space['wallet']['currencies']
+  const currencies: Currency[] = space ? space['wallet']['currencies'] : []
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -30,10 +30,7 @@ export default function AdvancedCurrencyDataDialog({
 
           <DialogDescription>List of all currencies</DialogDescription>
         </DialogHeader>
-        <AdvancedCurrencyDataTable
-          data={currencies}
-          columns={currencyColumns}
-        />
+        <DisplayCurrencyDataTable data={currencies} columns={currencyColumns} />
       </DialogContent>
     </Dialog>
   )

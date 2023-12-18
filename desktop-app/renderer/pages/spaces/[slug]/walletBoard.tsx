@@ -12,9 +12,13 @@ import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { ArrowUpRightIcon } from '@heroicons/react/24/outline'
 import { AreaChart, DonutChart, Icon, Metric } from '@tremor/react'
-import AdvancedCurrencyDataDialog from './advancedCurrencyDialog'
-import { fakeDashboardData } from './fakeDashboardData'
-import { simpleCurrencyData } from './simpleCurrencyDataTable'
+import { fakeDashboardData } from '../../../lib/fakeDashboardData'
+import DisplayCurrencyDataDialog from './displayCurrencyDialog'
+
+export type simpleCurrencyData = {
+  ticker: string
+  value: number
+}
 
 export default function WalletBoard({
   space,
@@ -23,7 +27,7 @@ export default function WalletBoard({
   space: RetrievedNapseSpace
   className?: string
 }): JSX.Element {
-  const currencies = space['wallet']['currencies']
+  const currencies = space ? space['wallet']['currencies'] : []
   const simpleCurrencies: simpleCurrencyData[] = currencies.map((currency) => ({
     ticker: currency.ticker,
     value: currency.value
@@ -85,7 +89,7 @@ export default function WalletBoard({
           </div>
         </CardContent>
         <CardFooter className="flex flex-col items-center">
-          <AdvancedCurrencyDataDialog
+          <DisplayCurrencyDataDialog
             trigger={
               <Button variant="ghost" onClick={() => {}}>
                 Details

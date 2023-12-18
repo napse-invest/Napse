@@ -1,4 +1,3 @@
-import { RetreivedExchangeAccount } from 'api/exchangeAccounts/exchangeAccount'
 import { Fleet } from 'api/fleets/fleets'
 import { request } from 'api/request'
 import { Wallet } from 'api/wallets/wallets'
@@ -37,13 +36,13 @@ export interface RetrievedNapseSpace extends BaseNapseSpace {
 
 export async function getPossibleExchangeAccounts(
   searchParams: ReturnType<typeof useSearchParams>
-): Promise<AxiosResponse<RetreivedExchangeAccount[]>> {
+): Promise<AxiosResponse<string[]>> {
   const response = await request(
     searchParams,
     'GET',
     '/api/space/possible_exchange_accounts/'
   )
-  return response as AxiosResponse<RetreivedExchangeAccount[]>
+  return response as AxiosResponse<string[]>
 }
 
 export async function listSpace(

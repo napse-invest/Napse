@@ -1,5 +1,8 @@
-import { Currency } from '@/api/wallets/wallets'
-import { Button } from '@/components/ui/button'
+import { RetrievedNapseSpace } from '@/api/spaces/spaces'
+import { Operation } from '@/api/wallets/wallets'
+import { DataTableColumnHeader } from '@/components/ui/data-table-column-header'
+import { DataTableViewOptions } from '@/components/ui/data-table-column-toggle'
+import { DataTablePagination } from '@/components/ui/data-table-pagination'
 import {
   Table,
   TableBody,
@@ -11,79 +14,76 @@ import {
 import {
   ColumnDef,
   SortingState,
+  VisibilityState,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { ArrowUpDown } from 'lucide-react'
 import { useState } from 'react'
 
-export const currencyColumns: ColumnDef<Currency>[] = [
+const operationColumns: ColumnDef<Operation>[] = [
   {
     accessorKey: 'ticker',
-    header: () => <div className="text-right">Ticker</div>,
-    cell: ({ row }) => <div className="uppercase">{row.getValue('ticker')}</div>
-  },
-
-  {
-    accessorKey: 'mbp',
-    header: () => <div className="text-right">MBP</div>,
-    cell: ({ row }) => <div className="uppercase">{row.getValue('mbp')}</div>
+    header: ({ column }) => {
+      return (
+        <DataTableColumnHeader column={column} title="Ticker" className="" />
+      )
+    },
+    cell: ({ row }) => (
+      <div className=" uppercase">{row.getValue('ticker')}</div>
+    )
   },
   {
     accessorKey: 'amount',
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Amount
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <DataTableColumnHeader column={column} title="Amount" className="" />
       )
     },
-    cell: ({ row }) => <div className="uppercase">{row.getValue('amount')}</div>
+    cell: ({ row }) => (
+      <div className=" uppercase">{row.getValue('amount')}</div>
+    )
   },
   {
-    accessorKey: 'value',
-
+    accessorKey: 'operation_type',
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Value
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <DataTableColumnHeader column={column} title="Amount" className="" />
       )
     },
+    cell: ({ row }) => (
+      <div className=" uppercase">{row.getValue('operation_type')}</div>
+    )
+  },
+  {
+    accessorKey: 'created_at',
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Date" className="" />
+    },
     cell: ({ row }) => {
-      const value = parseFloat(row.getValue('value'))
-
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
-      }).format(value)
-
-      return <div className="text-right font-medium">{formatted}</div>
+      let date = new Date(row.getValue('created_at')).toLocaleDateString()
+      return <div className="">{date}</div>
     }
   }
 ]
 
 interface DataTableProps {
-  data: Currency[]
-  columns: ColumnDef<Currency>[]
+  data: Operation[]
+  columns: ColumnDef<Operation>[]
 }
 
-export default function AdvancedCurrencyDataTable({
-  data,
-  columns
-}: DataTableProps): JSX.Element {
+export default function OperationDataTable({
+  space
+}: {
+  space: RetrievedNapseSpace
+}): JSX.Element {
+  let data = space ? space['wallet']['operations'] : []
+  let columns = operationColumns
+
   const [sorting, setSorting] = useState<SortingState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const table = useReactTable({
     data,
     columns,
@@ -91,14 +91,17 @@ export default function AdvancedCurrencyDataTable({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
     state: {
-      sorting
+      sorting,
+      columnVisibility
     }
   })
 
   return (
     <div className="">
-      <div className="rounded-md border">
+      <DataTableViewOptions table={table} />
+      <div className="mt-4 rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -148,7 +151,7 @@ export default function AdvancedCurrencyDataTable({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      {/* <div className="flex items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"
           size="sm"
@@ -165,6 +168,9 @@ export default function AdvancedCurrencyDataTable({
         >
           Next
         </Button>
+      </div> */}
+      <div className="mt-4">
+        <DataTablePagination table={table} />
       </div>
     </div>
   )
