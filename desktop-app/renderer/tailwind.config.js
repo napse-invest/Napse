@@ -21,6 +21,16 @@ const FlipPlugin = plugin(function ({ addUtilities }) {
   })
 })
 
+
+const MiscellaneousPlugin = plugin(function ({ addUtilities }) {
+  addUtilities({
+    '.icon-md': {
+      transform: 'scale(1.8)'
+    },
+  })
+})
+
+
 module.exports = {
   content: [
     './renderer/pages/**/*.{js,ts,jsx,tsx}',
@@ -76,61 +86,61 @@ module.exports = {
         // light mode
         tremor: {
           brand: {
-            faint: '#eff6ff', // blue-50
-            muted: '#bfdbfe', // blue-200
-            subtle: '#60a5fa', // blue-400
-            DEFAULT: '#3b82f6', // blue-500
-            emphasis: '#1d4ed8', // blue-700
-            inverted: '#ffffff' // white
+            faint: 'hsl(var(--secondary))',
+            muted: 'hsl(var(--muted))',
+            subtle: 'hsl(var(--secondary))',
+            DEFAULT: 'hsl(var(--primary))',
+            emphasis: 'hsl(var(--accent))',
+            inverted: 'hsl(var(--background))' // white
           },
           background: {
-            muted: '#f9fafb', // gray-50
-            subtle: '#f3f4f6', // gray-100
-            DEFAULT: '#ffffff', // white
-            emphasis: '#374151' // gray-700
+            muted: 'hsl(var(--background))',
+            subtle: 'hsl(var(--background))', 
+            DEFAULT: 'hsl(var(--background))',
+            emphasis: 'hsl(var(--background))'
           },
           border: {
-            DEFAULT: '#e5e7eb' // gray-200
+            DEFAULT: 'hsl(var(--border))'
           },
           ring: {
-            DEFAULT: '#e5e7eb' // gray-200
+            DEFAULT: 'hsl(var(--border))',
           },
           content: {
-            subtle: '#9ca3af', // gray-400
-            DEFAULT: '#6b7280', // gray-500
-            emphasis: '#374151', // gray-700
-            strong: '#111827', // gray-900
+            subtle: 'hsl(var(--muted-foreground))', 
+            DEFAULT: 'hsl(var(--foreground))',
+            emphasis: 'hsl(var(--secondary-foreground))',
+            strong: 'hsl(var(--primary-foreground))',
             inverted: '#ffffff' // white
           }
         },
         // dark mode
         'dark-tremor': {
           brand: {
-            faint: '#0B1229', // custom
-            muted: '#172554', // blue-950
-            subtle: '#1e40af', // blue-800
-            DEFAULT: '#3b82f6', // blue-500
-            emphasis: '#60a5fa', // blue-400
-            inverted: '#030712' // gray-950
+            faint: 'hsl(var(--secondary))',
+            muted: 'hsl(var(--border))',
+            subtle: 'hsl(var(--secondary))',
+            DEFAULT: 'hsl(var(--primary))',
+            emphasis: 'hsl(var(--accent))',
+            inverted: 'hsl(var(--background))' // white
           },
           background: {
-            muted: '#131A2B', // custom
-            subtle: '#1f2937', // gray-800
-            DEFAULT: '#111827', // gray-900
-            emphasis: '#d1d5db' // gray-300
+            muted: 'hsl(var(--background))',
+            subtle: 'hsl(var(--background))', 
+            DEFAULT: 'hsl(var(--background))',
+            emphasis: 'hsl(var(--background))'
           },
           border: {
-            DEFAULT: '#1f2937' // gray-800
+            DEFAULT: 'hsl(var(--border))',
           },
           ring: {
-            DEFAULT: '#1f2937' // gray-800
+            DEFAULT: 'hsl(var(--border))',
           },
-          content: {
-            subtle: '#4b5563', // gray-600
-            DEFAULT: '#6b7280', // gray-500
-            emphasis: '#e5e7eb', // gray-200
-            strong: '#f9fafb', // gray-50
-            inverted: '#000000' // black
+          content: {  // Used by graph
+            subtle: 'hsl(var(--muted-foreground))', 
+            DEFAULT: 'hsl(var(--foreground))',
+            emphasis: 'hsl(var(--secondary-foreground))',
+            strong: 'hsl(var(--primary-foreground))',
+            inverted: 'hsl(var(--border))'
           }
         }
       },
@@ -210,6 +220,7 @@ module.exports = {
   plugins: [
     require('@headlessui/tailwindcss'),
     require('tailwindcss-animate'),
-    FlipPlugin
+    FlipPlugin,
+    MiscellaneousPlugin
   ]
 }

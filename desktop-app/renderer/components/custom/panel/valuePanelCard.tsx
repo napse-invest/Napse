@@ -19,7 +19,7 @@ function getDeltaType({ delta }: { delta: number }): string {
   return 'decrease'
 }
 
-function formatCurrencyValue(value: number): string {
+export function formatCurrencyValue(value: number): string {
   return `$${value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
 }
 
@@ -48,8 +48,8 @@ function ValuePanelCard({
       size="xs"
     >
       {delta >= 0
-        ? `+${delta.toFixed(delta % 1 == 0 ? 0 : 1)}`
-        : delta.toFixed(delta % 1 == 0 ? 0 : 1)}{' '}
+        ? `+${(delta * 100).toFixed(delta % 1 == 0 ? 0 : 1)}`
+        : (delta * 100).toFixed(delta % 1 == 0 ? 0 : 1)}{' '}
       %
     </BadgeDelta>
   )
