@@ -26,10 +26,10 @@ import {
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import React$1, { useEffect, useState } from 'react'
+import WalletBoard from '../../../components/custom/board/walletBoard'
+import OperationDataTable from '../../../components/custom/data-table/operationDataTable'
+import MoneyActionButtons from '../../../components/custom/moneyActionButtons'
 import { fakeDashboardData } from '../../../lib/fakeDashboardData'
-import MoneyActionButtons from './moneyActionButtons'
-import OperationDataTable from './operationDataTable'
-import WalletBoard from './walletBoard'
 
 type KpiData = {
   name: string

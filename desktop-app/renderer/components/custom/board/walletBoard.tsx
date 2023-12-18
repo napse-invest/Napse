@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils'
 import { ArrowUpRightIcon } from '@heroicons/react/24/outline'
 import { AreaChart, DonutChart, Icon, Metric } from '@tremor/react'
 import { fakeDashboardData } from '../../../lib/fakeDashboardData'
-import DisplayCurrencyDataDialog from './displayCurrencyDialog'
+import DisplayCurrencyDataDialog from '../data-table/displayCurrencyDialog'
 
 export type simpleCurrencyData = {
   ticker: string
