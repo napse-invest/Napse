@@ -113,7 +113,7 @@ export default function BreadcrumbLayout() {
                   searchParams
                 )}
               >
-                {exchangeAccountID}
+                {fleet}
               </BreadcrumbLink>
             </BreadcrumbItem>
           )}
@@ -122,7 +122,7 @@ export default function BreadcrumbLayout() {
               <BreadcrumbLink
                 href={standardUrlPartial('/bots/', bot, {}, searchParams)}
               >
-                {exchangeAccountID}
+                {bot}
               </BreadcrumbLink>
             </BreadcrumbItem>
           )}
