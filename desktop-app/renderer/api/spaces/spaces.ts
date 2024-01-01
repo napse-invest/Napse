@@ -37,11 +37,7 @@ export interface RetrievedNapseSpace extends BaseNapseSpace {
 export async function getPossibleExchangeAccounts(
   searchParams: ReturnType<typeof useSearchParams>
 ): Promise<AxiosResponse<string[]>> {
-  const response = await request(
-    searchParams,
-    'GET',
-    '/api/space/possible_exchange_accounts/'
-  )
+  const response = await request(searchParams, 'GET', '/api/exchange_account/')
   return response as AxiosResponse<string[]>
 }
 

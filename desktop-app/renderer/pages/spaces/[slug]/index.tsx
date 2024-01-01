@@ -1,4 +1,6 @@
+import { Fleet, listFleet } from '@/api/fleets/fleets'
 import { RetrievedNapseSpace, retrieveSpace } from '@/api/spaces/spaces'
+import ValuePanelCard from '@/components/custom/panel/valuePanelCard'
 import ContextHeader from '@/components/layout/contextHeader'
 import DefaultPageLayout from '@/components/layout/defaultPageLayout'
 import {
@@ -83,8 +85,10 @@ export default function Space(): JSX.Element {
   const spaceID: string = searchParams.get('space') || ''
   // const spaceID: string = 'wrongSpaceUUID'
   const [space, setSpace] = useState<RetrievedNapseSpace>()
+  const [fleets, setFleets] = useState<Fleet[]>([])
+
   useEffect(() => {
-    const fetchSpace = async () => {
+    async function fetchSpace() {
       try {
         const response = await retrieveSpace(searchParams, spaceID)
         setSpace(response.data)
@@ -96,14 +100,23 @@ export default function Space(): JSX.Element {
         )
       }
     }
+
+    async function fetchFleets() {
+      try {
+        const response = await listFleet(searchParams)
+        setFleets(response.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
     if (searchParams.get('server')) {
       fetchSpace()
+      fetchFleets()
     }
   }, [spaceID, searchParams, router])
 
   if (!space) {
-    console.log('No space')
-    console.log(searchParams.get('space'))
     return <></>
   } else {
     console.log(space)
@@ -123,9 +136,7 @@ export default function Space(): JSX.Element {
               <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
               <TabsTrigger value="wallet">Wallet</TabsTrigger>
               <TabsTrigger value="operations">Operations</TabsTrigger>
-              <TabsTrigger value="fleets" disabled>
-                Fleets
-              </TabsTrigger>
+              <TabsTrigger value="fleets">Fleets</TabsTrigger>
             </TabsList>
             <MoneyActionButtons />
           </div>
@@ -182,6 +193,30 @@ export default function Space(): JSX.Element {
           </TabsContent>
           <TabsContent value="operations" className="mt-0">
             <OperationDataTable space={space} />
+          </TabsContent>
+          <TabsContent value="fleets" className="mt-0">
+            <div>
+              {fleets.map((fleet, index) => (
+                <ValuePanelCard
+                  key={index}
+                  title={fleet.name}
+                  value={fleet.value}
+                  onClick={() => {
+                    router.push(
+                      standardUrlPartial(
+                        '/fleets/',
+                        fleet.uuid,
+                        {
+                          fleet: fleet.uuid,
+                          bot: ''
+                        },
+                        searchParams
+                      )
+                    )
+                  }}
+                />
+              ))}
+            </div>
           </TabsContent>
         </Tabs>
       </DefaultPageLayout>
