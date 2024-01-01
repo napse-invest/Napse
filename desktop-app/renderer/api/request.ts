@@ -14,9 +14,26 @@ export function request(
   if (!serverID) {
     throw new Error('No server selected')
   }
+  // Server
   const server = getServer(serverID)
   const serverUrl = server.url
   const token = server.token
+
+  // url
+  console.log(url)
+  if (!url.includes('?')) {
+    if (!url.endsWith('/')) {
+      url = url + '/'
+    }
+    url = url + '?'
+  }
+
+  // Space
+  const space_uuid = searchParams.get('space')
+  if (space_uuid) {
+    url = url + `&space=${space_uuid}`
+  }
+
   return axios({
     method: method,
     url: url,
