@@ -26,7 +26,7 @@ export function formatCurrencyValue(value: number): string {
 function ValuePanelCard({
   title = '',
   value = 0,
-  delta = 0,
+  delta,
   description = '',
   cardType = 'button',
   tooltip = '',
@@ -40,24 +40,29 @@ function ValuePanelCard({
   tooltip?: string
   onClick?: () => void
 }): JSX.Element {
-  const badge = (
-    <BadgeDelta
-      className="rounded-tremor-full"
-      deltaType={getDeltaType({ delta })}
-      isIncreasePositive={true}
-      size="xs"
-    >
-      {delta >= 0
-        ? `+${(delta * 100).toFixed(delta % 1 == 0 ? 0 : 1)}`
-        : (delta * 100).toFixed(delta % 1 == 0 ? 0 : 1)}{' '}
-      %
-    </BadgeDelta>
-  )
+  const badge = () => {
+    if (typeof delta == undefined || delta == null) {
+      return <></>
+    }
+    return (
+      <BadgeDelta
+        className="rounded-tremor-full"
+        deltaType={getDeltaType({ delta })}
+        isIncreasePositive={true}
+        size="xs"
+      >
+        {delta >= 0
+          ? `+${(delta * 100).toFixed(delta % 1 == 0 ? 0 : 1)}`
+          : (delta * 100).toFixed(delta % 1 == 0 ? 0 : 1)}{' '}
+        %
+      </BadgeDelta>
+    )
+  }
   return (
     <PanelCard
       className="h-32 w-80 min-w-fit"
       title={title}
-      badge={badge}
+      badge={badge()}
       description={description}
       cardType={cardType}
       tooltip={tooltip}
