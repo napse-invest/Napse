@@ -117,8 +117,6 @@ export default function Space(): JSX.Element {
   }, [spaceID, searchParams, router])
 
   if (!space) {
-    console.log('No space')
-    console.log(searchParams.get('space'))
     return <></>
   } else {
     console.log(space)
