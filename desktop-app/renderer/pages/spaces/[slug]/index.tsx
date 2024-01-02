@@ -140,7 +140,7 @@ export default function Space(): JSX.Element {
             </TabsList>
             <MoneyActionButtons />
           </div>
-          <TabsContent value="dashboard" className="mt-4 flex flex-row gap-6">
+          <TabsContent value="dashboard" className="mt-8 flex flex-row gap-6">
             {/* Graph card */}
             <Card className="h-[30rem] w-[55rem] grow-0">
               <CardHeader>
