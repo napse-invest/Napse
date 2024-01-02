@@ -9,6 +9,7 @@ import ValuePanelCard from '@/components/custom/panel/valuePanelCard'
 import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import CreateFleetDialog from './createFleetDialog'
 
 async function fetchFleets({
   setFleets,
@@ -93,12 +94,16 @@ export default function Fleets(): JSX.Element {
               `currentKey.is_master_key: ${currentKey?.is_master_key}`
             }
             textContent={
+              <CreateFleetDialog
+                fleets={fleets}
+                setFleets={setFleets}
+                disabledButton={currentKey?.is_master_key ? false : true}
+              />
               // <CreateSpaceDialog
               //   spaces={spaces}
               //   setSpaces={setSpaces}
               //   disabledButton={currentKey?.is_master_key ? false : true}
               // />
-              <div>create new fleet</div>
             }
           />
         </div>

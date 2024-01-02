@@ -11,7 +11,7 @@ export default function Fleet(): JSX.Element {
           'Here is an overview of all your fleets. A fleet fully manages the bots it owns.'
         }
       >
-        <></>
+        <div>create new fleet</div>
       </DefaultPageLayout>
     </ContextHeader>
   )
