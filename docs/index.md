@@ -5,7 +5,7 @@
 
 Napse is the future of open source investment. It connects seamlessly to exchanges and manages the money entrusted to it with trading bots.
 
-Napse is a desktop application compatible with all platforms. [Django-napse]'https://github.com/napse-invest/django-napse is the heart of the system, and Napse enables efficient deployment, operation and performance visualization.
+Napse is a desktop application compatible with all platforms. [Django-napse](https://github.com/napse-invest/django-napse) is the heart of the system, and Napse enables efficient deployment, operation and performance visualization.
 
 
 
