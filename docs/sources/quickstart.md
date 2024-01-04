@@ -113,7 +113,7 @@ Or run manually the following script depending on your operating system:
 
 #### Setup initial exchange accounts
 
-To make full use of the project, we recommend that you fill in the API keys of at least one exchange (among the django-napse [compabile exchanges](#compatible-exchanges)).
+To make full use of the project, we recommend that you fill in the API keys of at least one exchange (see [django-napse documentation](https://napse-invest.github.io/django-napse/) for more details).
 
 At `tests/test_app/`, build a `secret.json` file (or run the `./setup_secrets.sh` script). Here is an exemple with Binance:
 ```json
