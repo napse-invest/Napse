@@ -31,4 +31,4 @@ Napse is a desktop application compatible with all platforms. [Django-napse](htt
 
 # Documentation
 
-You can find the documentation [here](https://napse-invest.github.io/django-napse/).
+You can find the documentation [here](https://napse-invest.github.io/Napse/).
