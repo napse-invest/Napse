@@ -20,7 +20,7 @@
 
 <p align="center">
   <a href="#Napse"><strong>Napse</strong></a> ·
-  <a href="#documentation"><strong>Documentation</strong></a> .
+  <a href="#documentation"><strong>Documentation</strong></a>
 </p>
 <br/>
 
