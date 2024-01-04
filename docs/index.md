@@ -1,6 +1,8 @@
-
 ![Napse logo](theme/assets/napse_invest_logo_black.svg#only-light){ width="500" : .center}
 ![Napse logo](theme/assets/napse_invest_logo_white.svg#only-dark){ width="500" : .center}
+<br></br>
+
+# Welcome to Napse Documentation
 
 
 Napse is the future of open source investment. It connects seamlessly to exchanges and manages the money entrusted to it with trading bots.
@@ -10,7 +12,7 @@ Napse is a desktop application compatible with all platforms. [Django-napse](htt
 
 
 
-
+<br></br>
 <div class="grid cards" markdown>
 
 -   :material-lightning-bolt:{ .lg .middle } **Powerfull**
