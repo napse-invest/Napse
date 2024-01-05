@@ -18,43 +18,62 @@ Napse is still in early stage. You can only run it manually for now.
 
 To install nvm, download and install the nvm script from the project's GitHub page:
 
-```shell
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-```
 
-After installing nvm, close your terminal and open a new one. Verify the installation by checking the version of nvm:
+=== "Linux"
 
-```shell
-nvm --version
-```
+    ```shell
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+    nvm --version
+    ```
+
+=== "MacOS"
+
+    Please follow this [tutorial](https://dev.to/csituma/install-nvm-on-mac-windows-and-linux-1aj9)
+
+=== "Windows"
+
+    Please follow this [tutorial](https://dev.to/csituma/install-nvm-on-mac-windows-and-linux-1aj9)
+
 
 ### Install Node.js
 
 Now, you can install Node.js. The following command installs Node.js latest version :
 
-```shell
-nvm install --lts
-```
+=== "Linux"
+
+    ```shell
+    nvm install --lts
+    ```
+
+=== "MacOS"
+
+    Please follow this [tutorial](https://radixweb.com/blog/installing-npm-and-nodejs-on-windows-and-mac)
+
+=== "Windows"
+
+    Please follow this [tutorial](https://radixweb.com/blog/installing-npm-and-nodejs-on-windows-and-mac)
 
 ### Install yarn
 
 Yarn is a Node package manager. Install it by running these commands
 
-```shell
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-```
 
-```shell
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-```
+=== "Linux"
 
-```shell
-sudo apt update
-```
+    ```shell
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    sudo apt update
+    sudo apt install yarn
+    ```
 
-```shell
-sudo apt install yarn
-```
+=== "MacOS"
+
+    Please follow this [tutorial](https://www.hostinger.com/tutorials/how-to-install-yarn)
+
+=== "Windows"
+
+    Please follow this [tutorial](https://www.hostinger.com/tutorials/how-to-install-yarn)
 
 ---
 ## Run the desktop application
