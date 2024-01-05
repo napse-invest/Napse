@@ -1,0 +1,99 @@
+site_name: Napse Documentation
+# site_url: https://go.napse-invest.com/visit/
+repo_name: napse-invest/Napse
+repo_url: https://github.com/napse-invest/Napse
+copyright: MIT Licence
+
+docs_dir: "docs/"
+
+theme:
+  name: 'material'
+  custom_dir: theme
+  favicon: 'theme/assets/napse_logo_white.svg'
+  logo: 'theme/assets/napse_invest_logo_white.svg'
+  language: 'en'
+  palette:
+    # Palette toggle for light mode
+    - media: "prefers-color-scheme: light"
+      scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "prefers-color-scheme: dark"
+      scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+  custom_dir: 'docs/theme'
+  features:
+    - navigation.tabs
+    - navigation.tabs.stickyx
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.tracking
+    - navigation.section
+    - content.code.annotate
+    - toc.follow
+    - navigation.path
+    - navigation.top
+    - content.code.copy
+    - search.suggest
+    - content.tabs.link
+    - content.code.annotate
+
+plugins:
+  - search 
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+
+watch:
+  - docs
+
+extra_css:
+  -  assets/stylesheets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/NapseInvest
+      name: X
+    - icon: fontawesome/brands/linkedin
+      link: https://fr.linkedin.com/company/napse-investment
+      name: Linkedin
+    - icon: fontawesome/brands/discord
+      link: https://discord.com/invite/47gKBreSXa
+      name: Discord
+    - icon: fontawesome/brands/github
+      link: https://github.com/napse-invest/
+      name: Github
+
+nav:
+  - Home: 
+    - Overview: "index.md"
+    - Quickstart: "sources/quickstart.md"
+
