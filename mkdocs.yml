@@ -4,7 +4,7 @@ repo_name: napse-invest/Napse
 repo_url: https://github.com/napse-invest/Napse
 copyright: MIT Licence
 
-docs_dir: "."
+docs_dir: "docs/"
 
 theme:
   name: 'material'
@@ -31,7 +31,7 @@ theme:
         icon: material/toggle-switch
         name: Switch to light mode
 
-  custom_dir: 'theme'
+  custom_dir: 'docs/theme'
   features:
     - navigation.tabs
     - navigation.tabs.stickyx
@@ -72,7 +72,7 @@ markdown_extensions:
       alternate_style: true
 
 watch:
-  - .
+  - docs
 
 extra_css:
   -  assets/stylesheets/extra.css
