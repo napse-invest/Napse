@@ -94,4 +94,4 @@ CardFooter.propTypes = {
   className: PropTypes.string
 }
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }

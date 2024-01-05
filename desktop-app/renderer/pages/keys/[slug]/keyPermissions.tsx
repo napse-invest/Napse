@@ -154,7 +154,7 @@ export default function KeyPermissions(): JSX.Element {
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button
-            disabled={!selectedSpace}
+            disabled={!selectedSpace || key.is_master_key}
             onClick={async () => {
               try {
                 await updateKey(

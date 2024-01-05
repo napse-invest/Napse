@@ -49,7 +49,7 @@ export default function ContextHeader({
   }, [theme.resolvedTheme])
   return (
     <>
-      <div className="container flex h-20 flex-row items-center justify-between space-y-0 py-4 px-[12px]">
+      <div className="container flex h-20 flex-row items-center justify-between space-y-0 px-[12px] py-4">
         <div className="flex h-16 flex-row items-center justify-start space-x-12 pr-8">
           <Button
             variant={'ghost'}
