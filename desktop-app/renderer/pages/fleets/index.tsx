@@ -69,7 +69,7 @@ export default function Fleets(): JSX.Element {
               key={index}
               title={fleet.name}
               value={fleet.value}
-              // delta={fleet.delta}
+              delta={fleet.delta}
               onClick={() => {
                 console.log('fleet', fleet)
                 router.push(

@@ -12,6 +12,7 @@ export interface Fleet extends BaseFleet {
   uuid: string
   value: number
   bot_count: number
+  delta: number
   exchange_account: string
 }
 

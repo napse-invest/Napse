@@ -11,72 +11,16 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { getKeyData } from '@/lib/dataManagement'
 import { standardUrlPartial } from '@/lib/queryParams'
-import {
-  BanknotesIcon,
-  ChartBarSquareIcon,
-  EllipsisHorizontalIcon,
-  TicketIcon
-} from '@heroicons/react/24/outline'
-import {
-  AreaChart,
-  Color,
-  Icon,
-  Metric,
-  Card as TremorCard
-} from '@tremor/react'
+import { AreaChart, Icon, Metric, Card as TremorCard } from '@tremor/react'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
-import React$1, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import WalletBoard from '../../../components/custom/board/walletBoard'
 import OperationDataTable from '../../../components/custom/data-table/operationDataTable'
 import MoneyActionButtons from '../../../components/custom/moneyActionButtons'
 import { fakeDashboardData } from '../../../lib/fakeDashboardData'
-
-type KpiData = {
-  name: string
-  value: string | number
-  icon: React$1.ElementType
-  color: Color
-}
-
-function getKeyData(key: string, value: number): KpiData {
-  const KpiData: Record<string, KpiData> = {
-    // TicketIcon
-    // BanknotesIcon
-    // ChartBarSquareIcon
-    value: {
-      icon: BanknotesIcon,
-      color: 'emerald',
-      name: 'Value',
-      value: value
-    },
-    order_count_30: {
-      icon: TicketIcon,
-      color: 'blue',
-      name: 'Orders',
-      value: value
-    },
-    delta_30: {
-      icon: ChartBarSquareIcon,
-      color: 'amber',
-      name: 'Delta',
-      value:
-        value >= 0
-          ? `+ ${(value * 100).toFixed(value % 1 === 0 ? 0 : 1)} %`
-          : `${(value * 100).toFixed(value % 1 === 0 ? 0 : 1)} %`
-    }
-  }
-
-  return (
-    KpiData[key] || {
-      icon: EllipsisHorizontalIcon,
-      color: 'gray',
-      name: 'Unknown',
-      value: value
-    }
-  )
-}
 
 export default function Space(): JSX.Element {
   const searchParams = useSearchParams()
@@ -201,6 +145,7 @@ export default function Space(): JSX.Element {
                   key={index}
                   title={fleet.name}
                   value={fleet.value}
+                  delta={fleet.delta}
                   onClick={() => {
                     router.push(
                       standardUrlPartial(
