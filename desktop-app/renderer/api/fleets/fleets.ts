@@ -1,6 +1,12 @@
+import { Bot } from 'api/bots/bots'
 import { request } from 'api/request'
+import { Wallet } from 'api/wallets/wallets'
 import { AxiosResponse } from 'axios'
 import { useSearchParams } from 'next/navigation'
+
+interface Statistics {
+  [key: string]: number
+}
 
 export interface BaseFleet {
   name: string
@@ -14,6 +20,13 @@ export interface Fleet extends BaseFleet {
   bot_count: number
   delta: number
   exchange_account: string
+}
+
+export interface RetrievedFleet extends BaseFleet {
+  created_at: string
+  statistics: Statistics
+  wallet: Wallet
+  bots: Bot[]
 }
 
 export interface Cluster {
