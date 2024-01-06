@@ -47,7 +47,6 @@ export default function CreateSpaceDialog({
       try {
         const response = await getPossibleExchangeAccounts(searchParams)
         setPossibleExchangeAccounts(response.data)
-        console.log(response.data)
       } catch (error) {
         console.error(error)
         setPossibleExchangeAccounts([])

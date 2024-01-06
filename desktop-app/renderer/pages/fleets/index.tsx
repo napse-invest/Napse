@@ -71,12 +71,13 @@ export default function Fleets(): JSX.Element {
               value={fleet.value}
               // delta={fleet.delta}
               onClick={() => {
-                // console.log('fleet', fleet.uuid)
+                console.log('fleet', fleet)
                 router.push(
                   standardUrlPartial(
                     '/fleets/',
                     fleet.uuid,
                     {
+                      space: fleet.space,
                       fleet: fleet.uuid,
                       bot: ''
                     },
@@ -99,11 +100,6 @@ export default function Fleets(): JSX.Element {
                 setFleets={setFleets}
                 disabledButton={currentKey?.is_master_key ? false : true}
               />
-              // <CreateSpaceDialog
-              //   spaces={spaces}
-              //   setSpaces={setSpaces}
-              //   disabledButton={currentKey?.is_master_key ? false : true}
-              // />
             }
           />
         </div>
