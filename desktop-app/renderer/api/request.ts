@@ -20,7 +20,6 @@ export function request(
   const token = server.token
 
   // url
-  console.log(url)
   if (!url.includes('?')) {
     if (!url.endsWith('/')) {
       url = url + '/'
@@ -33,6 +32,7 @@ export function request(
   if (space_uuid) {
     url = url + `&space=${space_uuid}`
   }
+  console.log('url', url)
 
   return axios({
     method: method,
