@@ -38,12 +38,11 @@ export function getKeyData(key: string, value: number): KpiData {
           : `${(value * 100).toFixed(value % 1 === 0 ? 0 : 1)} %`
     }
   }
-
   return (
     KpiData[key] || {
       icon: EllipsisHorizontalIcon,
       color: 'gray',
-      name: 'Unknown',
+      name: key,
       value: value
     }
   )
