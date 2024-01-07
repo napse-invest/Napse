@@ -64,7 +64,7 @@ export default function Spaces(): JSX.Element {
                     '/spaces/',
                     space.uuid,
                     {
-                      exchangeAccount: space.exchange_account,
+                      exchangeAccount: space.exchangeAccount,
                       space: space.uuid,
                       fleet: '',
                       bot: ''

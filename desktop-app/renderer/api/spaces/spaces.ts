@@ -15,7 +15,7 @@ interface History {
 export interface BaseNapseSpace {
   name: string
   description: string
-  exchange_account: string
+  exchangeAccount: string
 }
 
 export interface NapseSpace extends BaseNapseSpace {
@@ -26,7 +26,7 @@ export interface NapseSpace extends BaseNapseSpace {
 
 export interface RetrievedNapseSpace extends BaseNapseSpace {
   uuid: string
-  exchange_account: string
+  exchangeAccount: string
   created_at: string
   statistics: Statistics
   wallet: Wallet

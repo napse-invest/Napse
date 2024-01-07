@@ -7,6 +7,9 @@ export interface Bot {
   uuid: string
   value: number
   delta: number
+  fleet: string
+  space?: string
+  exchangeAccount: string
 }
 
 export async function listBot(
