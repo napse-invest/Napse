@@ -3,7 +3,10 @@ import { AxiosResponse } from 'axios'
 import { useSearchParams } from 'next/navigation'
 
 export interface Bot {
-  [key: string]: number
+  name: string
+  uuid: string
+  value: number
+  delta: number
 }
 
 export async function listBot(

@@ -1,5 +1,5 @@
-import { Bot, listBot } from '@/api/bots/bots'
 import { RetrievedFleet, retrieveFleet } from '@/api/fleets/fleets'
+import ValuePanelCard from '@/components/custom/panel/valuePanelCard'
 import ContextHeader from '@/components/layout/contextHeader'
 import DefaultPageLayout from '@/components/layout/defaultPageLayout'
 import {
@@ -24,7 +24,6 @@ export default function Fleet(): JSX.Element {
 
   const fleetID: string = searchParams.get('fleet') || ''
   const [fleet, setFleet] = useState<RetrievedFleet>()
-  const [bots, setBots] = useState<Bot[]>()
 
   useEffect(() => {
     async function fetchFleet() {
@@ -40,18 +39,8 @@ export default function Fleet(): JSX.Element {
       }
     }
 
-    async function fetchBots() {
-      try {
-        const response = await listBot(searchParams)
-        setBots(response.data)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
     if (searchParams.get('server')) {
       fetchFleet()
-      fetchBots()
     }
   }, [fleetID, searchParams, router])
 
@@ -117,6 +106,31 @@ export default function Fleet(): JSX.Element {
                   </TremorCard>
                 )
               )}
+            </div>
+          </TabsContent>
+          <TabsContent value="fleets" className="mt-0">
+            <div className="my-10 grid max-w-screen-xl grid-cols-3 gap-6">
+              {fleet?.bots.map((bot, index) => (
+                <ValuePanelCard
+                  key={index}
+                  title={bot.name}
+                  value={bot.value}
+                  delta={bot.delta}
+                  onClick={() => {
+                    router.push(
+                      standardUrlPartial(
+                        '/fleets/',
+                        bot.uuid,
+                        {
+                          fleet: bot.uuid,
+                          bot: ''
+                        },
+                        searchParams
+                      )
+                    )
+                  }}
+                />
+              ))}
             </div>
           </TabsContent>
         </Tabs>
