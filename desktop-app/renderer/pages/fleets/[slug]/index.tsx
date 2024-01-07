@@ -119,11 +119,10 @@ export default function Fleet(): JSX.Element {
                   onClick={() => {
                     router.push(
                       standardUrlPartial(
-                        '/fleets/',
+                        '/bots/',
                         bot.uuid,
                         {
-                          fleet: bot.uuid,
-                          bot: ''
+                          bot: bot.uuid
                         },
                         searchParams
                       )

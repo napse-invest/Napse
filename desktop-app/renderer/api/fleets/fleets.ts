@@ -19,7 +19,7 @@ export interface Fleet extends BaseFleet {
   value: number
   bot_count: number
   delta: number
-  exchange_account: string
+  exchangeAccount: string
 }
 
 export interface RetrievedFleet extends BaseFleet {

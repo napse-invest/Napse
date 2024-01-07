@@ -77,6 +77,7 @@ export default function Fleets(): JSX.Element {
                     '/fleets/',
                     fleet.uuid,
                     {
+                      exchangeAccount: fleet.exchangeAccount,
                       space: fleet.space,
                       fleet: fleet.uuid,
                       bot: ''

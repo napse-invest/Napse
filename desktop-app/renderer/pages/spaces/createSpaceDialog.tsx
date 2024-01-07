@@ -24,7 +24,7 @@ import * as z from 'zod'
 const defaultSpace: BaseNapseSpace = {
   name: 'My Space',
   description: 'My Space Description',
-  exchange_account: '7bdd866e-f2a2-4ea9-a01e-02ddb77a80fe'
+  exchangeAccount: '7bdd866e-f2a2-4ea9-a01e-02ddb77a80fe'
 }
 
 export default function CreateSpaceDialog({
@@ -95,12 +95,12 @@ export default function CreateSpaceDialog({
             },
             {
               label: 'Exchange',
-              key: 'exchange_account',
+              key: 'exchangeAccount',
               // type: 'select',
               // possibilities: possibleExchangeAccounts,
               type: 'input',
               zod: z.string(),
-              default: defaultSpace.exchange_account
+              default: defaultSpace.exchangeAccount
             }
           ]}
           onSubmit={async (values) => {
