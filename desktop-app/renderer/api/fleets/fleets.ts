@@ -43,6 +43,18 @@ export async function listFleet(
   return response as AxiosResponse<Fleet[]>
 }
 
+export async function retrieveFleet(
+  searchParams: ReturnType<typeof useSearchParams>,
+  id: string
+): Promise<AxiosResponse<RetrievedFleet>> {
+  const response = await request(
+    searchParams,
+    'GET',
+    `/api/fleet/${id}/?fleet=${id}`
+  )
+  return response as AxiosResponse<RetrievedFleet>
+}
+
 export async function createFleet(
   searchParams: ReturnType<typeof useSearchParams>,
   fleet: BaseFleet

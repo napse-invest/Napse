@@ -1,6 +1,7 @@
 import {
   BanknotesIcon,
   ChartBarSquareIcon,
+  CpuChipIcon,
   EllipsisHorizontalIcon,
   TicketIcon
 } from '@heroicons/react/24/outline'
@@ -36,14 +37,19 @@ export function getKeyData(key: string, value: number): KpiData {
         value >= 0
           ? `+ ${(value * 100).toFixed(value % 1 === 0 ? 0 : 1)} %`
           : `${(value * 100).toFixed(value % 1 === 0 ? 0 : 1)} %`
+    },
+    bot_count: {
+      icon: CpuChipIcon,
+      color: 'violet',
+      name: 'Bots',
+      value: value
     }
   }
-
   return (
     KpiData[key] || {
       icon: EllipsisHorizontalIcon,
       color: 'gray',
-      name: 'Unknown',
+      name: key,
       value: value
     }
   )

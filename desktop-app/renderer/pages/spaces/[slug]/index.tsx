@@ -139,7 +139,7 @@ export default function Space(): JSX.Element {
             <OperationDataTable space={space} />
           </TabsContent>
           <TabsContent value="fleets" className="mt-0">
-            <div>
+            <div className="my-10 grid max-w-screen-xl grid-cols-3 gap-6">
               {fleets.map((fleet, index) => (
                 <ValuePanelCard
                   key={index}

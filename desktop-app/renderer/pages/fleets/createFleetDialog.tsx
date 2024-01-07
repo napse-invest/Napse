@@ -1,6 +1,7 @@
 import { BaseFleet, Fleet, createFleet } from '@/api/fleets/fleets'
 import { NapseSpace, listSpace } from '@/api/spaces/spaces'
 import { Button } from '@/components/ui/button'
+import { DialogClose } from '@radix-ui/react-dialog'
 import { useSearchParams } from 'next/navigation'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
@@ -21,13 +22,13 @@ const defaultFleet: BaseFleet = {
   space: 'dfe898aa-9aef-40ab-a02c-cb2b6ef9f108',
   clusters: [
     {
-      template_bot: '3cebf81a-8f65-4520-b6eb-4b7bfbc2c921',
+      template_bot: '063873d9-569d-473f-b1fd-b4bda7b0f37b',
       share: 0.7,
       breakpoint: 1000,
       autoscale: false
     },
     {
-      template_bot: '3cebf81a-8f65-4520-b6eb-4b7bfbc2c921',
+      template_bot: '063873d9-569d-473f-b1fd-b4bda7b0f37b',
       share: 0.3,
       breakpoint: 1000,
       autoscale: false
@@ -92,7 +93,7 @@ export default function CreateFleetDialog({
               default: defaultFleet.name
             },
             {
-              label: 'Exchange',
+              label: 'Space',
               key: 'space',
               // type: 'select',
               // possibilities: possibleSpaces,
@@ -109,7 +110,7 @@ export default function CreateFleetDialog({
                 ...value
               })
               setFleets([...fleets, response.data])
-              document.getElementById('close-dialog')?.click()
+              document.getElementById('close-button')?.click()
             } catch (error) {
               console.error(error)
             }
@@ -118,6 +119,7 @@ export default function CreateFleetDialog({
           buttonDescription="Create"
         />
       </DialogContent>
+      <DialogClose id="close-button" />
     </Dialog>
   )
 }
