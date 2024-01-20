@@ -64,6 +64,14 @@ export default function CreateFleetDialog({
     }
   }, [searchParams])
 
+  const SpacePossibilitiesSelection = possibleSpaces.reduce(
+    (obj, item) => {
+      obj[item.name] = item.uuid
+      return obj
+    },
+    {} as { [key: string]: string }
+  )
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -95,11 +103,10 @@ export default function CreateFleetDialog({
             {
               label: 'Space',
               key: 'space',
-              // type: 'select',
-              // possibilities: possibleSpaces,
-              type: 'input',
+              type: 'select',
+              possibilities: SpacePossibilitiesSelection,
               zod: z.string(),
-              default: defaultFleet.space
+              default: Object.values(SpacePossibilitiesSelection)[0]
             }
             // TODO: add & custom clusters
           ]}

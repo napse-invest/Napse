@@ -1,3 +1,4 @@
+import { convertInterfaceToSnakeCaseDict } from '@/api/request'
 import { Bot } from 'api/bots/bots'
 import { request } from 'api/request'
 import { Wallet } from 'api/wallets/wallets'
@@ -57,8 +58,14 @@ export async function retrieveFleet(
 
 export async function createFleet(
   searchParams: ReturnType<typeof useSearchParams>,
-  fleet: BaseFleet
+  data: BaseFleet
 ): Promise<AxiosResponse<Fleet>> {
-  const response = await request(searchParams, 'POST', `/api/fleet/`, fleet)
+  const formatedData = convertInterfaceToSnakeCaseDict(data)
+  const response = await request(
+    searchParams,
+    'POST',
+    `/api/fleet/`,
+    formatedData
+  )
   return response as AxiosResponse<Fleet>
 }

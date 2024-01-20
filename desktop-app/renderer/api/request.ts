@@ -45,3 +45,19 @@ export function request(
     data: data || {}
   })
 }
+
+export function convertInterfaceToSnakeCaseDict(obj: any) {
+  // from camelCase to snake_case for REST API communication
+
+  return Object.entries(obj).reduce(
+    (acc, [key, value]) => {
+      const newKey = key.replace(
+        /[A-Z]/g,
+        (letter) => `_${letter.toLowerCase()}`
+      )
+      acc[newKey] = value
+      return acc
+    },
+    {} as Record<string, unknown>
+  )
+}
