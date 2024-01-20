@@ -31,7 +31,8 @@ export interface InputType<T extends Object> {
   value?: string | number | boolean
   description?: string
   disabled?: boolean
-  possibilities?: string[]
+  // possibilities?: string[]
+  possibilities?: { [key: string]: string }
 }
 
 function defaultValue(input: InputType<any>) {
@@ -120,15 +121,17 @@ export default function CustomForm<T extends Object>({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {input.possibilities?.map((possibility) => (
-                            <SelectItem
-                              key={possibility}
-                              value={possibility}
-                              disabled={input.disabled}
-                            >
-                              {possibility}
-                            </SelectItem>
-                          ))}
+                          {Object.entries(input.possibilities ?? []).map(
+                            ([name, value]) => (
+                              <SelectItem
+                                key={name}
+                                value={value}
+                                disabled={input.disabled}
+                              >
+                                {name}
+                              </SelectItem>
+                            )
+                          )}
                         </SelectContent>
                       </Select>
                     ) : (

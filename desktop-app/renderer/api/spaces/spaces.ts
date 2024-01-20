@@ -1,9 +1,10 @@
+import { ExchangeAccount } from '@/api/exchangeAccounts/exchangeAccount'
+import { convertInterfaceToSnakeCaseDict } from '@/api/request'
 import { Fleet } from 'api/fleets/fleets'
 import { request } from 'api/request'
 import { Wallet } from 'api/wallets/wallets'
 import { AxiosResponse } from 'axios'
 import { useSearchParams } from 'next/navigation'
-
 interface Statistics {
   [key: string]: number
 }
@@ -36,9 +37,9 @@ export interface RetrievedNapseSpace extends BaseNapseSpace {
 
 export async function getPossibleExchangeAccounts(
   searchParams: ReturnType<typeof useSearchParams>
-): Promise<AxiosResponse<string[]>> {
+): Promise<AxiosResponse<ExchangeAccount[]>> {
   const response = await request(searchParams, 'GET', '/api/exchange_account/')
-  return response as AxiosResponse<string[]>
+  return response as AxiosResponse<ExchangeAccount[]>
 }
 
 export async function listSpace(
@@ -62,8 +63,14 @@ export async function retrieveSpace(
 
 export async function createSpace(
   searchParams: ReturnType<typeof useSearchParams>,
-  data: BaseNapseSpace
+  space: BaseNapseSpace
 ): Promise<AxiosResponse<NapseSpace>> {
-  const response = await request(searchParams, 'POST', '/api/space/', data)
+  const formated_space = convertInterfaceToSnakeCaseDict(space)
+  const response = await request(
+    searchParams,
+    'POST',
+    '/api/space/',
+    formated_space
+  )
   return response as AxiosResponse<NapseSpace>
 }

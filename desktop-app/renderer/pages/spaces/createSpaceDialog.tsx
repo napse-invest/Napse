@@ -1,3 +1,4 @@
+import { ExchangeAccount } from '@/api/exchangeAccounts/exchangeAccount'
 import CustomForm from '@/components/custom/selectedObject/inputs'
 import { Button } from '@/components/ui/button'
 import {
@@ -38,7 +39,7 @@ export default function CreateSpaceDialog({
 }): JSX.Element {
   const searchParams = useSearchParams()
   const [possibleExchangeAccounts, setPossibleExchangeAccounts] = useState<
-    string[]
+    ExchangeAccount[]
   >([])
   const [space, setSpace] = useState<BaseNapseSpace>(defaultSpace)
 
@@ -56,6 +57,14 @@ export default function CreateSpaceDialog({
       fetchPossibleExchangesAccount()
     }
   }, [searchParams])
+
+  const ExchangeAccountPossibilitiesSelection = possibleExchangeAccounts.reduce(
+    (obj, item) => {
+      obj[item.name] = item.uuid
+      return obj
+    },
+    {} as { [key: string]: string }
+  )
 
   return (
     <Dialog>
@@ -96,11 +105,10 @@ export default function CreateSpaceDialog({
             {
               label: 'Exchange',
               key: 'exchangeAccount',
-              // type: 'select',
-              // possibilities: possibleExchangeAccounts,
-              type: 'input',
+              type: 'select',
+              possibilities: ExchangeAccountPossibilitiesSelection,
               zod: z.string(),
-              default: defaultSpace.exchangeAccount
+              default: Object.values(ExchangeAccountPossibilitiesSelection)[0]
             }
           ]}
           onSubmit={async (values) => {
