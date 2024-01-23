@@ -1,17 +1,11 @@
-import { BaseFleet, Fleet } from '@/api/fleets/fleets'
+import { BaseFleet, Fleet, createFleet } from '@/api/fleets/fleets'
 import { NapseSpace, listSpace } from '@/api/spaces/spaces'
 import { Button } from '@/components/ui/button'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { useSearchParams } from 'next/navigation'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious
-} from '@/components/ui/carousel'
+import CustomForm from '@/components/custom/selectedObject/inputs'
 import {
   Dialog,
   DialogContent,
@@ -20,8 +14,8 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import { Separator } from '@/components/ui/separator'
 import { PlusIcon } from '@radix-ui/react-icons'
+import * as z from 'zod'
 
 const defaultFleet: BaseFleet = {
   name: 'My Fleet',
@@ -70,14 +64,6 @@ export default function CreateFleetDialog({
     }
   }, [searchParams])
 
-  const SpacePossibilitiesSelection = possibleSpaces.reduce(
-    (obj, item) => {
-      obj[item.name] = item.uuid
-      return obj
-    },
-    {} as { [key: string]: string }
-  )
-
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -90,33 +76,48 @@ export default function CreateFleetDialog({
           Add new
         </Button>
       </DialogTrigger>
-      {/* <DialogContent className="sm:max-w-[425px]"> */}
-      {/* <DialogContent className="max-w"> */}
-      <DialogContent className="w-full">
-        <Carousel className="w-full">
-          <CarouselContent>
-            <CarouselItem>
-              <DialogHeader className="">
-                <DialogTitle>Add a new Fleet</DialogTitle>
-                <DialogDescription>
-                  Add a new fleet will allow you to setup bots & invest on them.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid grid-cols-5">
-                <div></div>
-                <Separator className="col-span-3 mb-6 mt-8" />
-                <div></div>
-              </div>
-            </CarouselItem>
-            <CarouselItem>
-              <div className="p-1">
-                <p>prout</p>
-              </div>
-            </CarouselItem>
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Add a new Fleet</DialogTitle>
+          <DialogDescription>
+            Add a new fleet will allow you to setup bots & invest on them.
+          </DialogDescription>
+        </DialogHeader>
+        <CustomForm<BaseFleet>
+          inputs={[
+            {
+              label: 'Name',
+              key: 'name',
+              type: 'input',
+              zod: z.string(),
+              default: defaultFleet.name
+            },
+            {
+              label: 'Space',
+              key: 'space',
+              // type: 'select',
+              // possibilities: possibleSpaces,
+              type: 'input',
+              zod: z.string(),
+              default: defaultFleet.space
+            }
+            // TODO: add & custom clusters
+          ]}
+          onSubmit={async (value) => {
+            try {
+              const response = await createFleet(searchParams, {
+                ...defaultFleet,
+                ...value
+              })
+              setFleets([...fleets, response.data])
+              document.getElementById('close-button')?.click()
+            } catch (error) {
+              console.error(error)
+            }
+            console.log('fleets', fleets)
+          }}
+          buttonDescription="Create"
+        />
       </DialogContent>
       <DialogClose id="close-button" />
     </Dialog>
