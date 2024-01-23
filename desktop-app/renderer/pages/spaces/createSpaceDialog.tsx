@@ -78,7 +78,8 @@ export default function CreateSpaceDialog({
           Add new
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      {/* <DialogContent className="sm:max-w-[425px]"> */}
+      <DialogContent className="">
         <DialogHeader>
           <DialogTitle>Add a new Space</DialogTitle>
           <DialogDescription>

@@ -5,23 +5,9 @@ import { DialogClose } from '@radix-ui/react-dialog'
 import { useSearchParams } from 'next/navigation'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious
-} from '@/components/ui/carousel'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
-import { Separator } from '@/components/ui/separator'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { PlusIcon } from '@radix-ui/react-icons'
+import FleetForm from './createFleetForm'
 
 const defaultFleet: BaseFleet = {
   name: 'My Fleet',
@@ -92,31 +78,8 @@ export default function CreateFleetDialog({
       </DialogTrigger>
       {/* <DialogContent className="sm:max-w-[425px]"> */}
       {/* <DialogContent className="max-w"> */}
-      <DialogContent className="w-full">
-        <Carousel className="w-full">
-          <CarouselContent>
-            <CarouselItem>
-              <DialogHeader className="">
-                <DialogTitle>Add a new Fleet</DialogTitle>
-                <DialogDescription>
-                  Add a new fleet will allow you to setup bots & invest on them.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid grid-cols-5">
-                <div></div>
-                <Separator className="col-span-3 mb-6 mt-8" />
-                <div></div>
-              </div>
-            </CarouselItem>
-            <CarouselItem>
-              <div className="p-1">
-                <p>prout</p>
-              </div>
-            </CarouselItem>
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+      <DialogContent className="">
+        <FleetForm />
       </DialogContent>
       <DialogClose id="close-button" />
     </Dialog>
