@@ -31,6 +31,7 @@ export interface InputType<T extends Object> {
   default?: string | number | boolean
   value?: string | number | boolean
   description?: string
+  placeholder?: string | number
   disabled?: boolean
   sliderSettings?: {
     min: number
@@ -130,7 +131,9 @@ export default function CustomForm<T extends Object>({
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={input.value ?? 'test'} />
+                            <SelectValue
+                              placeholder={input.placeholder ?? ''}
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -151,7 +154,7 @@ export default function CustomForm<T extends Object>({
                       <FormControl>
                         {input.type === 'input' ? (
                           <Input
-                            placeholder={input.value as string}
+                            placeholder={input.placeholder as string}
                             disabled={input.disabled}
                             {...field}
                           />
