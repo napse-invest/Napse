@@ -187,7 +187,11 @@ export default function CreateFleetDialog({
                     <ClusterDataTable data={Clusters} />
                   </ScrollArea>
                   <div className="flex flex-row justify-between">
-                    <CreateClusterDialog possibleTemplateBots={[]} />
+                    <CreateClusterDialog
+                      possibleTemplateBots={[]}
+                      clusters={Clusters}
+                      setClusters={setClusters}
+                    />
                     <Button type="submit">Create</Button>
                   </div>
                 </CarouselItem>

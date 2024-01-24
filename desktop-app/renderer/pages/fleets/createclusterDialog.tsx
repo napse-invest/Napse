@@ -23,9 +23,13 @@ const defaultSpace: BaseNapseSpace = {
   exchangeAccount: '7bdd866e-f2a2-4ea9-a01e-02ddb77a80fe'
 }
 export default function CreateClusterDialog({
-  possibleTemplateBots
+  possibleTemplateBots,
+  clusters,
+  setClusters
 }: {
   possibleTemplateBots: Bot[]
+  clusters: Cluster[]
+  setClusters: React.Dispatch<React.SetStateAction<Cluster[]>>
 }) {
   // if (possibleTemplateBots.length === 0) {
   //   return (
@@ -36,13 +40,15 @@ export default function CreateClusterDialog({
   //   )
   // }
 
-  const BotPossibilitiesSelection = possibleTemplateBots.reduce(
-    (obj, item) => {
-      obj[item.name] = item.uuid
-      return obj
-    },
-    {} as { [key: string]: string }
-  )
+  const BotPossibilitiesSelection = possibleTemplateBots
+    ? possibleTemplateBots.reduce(
+        (obj, item) => {
+          obj[item.name] = item.uuid
+          return obj
+        },
+        {} as { [key: string]: string }
+      )
+    : {}
 
   return (
     <Dialog>
@@ -104,7 +110,15 @@ export default function CreateClusterDialog({
               disabled: true
             }
           ]}
-          onSubmit={async (values) => {}}
+          onSubmit={async (values) => {
+            const newCluster: Cluster = {
+              templateBot: values.templateBot,
+              share: values.share,
+              breakpoint: values.breakpoint,
+              autoscale: values.autoscale
+            }
+            setClusters([...clusters, newCluster])
+          }}
           buttonDescription="Create"
         />
       </DialogContent>
