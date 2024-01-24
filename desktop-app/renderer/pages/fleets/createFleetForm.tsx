@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { PlusIcon } from '@radix-ui/react-icons'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
@@ -14,12 +13,9 @@ import {
   CarouselPrevious
 } from '@/components/ui/carousel'
 import {
-  Dialog,
-  DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger
+  DialogTitle
 } from '@/components/ui/dialog'
 import {
   Form,
@@ -38,9 +34,10 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { DialogClose } from '@radix-ui/react-dialog'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import ClusterDataTable from './clusterDataTable'
+import CreateClusterDialog from './createclusterDialog'
 
 const FleetSchema = z.object({
   name: z
@@ -102,7 +99,7 @@ export default function FleetForm(): JSX.Element {
               </DialogHeader>
               <div className="grid grid-cols-5">
                 <div></div>
-                <Separator className="col-span-3 mb-6 mt-8" />
+                <Separator className="col-span-3 my-8" />
                 <div></div>
               </div>
               <FormField
@@ -159,42 +156,12 @@ export default function FleetForm(): JSX.Element {
                   Clusters will enable fleets to manage bots.
                 </DialogDescription>
               </DialogHeader>
-              <div className="grid grid-cols-5">
-                <div></div>
-                <Separator className="col-span-3 mb-6 mt-8" />
-                <div></div>
-              </div>
-              <ScrollArea className="mb-3 h-36 w-full rounded-md border">
-                {Clusters.map((cluster, index) => (
-                  <>
-                    <div key={index} className="text-sm">
-                      {cluster.share}
-                    </div>
-                    <Separator className="my-2" />
-                  </>
-                ))}
+
+              <ScrollArea className="mb-3 mt-8 h-44 w-full rounded-md border">
+                <ClusterDataTable data={Clusters} />
               </ScrollArea>
               <div className="flex flex-row justify-between">
-                <div>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        onClick={() => {
-                          console.log('prout')
-                        }}
-                      >
-                        <PlusIcon className="mr-2" />
-                        Add new
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[450px]">
-                      {/* <FleetForm /> */}
-                      <p>Good job</p>
-                    </DialogContent>
-                    <DialogClose id="close-button" />
-                  </Dialog>
-                </div>
+                <CreateClusterDialog possibleTemplateBots={[]} />
                 <Button type="submit">Create</Button>
               </div>
             </CarouselItem>

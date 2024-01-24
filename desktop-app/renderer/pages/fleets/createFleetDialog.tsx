@@ -9,25 +9,6 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { PlusIcon } from '@radix-ui/react-icons'
 import FleetForm from './createFleetForm'
 
-const defaultFleet: BaseFleet = {
-  name: 'My Fleet',
-  space: 'dfe898aa-9aef-40ab-a02c-cb2b6ef9f108',
-  clusters: [
-    {
-      template_bot: '063873d9-569d-473f-b1fd-b4bda7b0f37b',
-      share: 0.7,
-      breakpoint: 1000,
-      autoscale: false
-    },
-    {
-      template_bot: '063873d9-569d-473f-b1fd-b4bda7b0f37b',
-      share: 0.3,
-      breakpoint: 1000,
-      autoscale: false
-    }
-  ]
-}
-
 export default function CreateFleetDialog({
   fleets,
   setFleets,
@@ -39,7 +20,7 @@ export default function CreateFleetDialog({
 }): JSX.Element {
   const searchParams = useSearchParams()
   const [possibleSpaces, setPossibleSpaces] = useState<NapseSpace[]>([])
-  const [fleet, setFleet] = useState<BaseFleet>(defaultFleet)
+  const [fleet, setFleet] = useState<BaseFleet>()
 
   useEffect(() => {
     const fetchPossibleSpaces = async () => {
