@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils'
 import { ArrowUpRightIcon } from '@heroicons/react/24/outline'
 import { AreaChart, DonutChart, Icon, Metric } from '@tremor/react'
 import { fakeDashboardData } from '../../../lib/fakeDashboardData'
-import DisplayCurrencyDataDialog from '../data-table/displayCurrencyDialog'
+import CurrencyDataDialog from '../data-table/currencyDialog'
 
 export type simpleCurrencyData = {
   ticker: string
@@ -89,7 +89,7 @@ export default function WalletBoard({
           </div>
         </CardContent>
         <CardFooter className="flex flex-col items-center">
-          <DisplayCurrencyDataDialog
+          <CurrencyDataDialog
             trigger={
               <Button variant="ghost" onClick={() => {}}>
                 Details
