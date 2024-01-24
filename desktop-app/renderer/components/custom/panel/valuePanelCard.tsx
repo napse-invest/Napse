@@ -60,7 +60,8 @@ function ValuePanelCard({
   }
   return (
     <PanelCard
-      className="h-32 w-80 min-w-fit"
+      className="min-w-fit sm:h-28 sm:w-60 lg:h-32 lg:w-80"
+      // className="h-32 w-80 min-w-fit"
       title={title}
       badge={badge()}
       description={description}
