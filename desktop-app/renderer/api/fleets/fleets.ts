@@ -31,7 +31,7 @@ export interface RetrievedFleet extends BaseFleet {
 }
 
 export interface Cluster {
-  template_bot: string
+  templateBot: Bot
   share: number
   breakpoint: number
   autoscale: boolean
