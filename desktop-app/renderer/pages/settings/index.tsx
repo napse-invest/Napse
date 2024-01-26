@@ -7,6 +7,11 @@ import path from 'path'
 import { useEffect, useState } from 'react'
 
 export default function Settings(): JSX.Element {
+  useEffect(() => {
+    ipcRenderer.on('AWSChannel', function listener(event, data) {
+      console.log(data)
+    })
+  }, [])
   return (
     <ContextHeader isServer>
       <DefaultPageLayout
@@ -54,10 +59,30 @@ function SecretsInPutOrReadFromFile(): JSX.Element {
       </div>
       <Button
         onClick={() => {
-          const res = ipcRenderer.invoke('deployAWS', { secrets })
+          const res = ipcRenderer.invoke('deployAWS', {
+            secrets
+          })
         }}
       >
         Deploy to AWS
+      </Button>
+      <Button
+        onClick={() => {
+          const res = ipcRenderer.invoke('fullCleanupAWS', {
+            secrets
+          })
+        }}
+      >
+        Full Reset
+      </Button>
+      <Button
+        onClick={() => {
+          const res = ipcRenderer.invoke('updateAWS', {
+            secrets
+          })
+        }}
+      >
+        Update
       </Button>
       <div>{deployData.error || null}</div>
     </div>
