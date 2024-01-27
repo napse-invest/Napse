@@ -79,7 +79,7 @@ interface DataTableProps {
   columns: ColumnDef<Currency>[]
 }
 
-export default function DisplayCurrencyDataTable({
+export default function CurrencyDataTable({
   data = [],
   columns = []
 }: DataTableProps): JSX.Element {

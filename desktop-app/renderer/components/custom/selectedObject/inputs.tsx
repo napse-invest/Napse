@@ -16,21 +16,28 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import { Slider } from '@/components/ui/slider'
 import { Switch } from '@/components/ui/switch'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 export interface InputType<T extends Object> {
   label: string
   key: keyof T
-  type: 'input' | 'switch' | 'select'
+  type: 'input' | 'switch' | 'select' | 'slider'
   zod: z.ZodTypeAny
   default?: string | number | boolean
   value?: string | number | boolean
   description?: string
+  placeholder?: string | number
   disabled?: boolean
+  sliderSettings?: {
+    min: number
+    max: number
+    step: number
+  }
   // possibilities?: string[]
   possibilities?: { [key: string]: string }
 }
@@ -97,6 +104,13 @@ export default function CustomForm<T extends Object>({
       )
     )
   }, [inputs, form])
+
+  const [sliderValue, setSliderValue] = useState([50])
+
+  const handleSliderChange = (newValue: number[]) => {
+    setSliderValue(newValue)
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
@@ -117,7 +131,9 @@ export default function CustomForm<T extends Object>({
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select a verified email to display" />
+                            <SelectValue
+                              placeholder={input.placeholder ?? ''}
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -138,7 +154,7 @@ export default function CustomForm<T extends Object>({
                       <FormControl>
                         {input.type === 'input' ? (
                           <Input
-                            placeholder={input.value as string}
+                            placeholder={input.placeholder as string}
                             disabled={input.disabled}
                             {...field}
                           />
@@ -148,6 +164,18 @@ export default function CustomForm<T extends Object>({
                             disabled={input.disabled}
                             onCheckedChange={field.onChange}
                           />
+                        ) : input.type === 'slider' ? (
+                          <div className="flex flex-row">
+                            <Slider
+                              defaultValue={[input.default as number]}
+                              max={input.sliderSettings?.max ?? 100}
+                              min={input.sliderSettings?.min ?? 0}
+                              step={input.sliderSettings?.step ?? 1}
+                              onValueChange={handleSliderChange}
+                              className=""
+                            />
+                            <p className="w-20 text-end">{sliderValue} %</p>
+                          </div>
                         ) : (
                           <></>
                         )}
