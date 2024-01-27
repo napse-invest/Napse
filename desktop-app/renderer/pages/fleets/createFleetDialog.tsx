@@ -8,7 +8,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PlusIcon } from '@radix-ui/react-icons'
-import { useForm } from 'react-hook-form'
+import { FieldValues, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 import { Cluster } from '@/api/fleets/fleets'
@@ -66,6 +66,7 @@ export default function CreateFleetDialog({
   const [fleet, setFleet] = useState<BaseFleet>()
   const [Clusters, setClusters] = useState<Cluster[]>([])
   useEffect(() => {
+    console.log('searchParams::')
     const fetchPossibleSpaces = async () => {
       try {
         const response = await listSpace(searchParams)
@@ -88,14 +89,35 @@ export default function CreateFleetDialog({
     {} as { [key: string]: string }
   )
   const form = useForm<z.infer<typeof FleetSchema>>({
+    mode: 'onSubmit',
     resolver: zodResolver(FleetSchema),
     defaultValues: {
       name: 'Fleet Name',
-      space: Object.values(napseSpacePossibilitiesSelection)[0]
+      space: Object.values(napseSpacePossibilitiesSelection)[0] // why undifined ?
     }
   })
-  function onSubmit(values: z.infer<typeof FleetSchema>) {
+  console.log('form::', form)
+  console.log('napse::', napseSpacePossibilitiesSelection)
+
+  // function handleFleetSubmit({
+  //   form,
+  //   onSubmit
+  // }: {
+  //   form: UseFormReturn
+  //   onSubmit: (values: z.infer<typeof FleetSchema>) => void
+  // }) {
+  //   form.handleSubmit(onSubmit)
+  // }
+
+  function onSubmitFleet(values: FieldValues) {
+    console.log('Fleet submit triggered')
     console.log(FleetSchema)
+    form.reset({
+      name: 'Fleet Name',
+      space: Object.values(napseSpacePossibilitiesSelection)[0]
+    })
+    setClusters([])
+    document.getElementById('close-fleet-button')?.click()
   }
 
   return (
@@ -112,7 +134,10 @@ export default function CreateFleetDialog({
       </DialogTrigger>
       <DialogContent className="">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <form
+            // onSubmit={form.handleSubmit(onSubmitFleet)}
+            className="space-y-2"
+          >
             <Carousel className="">
               <CarouselContent>
                 <CarouselItem className="">
@@ -143,36 +168,39 @@ export default function CreateFleetDialog({
                   <FormField
                     control={form.control}
                     name="space"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="mx-2 mb-5 flex flex-col space-y-1.5">
-                          <FormLabel>Space</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select your space" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {Object.entries(
-                                napseSpacePossibilitiesSelection
-                              ).map(([name, value]) => (
-                                <SelectItem
-                                  key={name}
-                                  value={value}
-                                  // disabled={false}
-                                >
-                                  {name}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </FormItem>
-                    )}
+                    render={({ field }) => {
+                      console.log(Object.getOwnPropertyDescriptors(field))
+                      return (
+                        <FormItem>
+                          <div className="mx-2 mb-5 flex flex-col space-y-1.5">
+                            <FormLabel>Space</FormLabel>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select your space" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {Object.entries(
+                                  napseSpacePossibilitiesSelection
+                                ).map(([name, value]) => (
+                                  <SelectItem
+                                    key={name}
+                                    value={value}
+                                    // disabled={false}
+                                  >
+                                    {name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </FormItem>
+                      )
+                    }}
                   />
                 </CarouselItem>
                 <CarouselItem>
@@ -192,7 +220,12 @@ export default function CreateFleetDialog({
                       clusters={Clusters}
                       setClusters={setClusters}
                     />
-                    <Button type="submit">Create</Button>
+                    <Button
+                      type="submit"
+                      onClick={form.handleSubmit(onSubmitFleet)}
+                    >
+                      Create
+                    </Button>
                   </div>
                 </CarouselItem>
               </CarouselContent>
@@ -202,7 +235,7 @@ export default function CreateFleetDialog({
           </form>
         </Form>
       </DialogContent>
-      <DialogClose id="close-button" />
+      <DialogClose id="close-fleet-button" />
     </Dialog>
   )
 }

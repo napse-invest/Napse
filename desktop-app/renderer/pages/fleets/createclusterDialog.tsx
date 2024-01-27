@@ -118,11 +118,12 @@ export default function CreateClusterDialog({
               autoscale: values.autoscale
             }
             setClusters([...clusters, newCluster])
+            document.getElementById('close-cluster-button')?.click()
           }}
-          buttonDescription="Create"
+          buttonDescription="Done"
         />
       </DialogContent>
-      <DialogClose id="close-button" />
+      <DialogClose id="close-cluster-button" />
     </Dialog>
   )
 }
