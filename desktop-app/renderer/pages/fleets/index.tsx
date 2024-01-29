@@ -71,7 +71,6 @@ export default function Fleets(): JSX.Element {
               value={fleet.value}
               delta={fleet.delta}
               onClick={() => {
-                console.log('fleet', fleet)
                 router.push(
                   standardUrlPartial(
                     '/fleets/',

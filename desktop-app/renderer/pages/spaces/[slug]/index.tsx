@@ -61,9 +61,9 @@ export default function Space(): JSX.Element {
   }, [spaceID, searchParams, router])
 
   if (!space) {
+    // TODO: setup a squeleton or a loader
     return <></>
   } else {
-    console.log(space)
   }
 
   return (

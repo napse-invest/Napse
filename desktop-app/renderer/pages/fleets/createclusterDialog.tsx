@@ -1,4 +1,4 @@
-import { Bot } from '@/api/bots/bots'
+import { Bot, listFreeBot } from '@/api/bots/bots'
 import { Cluster } from '@/api/fleets/fleets'
 import CustomForm from '@/components/custom/selectedObject/inputs'
 import { Button } from '@/components/ui/button'
@@ -15,6 +15,8 @@ import { DialogClose } from '@radix-ui/react-dialog'
 import { PlusIcon } from '@radix-ui/react-icons'
 
 import { BaseNapseSpace } from 'api/spaces/spaces'
+import { useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { z } from 'zod'
 
 const defaultSpace: BaseNapseSpace = {
@@ -23,27 +25,34 @@ const defaultSpace: BaseNapseSpace = {
   exchangeAccount: '7bdd866e-f2a2-4ea9-a01e-02ddb77a80fe'
 }
 export default function CreateClusterDialog({
-  possibleTemplateBots,
   clusters,
   setClusters
 }: {
-  possibleTemplateBots: Bot[]
   clusters: Cluster[]
   setClusters: React.Dispatch<React.SetStateAction<Cluster[]>>
 }) {
-  // if (possibleTemplateBots.length === 0) {
-  //   return (
-  //     <div className="text-center">
-  //       <p>You must create a bot in the workshop</p>
-  //       <p>before create a cluster</p>
-  //     </div>
-  //   )
-  // }
+  const searchParams = useSearchParams()
+  const [possibleTemplateBots, setpossibleTemplateBots] = useState<Bot[]>([])
+
+  useEffect(() => {
+    const fetchPossibleTemplateBot = async () => {
+      try {
+        const response = await listFreeBot(searchParams)
+        setpossibleTemplateBots(response.data)
+      } catch (error) {
+        console.error(error)
+        setpossibleTemplateBots([])
+      }
+    }
+    if (searchParams.get('server')) {
+      fetchPossibleTemplateBot()
+    }
+  }, [searchParams])
 
   const BotPossibilitiesSelection = possibleTemplateBots
     ? possibleTemplateBots.reduce(
         (obj, item) => {
-          obj[item.name] = item.uuid
+          obj[item.uuid] = item.name
           return obj
         },
         {} as { [key: string]: string }
@@ -78,14 +87,13 @@ export default function CreateClusterDialog({
               type: 'select',
               possibilities: BotPossibilitiesSelection,
               zod: z.string(),
-              default: Object.values(BotPossibilitiesSelection)[0],
+              default: Object.keys(BotPossibilitiesSelection)[0],
               placeholder: 'Select a bot'
             },
             {
               label: 'Share',
               key: 'share',
               type: 'slider',
-              possibilities: BotPossibilitiesSelection,
               zod: z.number(),
               default: 50,
               sliderSettings: {
@@ -112,17 +120,21 @@ export default function CreateClusterDialog({
           ]}
           onSubmit={async (values) => {
             const newCluster: Cluster = {
-              templateBot: values.templateBot,
+              templateBot: possibleTemplateBots.find(
+                (bot) => bot.uuid === values.templateBot
+              ) as Bot,
               share: values.share,
               breakpoint: values.breakpoint,
               autoscale: values.autoscale
             }
+            console.log('new cluster ::', newCluster)
             setClusters([...clusters, newCluster])
+            document.getElementById('close-cluster-button')?.click()
           }}
-          buttonDescription="Create"
+          buttonDescription="Done"
         />
       </DialogContent>
-      <DialogClose id="close-button" />
+      <DialogClose id="close-cluster-button" />
     </Dialog>
   )
 }

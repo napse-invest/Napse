@@ -32,7 +32,7 @@ export function request(
   if (space_uuid) {
     url = url + `&space=${space_uuid}`
   }
-  console.log('url', url)
+  // console.log('url', url)
 
   return axios({
     method: method,
