@@ -88,6 +88,16 @@ export default function CreateFleetDialog({
     },
     {} as { [key: string]: string }
   )
+  const defaultValues = {
+    name: 'Fleet Name',
+    space: Object.values(napseSpacePossibilitiesSelection)[0]
+  }
+
+  const defaultValues = {
+    name: 'Fleet Name',
+    space: Object.values(napseSpacePossibilitiesSelection)[0]
+  }
+
   const form = useForm<z.infer<typeof FleetSchema>>({
     mode: 'onSubmit',
     resolver: zodResolver(FleetSchema),
@@ -98,7 +108,17 @@ export default function CreateFleetDialog({
   })
   console.log('form::', form)
   console.log('napse::', napseSpacePossibilitiesSelection)
-
+  // useEffect(() => {
+  //   form.reset({
+  //     name: defaultValues.name,
+  //     space: defaultValues.space
+  //   })
+  // }, [
+  //   defaultValues.name,
+  //   defaultValues.space,
+  //   form,
+  //   form.formState.isSubmitSuccessful
+  // ])
   // function handleFleetSubmit({
   //   form,
   //   onSubmit

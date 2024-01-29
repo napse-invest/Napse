@@ -117,6 +117,7 @@ export default function CreateClusterDialog({
               breakpoint: values.breakpoint,
               autoscale: values.autoscale
             }
+            console.log('new cluster ::', newCluster)
             setClusters([...clusters, newCluster])
             document.getElementById('close-cluster-button')?.click()
           }}
