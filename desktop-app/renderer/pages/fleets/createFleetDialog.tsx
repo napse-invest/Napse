@@ -211,7 +211,6 @@ export default function CreateFleetDialog({
                   </ScrollArea>
                   <div className="flex flex-row justify-between">
                     <CreateClusterDialog
-                      possibleTemplateBots={[]}
                       clusters={Clusters}
                       setClusters={setClusters}
                     />

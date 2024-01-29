@@ -25,6 +25,13 @@ export async function listBot(
   return response as AxiosResponse<Bot[]>
 }
 
+export async function listFreeBot(
+  searchParams: ReturnType<typeof useSearchParams>
+): Promise<AxiosResponse<Bot[]>> {
+  const response = await request(searchParams, 'GET', `/api/bot/?free=true`)
+  return response as AxiosResponse<Bot[]>
+}
+
 export async function retrieveBot(
   searchParams: ReturnType<typeof useSearchParams>,
   uuid: string
