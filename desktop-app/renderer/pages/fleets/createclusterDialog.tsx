@@ -43,7 +43,7 @@ export default function CreateClusterDialog({
   const BotPossibilitiesSelection = possibleTemplateBots
     ? possibleTemplateBots.reduce(
         (obj, item) => {
-          obj[item.name] = item.uuid
+          obj[item.uuid] = item.name
           return obj
         },
         {} as { [key: string]: string }
@@ -78,14 +78,13 @@ export default function CreateClusterDialog({
               type: 'select',
               possibilities: BotPossibilitiesSelection,
               zod: z.string(),
-              default: Object.values(BotPossibilitiesSelection)[0],
+              default: Object.keys(BotPossibilitiesSelection)[0],
               placeholder: 'Select a bot'
             },
             {
               label: 'Share',
               key: 'share',
               type: 'slider',
-              possibilities: BotPossibilitiesSelection,
               zod: z.number(),
               default: 50,
               sliderSettings: {

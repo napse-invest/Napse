@@ -138,10 +138,10 @@ export default function CustomForm<T extends Object>({
                         </FormControl>
                         <SelectContent>
                           {Object.entries(input.possibilities ?? []).map(
-                            ([name, value]) => (
+                            ([uuid, name]) => (
                               <SelectItem
                                 key={name}
-                                value={value}
+                                value={uuid}
                                 disabled={input.disabled}
                               >
                                 {name}

@@ -60,7 +60,7 @@ export default function CreateSpaceDialog({
 
   const ExchangeAccountPossibilitiesSelection = possibleExchangeAccounts.reduce(
     (obj, item) => {
-      obj[item.name] = item.uuid
+      obj[item.uuid] = item.name
       return obj
     },
     {} as { [key: string]: string }
@@ -108,7 +108,7 @@ export default function CreateSpaceDialog({
               type: 'select',
               possibilities: ExchangeAccountPossibilitiesSelection,
               zod: z.string(),
-              default: Object.values(ExchangeAccountPossibilitiesSelection)[0]
+              default: Object.keys(ExchangeAccountPossibilitiesSelection)[0]
             }
           ]}
           onSubmit={async (values) => {
