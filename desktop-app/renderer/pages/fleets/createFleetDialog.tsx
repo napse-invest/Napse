@@ -88,6 +88,7 @@ export default function CreateFleetDialog({
     },
     {} as { [key: string]: string }
   )
+
   const defaultValues = {
     name: 'Fleet Name',
     space: Object.values(napseSpacePossibilitiesSelection)[0]
