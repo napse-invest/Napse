@@ -65,6 +65,7 @@ export default function CreateFleetDialog({
   const [possibleSpaces, setPossibleSpaces] = useState<NapseSpace[]>([])
   const [fleet, setFleet] = useState<BaseFleet>()
   const [Clusters, setClusters] = useState<Cluster[]>([])
+
   useEffect(() => {
     const fetchPossibleSpaces = async () => {
       try {

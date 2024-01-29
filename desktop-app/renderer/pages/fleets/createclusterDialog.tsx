@@ -120,7 +120,9 @@ export default function CreateClusterDialog({
           ]}
           onSubmit={async (values) => {
             const newCluster: Cluster = {
-              templateBot: values.templateBot,
+              templateBot: possibleTemplateBots.find(
+                (bot) => bot.uuid === values.templateBot
+              ) as Bot,
               share: values.share,
               breakpoint: values.breakpoint,
               autoscale: values.autoscale
