@@ -66,7 +66,6 @@ export default function CreateFleetDialog({
   const [fleet, setFleet] = useState<BaseFleet>()
   const [Clusters, setClusters] = useState<Cluster[]>([])
   useEffect(() => {
-    console.log('searchParams::')
     const fetchPossibleSpaces = async () => {
       try {
         const response = await listSpace(searchParams)
@@ -83,7 +82,7 @@ export default function CreateFleetDialog({
 
   const napseSpacePossibilitiesSelection = possibleSpaces.reduce(
     (obj, item) => {
-      obj[item.name] = item.uuid
+      obj[item.uuid] = item.name
       return obj
     },
     {} as { [key: string]: string }
@@ -91,54 +90,34 @@ export default function CreateFleetDialog({
 
   const defaultValues = {
     name: 'Fleet Name',
-    space: Object.values(napseSpacePossibilitiesSelection)[0]
+    space: Object.keys(napseSpacePossibilitiesSelection)[0]
   }
 
   const form = useForm<z.infer<typeof FleetSchema>>({
     mode: 'onSubmit',
     resolver: zodResolver(FleetSchema),
     defaultValues: {
-      name: 'Fleet Name',
-      space: Object.values(napseSpacePossibilitiesSelection)[0] // why undifined ?
+      name: defaultValues.name,
+      space: defaultValues.space // why undifined ?
     }
   })
-  console.log('form::', form)
-  console.log('napse::', napseSpacePossibilitiesSelection)
-  // useEffect(() => {
-  //   form.reset({
-  //     name: defaultValues.name,
-  //     space: defaultValues.space
-  //   })
-  // }, [
-  //   defaultValues.name,
-  //   defaultValues.space,
-  //   form,
-  //   form.formState.isSubmitSuccessful
-  // ])
-  // function handleFleetSubmit({
-  //   form,
-  //   onSubmit
-  // }: {
-  //   form: UseFormReturn
-  //   onSubmit: (values: z.infer<typeof FleetSchema>) => void
-  // }) {
-  //   form.handleSubmit(onSubmit)
-  // }
 
   function onSubmitFleet(values: FieldValues) {
     console.log('Fleet submit triggered')
-
-    console.log(FleetSchema)
-    form.reset({
-      name: 'Fleet Name',
-      space: Object.values(napseSpacePossibilitiesSelection)[0]
-    })
-    setClusters([])
+    // TODO: call api to create a fleet
     document.getElementById('close-fleet-button')?.click()
   }
 
+  function formReset() {
+    form.reset({
+      name: defaultValues.name,
+      space: defaultValues.space
+    })
+    setClusters([])
+  }
+
   return (
-    <Dialog>
+    <Dialog onOpenChange={formReset}>
       <DialogTrigger asChild>
         <Button
           variant="ghost"
@@ -186,7 +165,6 @@ export default function CreateFleetDialog({
                     control={form.control}
                     name="space"
                     render={({ field }) => {
-                      console.log(Object.getOwnPropertyDescriptors(field))
                       return (
                         <FormItem>
                           <div className="mx-2 mb-5 flex flex-col space-y-1.5">
@@ -203,10 +181,10 @@ export default function CreateFleetDialog({
                               <SelectContent>
                                 {Object.entries(
                                   napseSpacePossibilitiesSelection
-                                ).map(([name, value]) => (
+                                ).map(([uuid, name]) => (
                                   <SelectItem
                                     key={name}
-                                    value={value}
+                                    value={uuid}
                                     // disabled={false}
                                   >
                                     {name}
