@@ -13,11 +13,14 @@ export default function ClusterDataTable({
     {
       accessorKey: 'templateBot',
       header: () => <div className="text-center">Bots</div>,
-      cell: ({ row }) => (
-        <div className="">
-          {(row.getValue('templateBot') as { name: string }).name}
-        </div>
-      )
+      cell: ({ row }) => {
+        console.log('row::', row)
+        return (
+          <div className="">
+            {(row.getValue('templateBot') as { name: string }).name}
+          </div>
+        )
+      }
     },
     {
       accessorKey: 'share',

@@ -39,7 +39,6 @@ export default function CreateClusterDialog({
       try {
         const response = await listFreeBot(searchParams)
         setpossibleTemplateBots(response.data)
-        console.log('DATA::', response.data)
       } catch (error) {
         console.error(error)
         setpossibleTemplateBots([])

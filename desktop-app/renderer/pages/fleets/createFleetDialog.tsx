@@ -103,8 +103,8 @@ export default function CreateFleetDialog({
   })
 
   function onSubmitFleet(values: FieldValues) {
-    console.log('Fleet submit triggered')
     // TODO: call api to create a fleet
+    console.log('Fleet submit triggered')
     document.getElementById('close-fleet-button')?.click()
   }
 
