@@ -107,9 +107,7 @@ export default function CustomForm<T extends Object>({
 
   const [sliderValue, setSliderValue] = useState([50])
 
-  const handleSliderChange = (newValue: number[]) => {
-    setSliderValue(newValue)
-  }
+  const handleSliderChange = () => {}
 
   return (
     <Form {...form}>
@@ -163,6 +161,7 @@ export default function CustomForm<T extends Object>({
                             checked={field.value}
                             disabled={input.disabled}
                             onCheckedChange={field.onChange}
+                            {...field}
                           />
                         ) : input.type === 'slider' ? (
                           <div className="flex flex-row">
@@ -171,7 +170,10 @@ export default function CustomForm<T extends Object>({
                               max={input.sliderSettings?.max ?? 100}
                               min={input.sliderSettings?.min ?? 0}
                               step={input.sliderSettings?.step ?? 1}
-                              onValueChange={handleSliderChange}
+                              onValueChange={(newValue: number[]) => {
+                                setSliderValue(newValue)
+                                form.setValue(input.key as string, newValue[0])
+                              }}
                               className=""
                             />
                             <p className="w-20 text-end">{sliderValue} %</p>
