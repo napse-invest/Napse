@@ -57,7 +57,9 @@ export default function ClusterDataTable({
         )
       },
       cell: ({ row }) => (
-        <div className="text-center">{row.getValue('share')}</div>
+        <div className="text-center">
+          {(row.getValue('share') as number) * 100} %
+        </div>
       )
     }
   ]
