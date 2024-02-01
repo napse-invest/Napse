@@ -106,7 +106,8 @@ export default function CreateClusterDialog({
               label: 'Breakpoint',
               key: 'breakpoint',
               type: 'input',
-              zod: z.string(),
+              zod: z.number(),
+              default: 1000,
               placeholder: 1000
             },
             {
@@ -123,7 +124,7 @@ export default function CreateClusterDialog({
               templateBot: possibleTemplateBots.find(
                 (bot) => bot.uuid === values.templateBot
               ) as Bot,
-              share: values.share,
+              share: values.share / 100,
               breakpoint: values.breakpoint,
               autoscale: values.autoscale
             }

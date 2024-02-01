@@ -1,4 +1,4 @@
-import { BaseFleet, Fleet } from '@/api/fleets/fleets'
+import { BaseFleet, Fleet, createFleet } from '@/api/fleets/fleets'
 import { NapseSpace, listSpace } from '@/api/spaces/spaces'
 import { Button } from '@/components/ui/button'
 import { DialogClose } from '@radix-ui/react-dialog'
@@ -103,9 +103,23 @@ export default function CreateFleetDialog({
     }
   })
 
-  function onSubmitFleet(values: FieldValues) {
+  async function onSubmitFleet(values: FieldValues) {
     // TODO: call api to create a fleet
     console.log('Fleet submit triggered')
+
+    try {
+      const fleetData = {
+        name: values.name,
+        space: values.space,
+        clusters: Clusters
+      }
+      console.log('fleetData::', fleetData)
+
+      const response = await createFleet(searchParams, fleetData)
+      setFleets([...fleets, response.data])
+    } catch (error) {
+      console.error(error)
+    }
     document.getElementById('close-fleet-button')?.click()
   }
 
