@@ -1,4 +1,4 @@
-import { BaseFleet, Fleet } from '@/api/fleets/fleets'
+import { BaseFleet, Fleet, createFleet } from '@/api/fleets/fleets'
 import { NapseSpace, listSpace } from '@/api/spaces/spaces'
 import { Button } from '@/components/ui/button'
 import { DialogClose } from '@radix-ui/react-dialog'
@@ -41,6 +41,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
+import { useToast } from '@/components/ui/use-toast'
 import ClusterDataTable from './clusterDataTable'
 import CreateClusterDialog from './createclusterDialog'
 
@@ -61,6 +62,8 @@ export default function CreateFleetDialog({
   setFleets: Dispatch<SetStateAction<Fleet[]>>
   disabledButton?: boolean
 }): JSX.Element {
+  const { toast } = useToast()
+
   const searchParams = useSearchParams()
   const [possibleSpaces, setPossibleSpaces] = useState<NapseSpace[]>([])
   const [fleet, setFleet] = useState<BaseFleet>()
@@ -103,9 +106,34 @@ export default function CreateFleetDialog({
     }
   })
 
-  function onSubmitFleet(values: FieldValues) {
-    // TODO: call api to create a fleet
-    console.log('Fleet submit triggered')
+  async function onSubmitFleet(values: FieldValues) {
+    let acc = 0
+    for (const cluster of Clusters) {
+      acc += cluster.share
+    }
+    if (acc != 1) {
+      console.log('acc::', acc)
+      toast({
+        title: 'The sum of all share must be equal to 100 %',
+        description: 'You have ' + (1 - acc) * 100 + ' % left',
+        variant: 'destructive'
+      })
+      return
+    }
+
+    try {
+      const fleetData = {
+        name: values.name,
+        space: values.space,
+        clusters: Clusters
+      }
+      console.log('fleetData::', fleetData)
+
+      const response = await createFleet(searchParams, fleetData)
+      setFleets([...fleets, response.data])
+    } catch (error) {
+      console.error(error)
+    }
     document.getElementById('close-fleet-button')?.click()
   }
 

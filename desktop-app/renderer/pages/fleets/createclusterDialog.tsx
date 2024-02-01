@@ -14,6 +14,7 @@ import { Separator } from '@/components/ui/separator'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { PlusIcon } from '@radix-ui/react-icons'
 
+import { useToast } from '@/components/ui/use-toast'
 import { BaseNapseSpace } from 'api/spaces/spaces'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -31,6 +32,7 @@ export default function CreateClusterDialog({
   clusters: Cluster[]
   setClusters: React.Dispatch<React.SetStateAction<Cluster[]>>
 }) {
+  const { toast } = useToast()
   const searchParams = useSearchParams()
   const [possibleTemplateBots, setpossibleTemplateBots] = useState<Bot[]>([])
 
@@ -106,7 +108,8 @@ export default function CreateClusterDialog({
               label: 'Breakpoint',
               key: 'breakpoint',
               type: 'input',
-              zod: z.string(),
+              zod: z.number(),
+              default: 1000,
               placeholder: 1000
             },
             {
@@ -119,17 +122,36 @@ export default function CreateClusterDialog({
             }
           ]}
           onSubmit={async (values) => {
+            // Make the sum of all share mapped on clusters
+            let acc = 0
+            clusters.map((cluster) => {
+              acc += cluster.share
+            })
+            const accTotal = acc + values.share / 100
+            if (accTotal > 1) {
+              toast({
+                title: 'The sum of all share must be equal to 100 %',
+                description: 'You have only ' + (1 - acc) * 100 + ' % left',
+                variant: 'destructive'
+              })
+              return
+            }
+
             const newCluster: Cluster = {
               templateBot: possibleTemplateBots.find(
                 (bot) => bot.uuid === values.templateBot
               ) as Bot,
-              share: values.share,
+              share: parseFloat((values.share / 100).toFixed(2)),
               breakpoint: values.breakpoint,
               autoscale: values.autoscale
             }
             console.log('new cluster ::', newCluster)
             setClusters([...clusters, newCluster])
             document.getElementById('close-cluster-button')?.click()
+            toast({
+              title: 'Cluster created',
+              description: newCluster.templateBot.name + "'s cluster created"
+            })
           }}
           buttonDescription="Done"
         />

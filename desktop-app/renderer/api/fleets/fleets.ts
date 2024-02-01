@@ -60,7 +60,21 @@ export async function createFleet(
   searchParams: ReturnType<typeof useSearchParams>,
   data: BaseFleet
 ): Promise<AxiosResponse<Fleet>> {
-  const formatedData = convertInterfaceToSnakeCaseDict(data)
+  let dataDict = data as any
+  if (data.clusters) {
+    dataDict = {
+      ...data,
+      clusters: data.clusters.map((cluster: Cluster) =>
+        convertInterfaceToSnakeCaseDict({
+          ...cluster,
+          templateBot: cluster.templateBot.uuid
+        })
+      )
+    }
+  }
+
+  const formatedData = convertInterfaceToSnakeCaseDict(dataDict)
+  console.log('formatedData::', formatedData)
   const response = await request(
     searchParams,
     'POST',
