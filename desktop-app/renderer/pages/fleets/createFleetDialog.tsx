@@ -115,7 +115,7 @@ export default function CreateFleetDialog({
       console.log('acc::', acc)
       toast({
         title: 'The sum of all share must be equal to 100 %',
-        description: 'You have ' + (1 - acc) * 100 + ' % left',
+        description: 'You have ' + ((1 - acc) * 100).toFixed(2) + ' % left',
         variant: 'destructive'
       })
       return
