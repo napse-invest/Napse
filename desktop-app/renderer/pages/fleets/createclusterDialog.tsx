@@ -131,7 +131,8 @@ export default function CreateClusterDialog({
             if (accTotal > 1) {
               toast({
                 title: 'The sum of all share must be equal to 100 %',
-                description: 'You have only ' + (1 - acc) * 100 + ' % left',
+                description:
+                  'You have only ' + ((1 - acc) * 100).toFixed(2) + ' % left',
                 variant: 'destructive'
               })
               return
@@ -145,7 +146,6 @@ export default function CreateClusterDialog({
               breakpoint: values.breakpoint,
               autoscale: values.autoscale
             }
-            console.log('new cluster ::', newCluster)
             setClusters([...clusters, newCluster])
             document.getElementById('close-cluster-button')?.click()
             toast({

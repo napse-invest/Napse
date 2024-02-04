@@ -109,7 +109,7 @@ module.exports = {
             subtle: 'hsl(var(--muted-foreground))', 
             DEFAULT: 'hsl(var(--foreground))',
             emphasis: 'hsl(var(--secondary-foreground))',
-            strong: 'hsl(var(--primary-foreground))',
+            strong: 'hsl(var(--foreground))',
             inverted: '#ffffff' // white
           }
         },
@@ -139,7 +139,7 @@ module.exports = {
             subtle: 'hsl(var(--muted-foreground))', 
             DEFAULT: 'hsl(var(--foreground))',
             emphasis: 'hsl(var(--secondary-foreground))',
-            strong: 'hsl(var(--primary-foreground))',
+            strong: 'hsl(var(--foreground))',
             inverted: 'hsl(var(--border))'
           }
         }

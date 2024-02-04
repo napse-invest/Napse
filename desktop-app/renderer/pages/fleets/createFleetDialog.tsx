@@ -1,4 +1,4 @@
-import { BaseFleet, Fleet, createFleet } from '@/api/fleets/fleets'
+import { Fleet, createFleet } from '@/api/fleets/fleets'
 import { NapseSpace, listSpace } from '@/api/spaces/spaces'
 import { Button } from '@/components/ui/button'
 import { DialogClose } from '@radix-ui/react-dialog'
@@ -33,13 +33,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { useToast } from '@/components/ui/use-toast'
 import ClusterDataTable from './clusterDataTable'
@@ -66,7 +59,6 @@ export default function CreateFleetDialog({
 
   const searchParams = useSearchParams()
   const [possibleSpaces, setPossibleSpaces] = useState<NapseSpace[]>([])
-  const [fleet, setFleet] = useState<BaseFleet>()
   const [Clusters, setClusters] = useState<Cluster[]>([])
 
   useEffect(() => {
@@ -115,7 +107,7 @@ export default function CreateFleetDialog({
       console.log('acc::', acc)
       toast({
         title: 'The sum of all share must be equal to 100 %',
-        description: 'You have ' + (1 - acc) * 100 + ' % left',
+        description: 'You have ' + ((1 - acc) * 100).toFixed(2) + ' % left',
         variant: 'destructive'
       })
       return
@@ -195,33 +187,21 @@ export default function CreateFleetDialog({
                     name="space"
                     render={({ field }) => {
                       return (
-                        <FormItem>
-                          <div className="mx-2 mb-5 flex flex-col space-y-1.5">
-                            <FormLabel>Space</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select your space" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {Object.entries(
+                        <FormItem className="mx-2 mb-5 flex flex-col space-y-1.5">
+                          <FormLabel>Space</FormLabel>
+                          <FormControl>
+                            <Input
+                              value={
+                                Object.entries(
                                   napseSpacePossibilitiesSelection
-                                ).map(([uuid, name]) => (
-                                  <SelectItem
-                                    key={name}
-                                    value={uuid}
-                                    // disabled={false}
-                                  >
-                                    {name}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
+                                ).find(
+                                  ([uuid, name]) =>
+                                    uuid === searchParams.get('space')
+                                )?.[1]
+                              }
+                              disabled
+                            />
+                          </FormControl>
                         </FormItem>
                       )
                     }}
@@ -235,7 +215,7 @@ export default function CreateFleetDialog({
                     </DialogDescription>
                   </DialogHeader>
 
-                  <ScrollArea className="mb-3 mt-8 h-44 w-full rounded-md border">
+                  <ScrollArea className="mb-3 mt-8 w-full rounded-md border">
                     <ClusterDataTable data={Clusters} />
                   </ScrollArea>
                   <div className="flex flex-row justify-between">

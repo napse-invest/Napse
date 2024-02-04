@@ -113,7 +113,7 @@ export default function ClusterDataTable({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
+              <TableCell colSpan={columns.length} className="h-32 text-center">
                 No results.
               </TableCell>
             </TableRow>
