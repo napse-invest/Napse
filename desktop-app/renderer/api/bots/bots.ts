@@ -3,6 +3,11 @@ import { Wallet } from '@/api/wallets/wallets'
 import { request } from 'api/request'
 import { AxiosResponse } from 'axios'
 import { useSearchParams } from 'next/navigation'
+
+interface Statistics {
+  [key: string]: number
+}
+
 export interface Bot {
   name: string
   uuid: string
@@ -16,6 +21,7 @@ export interface Bot {
 export interface RetrievedBot extends Bot {
   wallet: Wallet
   orders: Order[]
+  statistics?: Statistics
 }
 
 export async function listBot(
