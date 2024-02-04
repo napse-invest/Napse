@@ -13,10 +13,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getKeyData } from '@/lib/dataManagement'
 import { standardUrlPartial } from '@/lib/queryParams'
 import { AreaChart, Icon, Metric, Card as TremorCard } from '@tremor/react'
+import { format } from 'date-fns'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import MoneyActionButtons from '../../../components/custom/moneyActionButtons'
 import { fakeDashboardData } from '../../../lib/fakeDashboardData'
+
+const formattedFakeDashboardData = fakeDashboardData.map((item) => {
+  return { ...item, date: format(item.date, 'd MMM yy') }
+})
 
 export default function Fleet(): JSX.Element {
   const searchParams = useSearchParams()
@@ -69,7 +74,7 @@ export default function Fleet(): JSX.Element {
               <CardContent className="">
                 <AreaChart
                   className="mt-4 h-80"
-                  data={fakeDashboardData}
+                  data={formattedFakeDashboardData}
                   categories={['value']}
                   index="date"
                   colors={['green']}

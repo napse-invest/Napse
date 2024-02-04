@@ -136,7 +136,7 @@ export default function Bot(): JSX.Element {
                   yAxisWidth={55}
                   onValueChange={() => {}}
                   showAnimation={true}
-                  curveType="linear"
+                  curveType="monotone"
                   className="mt-6 hidden h-96 sm:block"
                 />
                 <div className="my-4 text-base font-medium">Summary</div>

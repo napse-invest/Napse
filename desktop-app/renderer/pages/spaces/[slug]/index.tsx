@@ -25,6 +25,7 @@ import OperationDataTable from '../../../components/custom/data-table/operationD
 import MoneyActionButtons from '../../../components/custom/moneyActionButtons'
 import { fakeDashboardData } from '../../../lib/fakeDashboardData'
 
+import { format } from 'date-fns'
 import { ReadonlyURLSearchParams } from 'next/navigation'
 import { Dispatch, SetStateAction } from 'react'
 
@@ -43,6 +44,9 @@ async function fetchCurrentKey({
     setCurrentKey(undefined)
   }
 }
+const formattedFakeDashboardData = fakeDashboardData.map((item) => {
+  return { ...item, date: format(item.date, 'd MMM yy') }
+})
 
 export default function Space(): JSX.Element {
   const searchParams = useSearchParams()
@@ -118,7 +122,7 @@ export default function Space(): JSX.Element {
               <CardContent className="">
                 <AreaChart
                   className="mt-4 h-80"
-                  data={fakeDashboardData}
+                  data={formattedFakeDashboardData}
                   categories={['value']}
                   index="date"
                   colors={['green']}
