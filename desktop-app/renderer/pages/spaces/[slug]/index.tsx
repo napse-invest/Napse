@@ -1,5 +1,7 @@
 import { Fleet, listFleet } from '@/api/fleets/fleets'
+import { Key, getCurrentKey } from '@/api/key/key'
 import { RetrievedNapseSpace, retrieveSpace } from '@/api/spaces/spaces'
+import InfoPanelCard from '@/components/custom/panel/infoPanelCard'
 import ValuePanelCard from '@/components/custom/panel/valuePanelCard'
 import ContextHeader from '@/components/layout/contextHeader'
 import DefaultPageLayout from '@/components/layout/defaultPageLayout'
@@ -13,6 +15,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getKeyData } from '@/lib/dataManagement'
 import { standardUrlPartial } from '@/lib/queryParams'
+import CreateFleetDialog from '@/pages/fleets/createFleetDialog'
 import { AreaChart, Icon, Metric, Card as TremorCard } from '@tremor/react'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
@@ -22,12 +25,33 @@ import OperationDataTable from '../../../components/custom/data-table/operationD
 import MoneyActionButtons from '../../../components/custom/moneyActionButtons'
 import { fakeDashboardData } from '../../../lib/fakeDashboardData'
 
+import { ReadonlyURLSearchParams } from 'next/navigation'
+import { Dispatch, SetStateAction } from 'react'
+
+async function fetchCurrentKey({
+  setCurrentKey,
+  searchParams
+}: {
+  setCurrentKey: Dispatch<SetStateAction<Key | undefined>>
+  searchParams: ReadonlyURLSearchParams
+}) {
+  try {
+    const response = await getCurrentKey(searchParams)
+    setCurrentKey(response)
+  } catch (error) {
+    console.error(error)
+    setCurrentKey(undefined)
+  }
+}
+
 export default function Space(): JSX.Element {
   const searchParams = useSearchParams()
   const router = useRouter()
 
   const spaceID: string = searchParams.get('space') || ''
   // const spaceID: string = 'wrongSpaceUUID'
+  const [currentKey, setCurrentKey] = useState<Key>()
+
   const [space, setSpace] = useState<RetrievedNapseSpace>()
   const [fleets, setFleets] = useState<Fleet[]>([])
 
@@ -57,6 +81,7 @@ export default function Space(): JSX.Element {
     if (searchParams.get('server')) {
       fetchSpace()
       fetchFleets()
+      fetchCurrentKey({ setCurrentKey, searchParams })
     }
   }, [spaceID, searchParams, router])
 
@@ -161,6 +186,23 @@ export default function Space(): JSX.Element {
                   }}
                 />
               ))}
+              <InfoPanelCard
+                cardType={
+                  currentKey?.is_master_key ? 'button' : 'disabledButton'
+                }
+                tooltip={
+                  !currentKey?.is_master_key &&
+                  // 'You do not have the permission to create an exchange account.'
+                  `currentKey.is_master_key: ${currentKey?.is_master_key}`
+                }
+                textContent={
+                  <CreateFleetDialog
+                    fleets={fleets}
+                    setFleets={setFleets}
+                    disabledButton={currentKey?.is_master_key ? false : true}
+                  />
+                }
+              />
             </div>
           </TabsContent>
         </Tabs>
