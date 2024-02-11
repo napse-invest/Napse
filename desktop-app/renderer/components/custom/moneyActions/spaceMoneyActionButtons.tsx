@@ -1,4 +1,10 @@
-import { RetrievedNapseSpace } from '@/api/spaces/spaces'
+import {
+  Investment,
+  RetrievedNapseSpace,
+  spaceInvest,
+  spacePossibleInvestments
+} from '@/api/spaces/spaces'
+import CustomForm from '@/components/custom/selectedObject/inputs'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -19,10 +25,17 @@ import {
   ArrowDownOnSquareIcon,
   ArrowUpOnSquareIcon
 } from '@heroicons/react/24/outline'
+import { useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import * as z from 'zod'
 
-interface SpaceMoneyActionButtonsProps {
-  space: RetrievedNapseSpace
-}
+const InvestmentSchema = z.object({
+  ticker: z
+    .string()
+    .min(2, { message: 'You have to give an existing currency.' })
+    .max(8, { message: 'You have to give an existing currency.' }),
+  amount: z.number()
+})
 
 export default function SpaceMoneyActionButtons({
   space
@@ -30,13 +43,44 @@ export default function SpaceMoneyActionButtons({
   space: RetrievedNapseSpace
 }): JSX.Element {
   const { toast } = useToast()
-  console.log('space', space)
+  const searchParams = useSearchParams()
+  const [possibleInvestments, setPossibleInvestments] = useState<Investment[]>(
+    []
+  )
+  const [selectedTicker, setSelectedTicker] = useState<string>('')
+
+  useEffect(() => {
+    const fetchPossibleInvestments = async () => {
+      try {
+        const response = await spacePossibleInvestments(searchParams, space)
+        setPossibleInvestments(response.data)
+      } catch (error) {
+        console.error(error)
+        setPossibleInvestments([])
+      }
+    }
+    if (searchParams.get('server')) {
+      fetchPossibleInvestments()
+    }
+  }, [searchParams, space])
+
+  const PossibleInvestmentTickerSelection = possibleInvestments.reduce(
+    (obj, item) => {
+      obj[item.ticker] = item.ticker
+      return obj
+    },
+    {} as { [key: string]: string }
+  )
 
   return (
     <>
       {space.testing && (
         <div className="flex flex-row gap-4">
-          <Dialog>
+          <Dialog
+            onOpenChange={() => {
+              setSelectedTicker(' ')
+            }}
+          >
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -58,12 +102,78 @@ export default function SpaceMoneyActionButtons({
             </TooltipProvider>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Invest on {space.name} space</DialogTitle>
+                <DialogTitle>Invest on {space.name}</DialogTitle>
                 <DialogDescription>
-                  You allocate money from your exchange account to be managed by
-                  the space.
+                  Allocate money of your exchange account to the space.
                 </DialogDescription>
               </DialogHeader>
+
+              <CustomForm<Investment>
+                inputs={[
+                  {
+                    label: 'Ticker',
+                    key: 'ticker',
+                    type: 'select',
+                    possibilities: PossibleInvestmentTickerSelection,
+                    zod: z.string(),
+                    placeholder: 'Select a ticker',
+                    setter: setSelectedTicker
+                  },
+                  {
+                    label: 'Amount',
+                    key: 'amount',
+                    type: 'input',
+                    zod: z.number(),
+                    // value: selectedAmount,
+                    // setter: setSelectedAmount,
+                    // placeholder: possibleInvestments.find(
+                    //   (inv) => inv.ticker === selectedTicker
+                    // )
+                    //   ? `max: ${possibleInvestments.find(
+                    //       (inv) => inv.ticker === selectedTicker
+                    //     )?.amount} ${selectedTicker}`
+                    //   : ' '
+                    default: 0,
+                    placeholder: 0
+                  }
+                ]}
+                onSubmit={async (values) => {
+                  const newInvestment: Investment = {
+                    ticker: selectedTicker,
+                    amount: values.amount
+                  }
+                  try {
+                    const response = await spaceInvest(
+                      searchParams,
+                      space,
+                      newInvestment
+                    )
+                    console.log('response::', response)
+                    toast({
+                      title: 'Investment',
+                      description: 'You have invested money !'
+                    })
+                  } catch (error) {
+                    console.error(error)
+                    toast({
+                      title: 'Investment',
+                      description: 'You cannot invest money yet.',
+                      variant: 'destructive'
+                    })
+                  }
+                }}
+                buttonDescription="Done"
+              />
+
+              <DialogDescription>
+                {possibleInvestments.find(
+                  (inv) => inv.ticker === selectedTicker
+                )?.amount
+                  ? `max: ${possibleInvestments.find(
+                      (inv) => inv.ticker === selectedTicker
+                    )?.amount} ${selectedTicker}`
+                  : ''}
+              </DialogDescription>
             </DialogContent>
           </Dialog>
 
@@ -89,7 +199,7 @@ export default function SpaceMoneyActionButtons({
             </TooltipProvider>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Withdraw from {space.name} space</DialogTitle>
+                <DialogTitle>Withdraw from {space.name}</DialogTitle>
                 <DialogDescription>
                   You deallocate money from the space. He won&apos;t be able to
                   manage it

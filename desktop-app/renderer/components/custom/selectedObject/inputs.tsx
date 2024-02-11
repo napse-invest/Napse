@@ -19,7 +19,7 @@ import {
 import { Slider } from '@/components/ui/slider'
 import { Switch } from '@/components/ui/switch'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
@@ -40,6 +40,7 @@ export interface InputType<T extends Object> {
   }
   // possibilities?: string[]
   possibilities?: { [key: string]: string }
+  setter?: Dispatch<SetStateAction<any>>
 }
 
 function defaultValue(input: InputType<any>) {
@@ -124,7 +125,11 @@ export default function CustomForm<T extends Object>({
                     <FormLabel>{input.label}</FormLabel>
                     {input.type === 'select' ? (
                       <Select
-                        onValueChange={field.onChange}
+                        // onValueChange={field.onChange}
+                        onValueChange={(newValue: string) => {
+                          input.setter ? input.setter(newValue) : null
+                          form.setValue(input.key as string, newValue[0])
+                        }}
                         defaultValue={field.value}
                       >
                         <FormControl>
@@ -155,6 +160,21 @@ export default function CustomForm<T extends Object>({
                             placeholder={input.placeholder as string}
                             disabled={input.disabled}
                             {...field}
+                            onChange={(e) => {
+                              if (input.zod instanceof z.ZodNumber) {
+                                const numericValue = Number(e.target.value)
+                                if (!isNaN(numericValue)) {
+                                  field.onChange(numericValue)
+                                }
+                              } else {
+                                field.onChange(e.target.value)
+                              }
+                            }}
+
+                            // onChange={(e) => {
+                            //   const amount = Number(e.target.value)
+                            //   input.setter && input.setter(amount)
+                            // }}
                           />
                         ) : input.type === 'switch' ? (
                           <Switch
@@ -171,6 +191,7 @@ export default function CustomForm<T extends Object>({
                               min={input.sliderSettings?.min ?? 0}
                               step={input.sliderSettings?.step ?? 1}
                               onValueChange={(newValue: number[]) => {
+                                // TODO: use setter instead
                                 setSliderValue(newValue)
                                 form.setValue(input.key as string, newValue[0])
                               }}
