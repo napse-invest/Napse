@@ -23,7 +23,8 @@ import { z } from 'zod'
 const defaultSpace: BaseNapseSpace = {
   name: 'My Space',
   description: 'My Space Description',
-  exchangeAccount: '7bdd866e-f2a2-4ea9-a01e-02ddb77a80fe'
+  exchangeAccount: '7bdd866e-f2a2-4ea9-a01e-02ddb77a80fe',
+  testing: true
 }
 export default function CreateClusterDialog({
   clusters,
@@ -71,9 +72,9 @@ export default function CreateClusterDialog({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[450px]">
         <DialogHeader>
-          <DialogTitle>Add a new Cluster</DialogTitle>
+          <DialogTitle>Add a new Bot</DialogTitle>
           <DialogDescription>
-            The cluster will tell to the fleet how to manage bots.
+            Theses settings will tell to the fleet how to manage the bot
           </DialogDescription>
         </DialogHeader>
         <div className="grid grid-cols-5">

@@ -17,6 +17,7 @@ export interface BaseNapseSpace {
   name: string
   description: string
   exchangeAccount: string
+  testing: boolean
 }
 
 export interface NapseSpace extends BaseNapseSpace {
