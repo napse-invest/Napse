@@ -209,9 +209,9 @@ export default function CreateFleetDialog({
                 </CarouselItem>
                 <CarouselItem>
                   <DialogHeader className="">
-                    <DialogTitle>Add clusters to your fleet</DialogTitle>
+                    <DialogTitle>Add bots to your fleet</DialogTitle>
                     <DialogDescription>
-                      Clusters will enable fleets to manage bots.
+                      Fleet will manage your bots.
                     </DialogDescription>
                   </DialogHeader>
 

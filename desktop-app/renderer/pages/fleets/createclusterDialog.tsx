@@ -72,9 +72,9 @@ export default function CreateClusterDialog({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[450px]">
         <DialogHeader>
-          <DialogTitle>Add a new Cluster</DialogTitle>
+          <DialogTitle>Add a new Bot</DialogTitle>
           <DialogDescription>
-            The cluster will tell to the fleet how to manage bots.
+            Theses settings will tell to the fleet how to manage the bot
           </DialogDescription>
         </DialogHeader>
         <div className="grid grid-cols-5">
