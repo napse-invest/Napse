@@ -23,7 +23,8 @@ import { z } from 'zod'
 const defaultSpace: BaseNapseSpace = {
   name: 'My Space',
   description: 'My Space Description',
-  exchangeAccount: '7bdd866e-f2a2-4ea9-a01e-02ddb77a80fe'
+  exchangeAccount: '7bdd866e-f2a2-4ea9-a01e-02ddb77a80fe',
+  testing: true
 }
 export default function CreateClusterDialog({
   clusters,
