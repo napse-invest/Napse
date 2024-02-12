@@ -22,7 +22,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import WalletBoard from '../../../components/custom/board/walletBoard'
 import OperationDataTable from '../../../components/custom/data-table/operationDataTable'
-import MoneyActionButtons from '../../../components/custom/moneyActionButtons'
+import SpaceMoneyActionButtons from '../../../components/custom/moneyActions/spaceMoneyActionButtons'
 import { fakeDashboardData } from '../../../lib/fakeDashboardData'
 
 import { format } from 'date-fns'
@@ -111,7 +111,7 @@ export default function Space(): JSX.Element {
               <TabsTrigger value="operations">Operations</TabsTrigger>
               <TabsTrigger value="fleets">Fleets</TabsTrigger>
             </TabsList>
-            <MoneyActionButtons />
+            <SpaceMoneyActionButtons space={space} />
           </div>
           <TabsContent value="dashboard" className="mt-8 flex flex-row gap-6">
             {/* Graph card */}
