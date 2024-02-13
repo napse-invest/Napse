@@ -4,6 +4,7 @@ import {
   spaceInvest,
   spacePossibleInvestments
 } from '@/api/spaces/spaces'
+import UnavailableMoneyActionButton from '@/components/custom/moneyActions/unavailableMoneyActionButton'
 import CustomForm from '@/components/custom/selectedObject/inputs'
 import { Button } from '@/components/ui/button'
 import {
@@ -21,10 +22,7 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { useToast } from '@/components/ui/use-toast'
-import {
-  ArrowDownOnSquareIcon,
-  ArrowUpOnSquareIcon
-} from '@heroicons/react/24/outline'
+import { ArrowDownOnSquareIcon } from '@heroicons/react/24/outline'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import * as z from 'zod'
@@ -209,64 +207,7 @@ export default function SpaceMoneyActionButtons({
           </Dialog>
         </div>
       )}
-      {!space.testing && (
-        <div className="flex flex-row gap-4">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => {
-                      toast({
-                        title: 'Withdraw real money',
-                        description: 'You cannot withdraw real money yet.',
-                        variant: 'destructive'
-                      })
-                    }}
-                  >
-                    <ArrowDownOnSquareIcon
-                      className="h-6 w-6"
-                      strokeWidth={1.2}
-                    />
-                  </Button>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Deposit</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => {
-                      toast({
-                        title: 'Withdraw real money',
-                        description: 'You cannot withdraw real money yet.',
-                        variant: 'destructive'
-                      })
-                    }}
-                  >
-                    <ArrowUpOnSquareIcon
-                      className="h-6 w-6"
-                      strokeWidth={1.2}
-                    />
-                  </Button>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Withdraw</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-      )}
+      {!space.testing && <UnavailableMoneyActionButton />}
     </>
   )
 }
