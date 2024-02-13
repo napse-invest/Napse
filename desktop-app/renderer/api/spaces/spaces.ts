@@ -76,28 +76,28 @@ export async function createSpace(
   return response as AxiosResponse<NapseSpace>
 }
 
-// Investments related
-export interface Investment {
+// Operation related
+export interface Operation {
   ticker: string
   amount: number
 }
 export async function spacePossibleInvestments(
   searchParams: ReturnType<typeof useSearchParams>,
   space: RetrievedNapseSpace
-): Promise<AxiosResponse<Investment[]>> {
+): Promise<AxiosResponse<Operation[]>> {
   const response = await request(
     searchParams,
     'GET',
     `/api/space/${space.uuid}/invest/`
   )
-  return response as AxiosResponse<Investment[]>
+  return response as AxiosResponse<Operation[]>
 }
 
 export async function spaceInvest(
   searchParams: ReturnType<typeof useSearchParams>,
   space: RetrievedNapseSpace,
-  investment: Investment
-): Promise<AxiosResponse<Investment>> {
+  investment: Operation
+): Promise<AxiosResponse<Operation>> {
   const formated_investment = convertInterfaceToSnakeCaseDict(investment)
   console.log('investment', investment)
   console.log('formated_investment', formated_investment)
@@ -107,5 +107,5 @@ export async function spaceInvest(
     `/api/space/${space.uuid}/invest/`,
     formated_investment
   )
-  return response as AxiosResponse<Investment>
+  return response as AxiosResponse<Operation>
 }

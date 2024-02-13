@@ -39,6 +39,7 @@ export default function UnavailableMoneyActionButton({}: {}): JSX.Element {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
+
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
