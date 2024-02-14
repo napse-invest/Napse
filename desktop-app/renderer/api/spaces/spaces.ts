@@ -76,7 +76,7 @@ export async function createSpace(
   return response as AxiosResponse<NapseSpace>
 }
 
-// Operation related
+// Invest related
 export interface Operation {
   ticker: string
   amount: number
@@ -98,14 +98,40 @@ export async function spaceInvest(
   space: RetrievedNapseSpace,
   investment: Operation
 ): Promise<AxiosResponse<Operation>> {
-  const formated_investment = convertInterfaceToSnakeCaseDict(investment)
-  console.log('investment', investment)
-  console.log('formated_investment', formated_investment)
+  const formated_operation = convertInterfaceToSnakeCaseDict(investment)
   const response = await request(
     searchParams,
     'POST',
     `/api/space/${space.uuid}/invest/`,
-    formated_investment
+    formated_operation
+  )
+  return response as AxiosResponse<Operation>
+}
+
+// Withdraw related
+export async function spacePossibleWithdraws(
+  searchParams: ReturnType<typeof useSearchParams>,
+  space: RetrievedNapseSpace
+): Promise<AxiosResponse<Operation[]>> {
+  const response = await request(
+    searchParams,
+    'GET',
+    `/api/space/${space.uuid}/withdraw/`
+  )
+  return response as AxiosResponse<Operation[]>
+}
+
+export async function spaceWithdraw(
+  searchParams: ReturnType<typeof useSearchParams>,
+  space: RetrievedNapseSpace,
+  investment: Operation
+): Promise<AxiosResponse<Operation>> {
+  const formated_operation = convertInterfaceToSnakeCaseDict(investment)
+  const response = await request(
+    searchParams,
+    'POST',
+    `/api/space/${space.uuid}/withdraw/`,
+    formated_operation
   )
   return response as AxiosResponse<Operation>
 }

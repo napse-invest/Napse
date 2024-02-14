@@ -1,13 +1,12 @@
 import {
-  Operation,
   RetrievedNapseSpace,
-  spacePossibleInvestments
+  spaceInvest,
+  spacePossibleInvestments,
+  spacePossibleWithdraws,
+  spaceWithdraw
 } from '@/api/spaces/spaces'
 import OperationMoneyActionButton from '@/components/custom/moneyActions/moneyActionButtons'
 import UnavailableMoneyActionButton from '@/components/custom/moneyActions/unavailableMoneyActionButton'
-import { useToast } from '@/components/ui/use-toast'
-import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
 import * as z from 'zod'
 
 const InvestmentSchema = z.object({
@@ -23,39 +22,17 @@ export default function SpaceMoneyActionButtons({
 }: {
   space: RetrievedNapseSpace
 }): JSX.Element {
-  const { toast } = useToast()
-  const searchParams = useSearchParams()
-  const [possibleInvestments, setPossibleInvestments] = useState<Operation[]>(
-    []
-  )
-  const [selectedTicker, setSelectedTicker] = useState<string>('')
-
-  useEffect(() => {
-    const fetchPossibleInvestments = async () => {
-      try {
-        const response = await spacePossibleInvestments(searchParams, space)
-        setPossibleInvestments(response.data)
-      } catch (error) {
-        console.error(error)
-        setPossibleInvestments([])
-      }
-    }
-    if (searchParams.get('server')) {
-      fetchPossibleInvestments()
-    }
-  }, [searchParams, space])
-
-  const PossibleInvestmentTickerSelection = possibleInvestments.reduce(
-    (obj, item) => {
-      obj[item.ticker] = item.ticker
-      return obj
-    },
-    {} as { [key: string]: string }
-  )
-
   return (
     <>
-      {space.testing && <OperationMoneyActionButton />}
+      {space.testing && (
+        <OperationMoneyActionButton<RetrievedNapseSpace>
+          object={space}
+          getPossibleInvestmentsCallback={spacePossibleInvestments}
+          postInvestmentCallback={spaceInvest}
+          getPossibleWithdrawCallback={spacePossibleWithdraws}
+          postWithdrawCallback={spaceWithdraw}
+        />
+      )}
       {!space.testing && <UnavailableMoneyActionButton />}
     </>
   )

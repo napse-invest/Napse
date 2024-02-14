@@ -9,6 +9,8 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
+import { DialogClose } from '@radix-ui/react-dialog'
+
 import {
   Tooltip,
   TooltipContent,
@@ -21,6 +23,7 @@ import { AxiosResponse } from 'axios'
 import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import * as z from 'zod'
+import { useOperationContext } from './operationContext'
 
 const OperationSchema = z.object({
   ticker: z
@@ -33,20 +36,16 @@ const OperationSchema = z.object({
 interface ObjectWithName extends Object {
   name: string
 }
-interface getProps<T extends ObjectWithName> {
-  (
-    searchParams: ReadonlyURLSearchParams,
-    object: T
-  ): Promise<AxiosResponse<Operation[]>>
-}
 
-interface postProps<T extends ObjectWithName> {
-  (
-    searchParams: ReadonlyURLSearchParams,
-    object: T,
-    operation: Operation
-  ): Promise<AxiosResponse<Operation[]>>
-}
+type getCallbackType<T> = (
+  searchParams: ReadonlyURLSearchParams,
+  object: T
+) => Promise<AxiosResponse<Operation[], any>>
+type postCallbackType<T> = (
+  searchParams: ReadonlyURLSearchParams,
+  object: T,
+  investment: Operation
+) => Promise<AxiosResponse<Operation, any>>
 
 export function InvestMoneyActionButton<T extends ObjectWithName>({
   object,
@@ -54,8 +53,8 @@ export function InvestMoneyActionButton<T extends ObjectWithName>({
   postInvestmentCallback
 }: {
   object: T
-  getPossibleInvestmentsCallback: getProps<T>
-  postInvestmentCallback: postProps<T>
+  getPossibleInvestmentsCallback: getCallbackType<T>
+  postInvestmentCallback: postCallbackType<T>
 }): JSX.Element {
   const { toast } = useToast()
   const searchParams = useSearchParams()
@@ -63,6 +62,7 @@ export function InvestMoneyActionButton<T extends ObjectWithName>({
     []
   )
   const [selectedTicker, setSelectedTicker] = useState<string>('')
+  const { setTriggerRefresh } = useOperationContext()
 
   useEffect(() => {
     const fetchPossibleInvestments = async () => {
@@ -155,6 +155,11 @@ export function InvestMoneyActionButton<T extends ObjectWithName>({
                 newInvestment
               )
               console.log('response::', response)
+              if (response.status === 200) {
+                // Trigger space refresh
+                setTriggerRefresh((prev) => !prev)
+              }
+
               toast({
                 title: 'Investment',
                 description: 'You have invested money !'
@@ -167,6 +172,7 @@ export function InvestMoneyActionButton<T extends ObjectWithName>({
                 variant: 'destructive'
               })
             }
+            document.getElementById('close-invest-button')?.click()
           }}
           buttonDescription="Done"
         />
@@ -180,6 +186,7 @@ export function InvestMoneyActionButton<T extends ObjectWithName>({
             : ''}
         </DialogDescription>
       </DialogContent>
+      <DialogClose id="close-invest-button" />
     </Dialog>
   )
 }
@@ -190,8 +197,8 @@ export function WithdrawMoneyActionButton<T extends ObjectWithName>({
   postWithdrawCallback
 }: {
   object: T
-  getPossibleWithdrawCallback: getProps<T>
-  postWithdrawCallback: postProps<T>
+  getPossibleWithdrawCallback: getCallbackType<T>
+  postWithdrawCallback: postCallbackType<T>
 }): JSX.Element {
   return (
     <Dialog>
@@ -227,19 +234,31 @@ export function WithdrawMoneyActionButton<T extends ObjectWithName>({
   )
 }
 
-export default function OperationMoneyActionButton<
-  T extends ObjectWithName
->({} // object,
-// getPossibleInvestmentsCallback,
-// postInvestmentCallback,
-// getPossibleWithdrawCallback,
-// postWithdrawCallback
-: {
-  // object: T
-  // getPossibleInvestmentsCallback: getProps<T>
-  // postInvestmentCallback: postProps<T>
-  // getPossibleWithdrawCallback: getProps<T>
-  // postWithdrawCallback: postProps<T>
+export default function OperationMoneyActionButton<T extends ObjectWithName>({
+  object,
+  getPossibleInvestmentsCallback,
+  postInvestmentCallback,
+  getPossibleWithdrawCallback,
+  postWithdrawCallback
+}: {
+  object: T
+  getPossibleInvestmentsCallback: getCallbackType<T>
+  postInvestmentCallback: postCallbackType<T>
+  getPossibleWithdrawCallback: getCallbackType<T>
+  postWithdrawCallback: postCallbackType<T>
 }): JSX.Element {
-  return <></>
+  return (
+    <div className="flex flex-row gap-4">
+      <InvestMoneyActionButton
+        object={object}
+        getPossibleInvestmentsCallback={getPossibleInvestmentsCallback}
+        postInvestmentCallback={postInvestmentCallback}
+      />
+      <WithdrawMoneyActionButton
+        object={object}
+        getPossibleWithdrawCallback={getPossibleWithdrawCallback}
+        postWithdrawCallback={postWithdrawCallback}
+      />
+    </div>
+  )
 }
