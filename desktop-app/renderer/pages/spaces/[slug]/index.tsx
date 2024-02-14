@@ -1,6 +1,7 @@
 import { Fleet, listFleet } from '@/api/fleets/fleets'
 import { Key, getCurrentKey } from '@/api/key/key'
 import { RetrievedNapseSpace, retrieveSpace } from '@/api/spaces/spaces'
+import { useOperationContext } from '@/components/custom/moneyActions/operationContext'
 import InfoPanelCard from '@/components/custom/panel/infoPanelCard'
 import ValuePanelCard from '@/components/custom/panel/valuePanelCard'
 import ContextHeader from '@/components/layout/contextHeader'
@@ -58,6 +59,7 @@ export default function Space(): JSX.Element {
 
   const [space, setSpace] = useState<RetrievedNapseSpace>()
   const [fleets, setFleets] = useState<Fleet[]>([])
+  const { triggerRefresh, setTriggerRefresh } = useOperationContext()
 
   useEffect(() => {
     async function fetchSpace() {
@@ -87,7 +89,12 @@ export default function Space(): JSX.Element {
       fetchFleets()
       fetchCurrentKey({ setCurrentKey, searchParams })
     }
-  }, [spaceID, searchParams, router])
+
+    // Operation trigger
+    if (triggerRefresh) {
+      fetchSpace()
+    }
+  }, [spaceID, searchParams, router, triggerRefresh])
 
   if (!space) {
     // TODO: setup a squeleton or a loader
