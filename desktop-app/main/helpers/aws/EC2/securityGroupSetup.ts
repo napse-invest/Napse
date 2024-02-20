@@ -113,7 +113,7 @@ export default async function Main(
         }
       }
       try {
-        const ingress = await ec2Client.send(
+        await ec2Client.send(
           new AuthorizeSecurityGroupIngressCommand({
             GroupId: sg as string,
             IpPermissions: [
@@ -130,7 +130,6 @@ export default async function Main(
             ]
           })
         )
-        console.log(ingress)
       } catch (e) {
         console.log(e)
       }
