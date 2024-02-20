@@ -92,7 +92,7 @@ export default async function Main(
       if (!ingressRules) {
         throw new Error('No ingress rules found')
       }
-      // Revoke each ingress rule
+
       for (const rule of ingressRules) {
         try {
           const ipRangesRule = {
