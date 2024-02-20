@@ -26,20 +26,8 @@ export default async function Main(
         RoleName: roleName
       })
     )
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'createIAMRole',
-      message: `Role ${roleName} created`,
-      success: true,
-      response: data
-    })
     return true
   } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'createIAMRole',
-      message: `Role ${roleName} failed to create`,
-      success: false,
-      error: err
-    })
     return false
   }
 }

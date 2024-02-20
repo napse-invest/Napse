@@ -116,7 +116,7 @@ export default function CustomForm<T extends Object>({
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select a verified email to display" />
+                            <SelectValue placeholder={field.value} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>

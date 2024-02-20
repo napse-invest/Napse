@@ -43,17 +43,5 @@ export default async function Main(
       }
       isTruncated = listObjectsResponse.IsTruncated
     }
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'emptyBucket',
-      message: `Bucket ${bucketName} emptied`,
-      success: true
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'emptyBucket',
-      message: `Bucket ${bucketName} failed to empty`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 }

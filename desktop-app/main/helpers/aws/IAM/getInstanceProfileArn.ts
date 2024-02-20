@@ -24,30 +24,11 @@ export default async function Main(
         InstanceProfileName: instanceProfileName
       })
     )
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'getInstanceProfileArn',
-      message: `Instance profile ${instanceProfileName} found`,
-      success: true,
-      response: data
-    })
     if (!data.InstanceProfile) {
-      mainWindow.webContents.send('AWSChannel', {
-        from: 'getInstanceProfileArn',
-        message: `Instance profile ${instanceProfileName} not found`,
-        success: false,
-        error: 'InstanceProfile not found'
-      })
       throw new Error('InstanceProfile not found')
     }
     arn = data.InstanceProfile.Arn
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'getInstanceProfileArn',
-      message: `Instance profile ${instanceProfileName} failed to find`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
   if (!arn) {
     throw new Error(
       'Function getInstanceProfileArn: arn is null. This should not happen'

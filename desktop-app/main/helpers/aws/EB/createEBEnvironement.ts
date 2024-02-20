@@ -105,18 +105,5 @@ export default async function Main(
 
   try {
     const data = await client.send(new CreateEnvironmentCommand(params))
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'createEBEnvironment',
-      message: `Environment ${environmentName} created`,
-      success: true,
-      response: data
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'createEBEnvironment',
-      message: `Environment ${environmentName} failed to create`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 }

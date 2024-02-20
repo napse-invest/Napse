@@ -20,21 +20,6 @@ export default async function Main(
   })
   await detachPoliciesFromRole(secrets, mainWindow, roleName)
   try {
-    const data = await client.send(
-      new DeleteRoleCommand({ RoleName: roleName })
-    )
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'deleteIAMRole',
-      message: `Role ${roleName} deleted`,
-      success: true,
-      response: data
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'deleteIAMRole',
-      message: `Role ${roleName} failed to delete`,
-      success: false,
-      error: err
-    })
-  }
+    await client.send(new DeleteRoleCommand({ RoleName: roleName }))
+  } catch (err) {}
 }

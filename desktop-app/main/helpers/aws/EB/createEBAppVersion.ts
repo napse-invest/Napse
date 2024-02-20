@@ -32,18 +32,5 @@ export default async function Main(
         }
       })
     )
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'createEBAppVersion',
-      message: `Application version ${newVersionLabel} created for ${applicationName}`,
-      success: true,
-      response: data
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'createEBAppVersion',
-      message: `Application version ${newVersionLabel} failed to create for ${applicationName}`,
-      success: false,
-      response: err
-    })
-  }
+  } catch (err) {}
 }

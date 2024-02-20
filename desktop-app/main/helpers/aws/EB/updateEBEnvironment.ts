@@ -32,18 +32,5 @@ export default async function Main(
         OptionSettings: OptionSettings
       })
     )
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'updateEBEnvironment',
-      message: `Environment ${environmentName} updated`,
-      success: true,
-      response: data
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'updateEBEnvironment',
-      message: `Environment ${environmentName} failed to update`,
-      success: false,
-      response: err
-    })
-  }
+  } catch (err) {}
 }

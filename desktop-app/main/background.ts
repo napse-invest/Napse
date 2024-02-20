@@ -4,6 +4,7 @@ import {
   createWindow,
   deployToAWS,
   fullCleanupAWS,
+  syncConfig,
   updateAWSApp
 } from './helpers'
 
@@ -38,6 +39,12 @@ if (isProd) {
   ipcMain.handle('updateAWS', async (event, args) => {
     if (args.secrets) {
       return await updateAWSApp(args.secrets, mainWindow)
+    }
+  })
+
+  ipcMain.handle('sync-config', async (event, args) => {
+    if (args.secrets) {
+      return await syncConfig(args.secrets, mainWindow)
     }
   })
 

@@ -10,6 +10,7 @@ import {
   getNapseVersion,
   unzipPackage,
   updateEBEnvironment,
+  updateStatus,
   uploadFileToBucket
 } from 'main/helpers'
 import path from 'path'
@@ -22,6 +23,8 @@ export default async function Main(
   },
   mainWindow: BrowserWindow
 ) {
+  updateStatus(mainWindow, 'update', 'START')
+  updateStatus(mainWindow, 'update', 'waitForEbEnvToBeReady')
   const envs = await getEnvironments(
     secrets,
     mainWindow,
@@ -38,29 +41,34 @@ export default async function Main(
     }
   }
   if (!napseIsDeployed) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'updateAWSApp',
-      message: 'Napse is not deployed',
-      success: false
-    })
+    updateStatus(
+      mainWindow,
+      'update',
+      'waitForEbEnvToBeReady',
+      'Napse is not deployed. Please deploy Napse first.'
+    )
     return
   }
+  updateStatus(mainWindow, 'update', 'getNapseVersion')
   const version = await getNapseVersion()
+  updateStatus(mainWindow, 'update', 'downloadAWSDeployPackage')
   const homeDir = process.env.HOME || process.env.USERPROFILE
   if (!homeDir) throw new Error('No root path found')
-  const destDir = path.join(homeDir, '.napse', `deploy-aws-${version}.zip`)
+  const destDir = path.join(
+    homeDir,
+    process.env.NODE_ENV === 'production' ? '.napse' : '.napse-dev',
+    `deploy-aws-${version}.zip`
+  )
 
   if (fs.existsSync(destDir)) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'updateAWSApp',
-      message: `deploy-aws-${version}.zip already downloaded`,
-      success: true
-    })
+    updateStatus(mainWindow, 'update', 'END')
     return
   }
 
   await downloadAWSDeployPackage(mainWindow, version)
+  updateStatus(mainWindow, 'update', 'unzipPackage')
   await unzipPackage(`deploy-aws-${version}.zip`)
+  updateStatus(mainWindow, 'update', 'uploadFileToBucket1')
   await uploadFileToBucket(
     secrets,
     mainWindow,
@@ -68,6 +76,7 @@ export default async function Main(
     'config.json',
     EB_BUCKET_NAME
   )
+  updateStatus(mainWindow, 'update', 'uploadFileToBucket2')
   await uploadFileToBucket(
     secrets,
     mainWindow,
@@ -75,6 +84,7 @@ export default async function Main(
     `deploy-${version}.zip`,
     EB_BUCKET_NAME
   )
+  updateStatus(mainWindow, 'update', 'createEBAppVersion')
   await createEBAppVersion(
     secrets,
     mainWindow,
@@ -82,6 +92,7 @@ export default async function Main(
     EB_BUCKET_NAME,
     version
   )
+  updateStatus(mainWindow, 'update', 'updateEBEnvironment')
   await updateEBEnvironment(
     secrets,
     mainWindow,
@@ -89,4 +100,5 @@ export default async function Main(
     EB_ENV_NAME,
     version
   )
+  updateStatus(mainWindow, 'update', 'END')
 }

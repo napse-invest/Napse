@@ -28,18 +28,7 @@ export default async function Main(
         InstanceProfileName: instanceProfileName
       })
     )
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'createInstanceProfile',
-      message: `Instance profile ${instanceProfileName} created`,
-      success: true,
-      response: data
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 
   try {
     const data = await iamClient.send(
@@ -48,18 +37,5 @@ export default async function Main(
         RoleName: roleName
       })
     )
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'addRoleToInstanceProfile',
-      message: `Role ${roleName} added to instance profile ${instanceProfileName}`,
-      success: true,
-      response: data
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'addRoleToInstanceProfile',
-      message: `Role ${roleName} failed to add to instance profile ${instanceProfileName}`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 }

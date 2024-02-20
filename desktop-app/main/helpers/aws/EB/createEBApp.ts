@@ -29,18 +29,5 @@ export default async function Main(
 
   try {
     const data = await client.send(new CreateApplicationCommand(params))
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'createEBApp',
-      message: `Application ${ApplicationName} created`,
-      success: true,
-      response: data
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'createEBApp',
-      message: `Application ${ApplicationName} failed to create`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 }

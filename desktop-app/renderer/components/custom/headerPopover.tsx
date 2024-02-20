@@ -22,7 +22,14 @@ import { Close } from '@radix-ui/react-popover'
 import { Settings } from 'lucide-react'
 import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation'
 import { NextRouter, useRouter } from 'next/router'
-import { Dispatch, SetStateAction, useState } from 'react'
+import {
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import * as z from 'zod'
 import AllInputs from './selectedObject/inputs'
 
@@ -48,14 +55,10 @@ async function tryConnection(
           <br />
           <br />
           If the problem persists, check if the server is running.
-          {server.id && (
+          {server.name && (
             <Button
               onClick={() => {
-                Object.values(getServers()).map((serv) => {
-                  if (serv.id === server.id.toString()) {
-                    removeServer(serv.id)
-                  }
-                })
+                removeServer(server.name)
                 setServers(getServers())
                 router
                   .push(
@@ -86,6 +89,23 @@ async function tryConnection(
     return false
   }
 }
+function useOutsideClick(
+  ref: MutableRefObject<HTMLElement | null>,
+  callback: () => void
+) {
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        callback()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [ref, callback])
+}
 
 export default function ServerPopover(): JSX.Element {
   const { toast } = useToast()
@@ -94,6 +114,11 @@ export default function ServerPopover(): JSX.Element {
     url: 'http://localhost:8000',
     token: 'xxxxxxxx.xxxxxx.xxxxxxxxx'
   }
+  const popoverRef = useRef(null)
+
+  // useOutsideClick(popoverRef, () => {
+  //   setOpen(false)
+  // })
 
   const [servers, setServers] = useState(getServers())
   const router = useRouter()
@@ -111,7 +136,10 @@ export default function ServerPopover(): JSX.Element {
           Servers
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="flex w-80 flex-col items-center">
+      <PopoverContent
+        className="flex w-80 flex-col items-center"
+        ref={popoverRef}
+      >
         <div className="flex flex-col items-stretch space-y-3">
           {Object.values(servers).map((server, index) => {
             return (
@@ -135,7 +163,7 @@ export default function ServerPopover(): JSX.Element {
                             '/exchangeAccounts/',
                             null,
                             {
-                              server: server.id,
+                              server: server.name,
                               exchangeAccount: '',
                               space: '',
                               fleet: '',
@@ -152,9 +180,9 @@ export default function ServerPopover(): JSX.Element {
                         .push(
                           standardUrlPartial(
                             `/servers/`,
-                            server.id,
+                            server.name,
                             {
-                              server: server.id,
+                              server: server.name,
                               exchangeAccount: '',
                               space: '',
                               fleet: '',
@@ -167,7 +195,7 @@ export default function ServerPopover(): JSX.Element {
                           console.error(err)
                         })
                     } else if (currentURL.startsWith('/keys/')) {
-                      if (searchParams.get('server') === server.id) {
+                      if (searchParams.get('server') === server.name) {
                         document.getElementById('close-popover')?.click()
                         return
                       }
@@ -175,9 +203,9 @@ export default function ServerPopover(): JSX.Element {
                         .push(
                           standardUrlPartial(
                             `/servers/`,
-                            server.id,
+                            server.name,
                             {
-                              server: server.id,
+                              server: server.name,
                               exchangeAccount: '',
                               space: '',
                               fleet: '',
@@ -196,7 +224,7 @@ export default function ServerPopover(): JSX.Element {
                             `/${urlBase}/`,
                             urlId,
                             {
-                              server: server.id,
+                              server: server.name,
                               exchangeAccount: '',
                               space: '',
                               fleet: '',
@@ -231,9 +259,9 @@ export default function ServerPopover(): JSX.Element {
                       .push(
                         standardUrlPartial(
                           '/servers/',
-                          server.id,
+                          server.name,
                           {
-                            server: server.id,
+                            server: server.name,
                             exchangeAccount: '',
                             space: '',
                             fleet: '',
@@ -300,7 +328,7 @@ export default function ServerPopover(): JSX.Element {
                   }
                   if (
                     !(await tryConnection(
-                      { ...newServer, id: '' },
+                      { ...newServer, name: '' },
                       toast,
                       setServers,
                       router,
@@ -309,12 +337,12 @@ export default function ServerPopover(): JSX.Element {
                   )
                     return
 
-                  const id = addServer(
+                  const name = addServer(
                     newServer.name,
                     newServer.url,
                     newServer.token
                   )
-                  if (!id && id !== 0) {
+                  if (!name) {
                     console.log('Unable to add server')
                     return
                   }
@@ -323,9 +351,9 @@ export default function ServerPopover(): JSX.Element {
                     .push(
                       standardUrlPartial(
                         '/servers/',
-                        id.toString(),
+                        name,
                         {
-                          server: id.toString(),
+                          server: name,
                           exchangeAccount: '',
                           space: '',
                           fleet: '',
@@ -344,11 +372,7 @@ export default function ServerPopover(): JSX.Element {
                       <ToastAction
                         altText="Remove"
                         onClick={() => {
-                          Object.values(getServers()).map((server) => {
-                            if (server.id === id?.toString()) {
-                              removeServer(server.id)
-                            }
-                          })
+                          removeServer(name)
                           setServers(getServers())
                           router
                             .push(

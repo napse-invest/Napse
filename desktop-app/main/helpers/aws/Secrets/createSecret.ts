@@ -24,7 +24,7 @@ export default async function Main(
   })
 
   try {
-    const data = await client.send(
+    await client.send(
       new CreateSecretCommand({
         Name: secretName,
         Description: sectretDescription,
@@ -32,18 +32,5 @@ export default async function Main(
         ForceOverwriteReplicaSecret: true
       })
     )
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'createSecret',
-      message: `Secret ${secretName} created`,
-      success: true,
-      response: data
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'createSecret',
-      message: `Secret ${secretName} failed to create`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 }

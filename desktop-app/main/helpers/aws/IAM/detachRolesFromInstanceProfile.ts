@@ -37,12 +37,5 @@ export default async function Main(
         })
       )
     }
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'detachRoleFromInstanceProfile',
-      message: `Failed to detach role from instance profile ${instanceProfileName}`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 }

@@ -28,18 +28,5 @@ export default async function Main(
 
   try {
     const data = await client.send(new TerminateEnvironmentCommand(params))
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'deleteEBEnvironment',
-      message: `Environment ${environmentName} deleted`,
-      success: true,
-      response: data
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'deleteEBEnvironment',
-      message: `Environment ${environmentName} failed to delete`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 }

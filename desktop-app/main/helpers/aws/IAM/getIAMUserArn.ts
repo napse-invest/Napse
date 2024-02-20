@@ -18,14 +18,7 @@ export default async function Main(
   })
 
   const command = new GetCallerIdentityCommand({})
-
   const stsData = await stsClient.send(command)
   const arn = stsData.Arn
-  mainWindow.webContents.send('AWSChannel', {
-    from: 'getIAMUserArn',
-    message: `User ARN: ${arn}`,
-    success: true,
-    response: arn
-  })
   return arn
 }

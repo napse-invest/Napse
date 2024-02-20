@@ -24,30 +24,12 @@ export default async function Main(
         RoleName: role
       })
     )
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'getIAMRoleArn',
-      message: `Role ${role} found`,
-      success: true,
-      response: data
-    })
+
     if (!data.Role) {
-      mainWindow.webContents.send('AWSChannel', {
-        from: 'getIAMRoleArn',
-        message: `Role ${role} not found`,
-        success: false,
-        error: 'Role not found'
-      })
       throw new Error('Role not found')
     }
     arn = data.Role.Arn
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'getIAMRoleArn',
-      message: `Role ${role} failed to find`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
   if (!arn) {
     throw new Error(
       'Function getIAMRoleArn: arn is null. This should not happen'

@@ -35,12 +35,5 @@ export default async function Main(
         })
       )
     }
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'detachPoliciesFromRole',
-      message: `Failed to detach policies from role ${roleName}`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 }

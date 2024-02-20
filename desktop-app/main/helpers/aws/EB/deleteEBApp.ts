@@ -27,14 +27,5 @@ export default async function Main(
 
   try {
     const data = await client.send(new DeleteApplicationCommand(params))
-    mainWindow.webContents.send('AWSChannel', {
-      success: true,
-      response: data
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 }

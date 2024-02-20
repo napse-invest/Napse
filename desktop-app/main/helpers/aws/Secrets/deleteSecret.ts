@@ -22,24 +22,11 @@ export default async function Main(
   })
 
   try {
-    const data = await client.send(
+    await client.send(
       new DeleteSecretCommand({
         SecretId: secretARN,
         ForceDeleteWithoutRecovery: true
       })
     )
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'deleteSecret',
-      message: `Secret ${secretARN} deleted`,
-      success: true,
-      response: data
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'deleteSecret',
-      message: `Secret ${secretARN} failed to delete`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 }

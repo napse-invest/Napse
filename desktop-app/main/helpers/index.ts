@@ -5,6 +5,7 @@ import deleteEBApp from './aws/EB/deleteEBApp'
 import deleteEBEnvironment from './aws/EB/deleteEBEnvironment'
 import getEnvironments from './aws/EB/getEnvironments'
 import updateEBEnvironment from './aws/EB/updateEBEnvironment'
+import securityGroupSetup from './aws/EC2/securityGroupSetup'
 import attachIAMPolicy from './aws/IAM/attachIAMPolicy'
 import connectRoleToInstanceProfile from './aws/IAM/connectRoleToInstanceProfile'
 import createIAMRole from './aws/IAM/createIAMRole'
@@ -19,6 +20,7 @@ import downloadAWSDeployPackage from './aws/Napse/downloadAWSDeployPackage'
 import getNapseVersion from './aws/Napse/getNapseVersion'
 import createBucket from './aws/S3/createBucket'
 import deleteBucket from './aws/S3/deleteBucket'
+import downloadBucket from './aws/S3/downloadBucket'
 import emptyBucket from './aws/S3/emptyBucket'
 import getBucketURL from './aws/S3/getBucketURL'
 import uploadFileToBucket from './aws/S3/uploadFileToBucket'
@@ -35,11 +37,12 @@ import deployToAWS, {
   IAM_ROLE_NAME_SERVICE_ROLE
 } from './aws/deployToAWS'
 import fullCleanupAWS from './aws/fullCleanupAWS'
+import syncConfig from './aws/syncConfig'
 import updateAWSApp from './aws/updateAWSApp'
 import createWindow from './create-window'
 import deleteFilesAndDirectories from './utils/deleteFilesAndDirectories'
 import unzipPackage from './utils/unzipPackage'
-
+import updateStatus from './utils/updateStatus'
 export {
   // Constants
   EB_APP_DESCRIPTION,
@@ -71,6 +74,7 @@ export {
   detachPoliciesFromRole,
   detachRoleFromInstanceProfile,
   downloadAWSDeployPackage,
+  downloadBucket,
   emptyBucket,
   fullCleanupAWS,
   getBucketURL,
@@ -79,8 +83,11 @@ export {
   getIAMUserArn,
   getInstanceProfileArn,
   getNapseVersion,
+  securityGroupSetup,
+  syncConfig,
   unzipPackage,
   updateAWSApp,
   updateEBEnvironment,
+  updateStatus,
   uploadFileToBucket
 }

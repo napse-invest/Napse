@@ -24,18 +24,5 @@ export default async function Main(
         Bucket: bucketName
       })
     )
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'createBucket',
-      message: `Bucket ${bucketName} created`,
-      success: true,
-      response: data
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'createBucket',
-      message: `Bucket ${bucketName} failed to create`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 }

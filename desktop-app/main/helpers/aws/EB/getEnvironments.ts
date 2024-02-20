@@ -29,19 +29,6 @@ export default async function Main(
         EnvironmentNames: [environmentName]
       })
     )
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'getEnvironments',
-      message: `Environments for ${applicationName} retrieved. (${info})`,
-      success: true,
-      response: data
-    })
     return data.Environments
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'getEnvironments',
-      message: `Environments for ${applicationName} failed to retrieve. (${info})`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 }

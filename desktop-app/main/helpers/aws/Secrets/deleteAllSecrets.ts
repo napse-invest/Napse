@@ -29,18 +29,5 @@ export default async function Main(
       if (!secret.ARN) throw new Error('No ARN found')
       deleteSecret(secrets, mainWindow, secret.ARN)
     }
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'deleteAllSecrets',
-      message: `All secrets deleted`,
-      success: true,
-      response: data
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'deleteAllSecrets',
-      message: `Failed to delete all secrets`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 }

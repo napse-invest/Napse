@@ -1,7 +1,6 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import * as fs from 'fs'
 import path from 'path'
-
 export default async function Main(
   secrets: {
     AWS__API_TOKEN: string
@@ -10,9 +9,8 @@ export default async function Main(
   },
   mainWindow: Electron.BrowserWindow,
   fileName: string,
-  targetFileName: string,
   bucketName: string
-) {
+): Promise<boolean> {
   const S3client = new S3Client({
     region: secrets.AWS__REGION,
     credentials: {
@@ -30,14 +28,28 @@ export default async function Main(
   if (!fs.existsSync(destDir)) {
     fs.mkdirSync(destDir, { recursive: true })
   }
-  const fileContent = fs.readFileSync(path.join(destDir, fileName))
-  const params = {
-    Bucket: bucketName,
-    Key: targetFileName,
-    Body: fileContent
-  }
 
   try {
-    await S3client.send(new PutObjectCommand(params))
-  } catch (err) {}
+    const getObjectCommand = new GetObjectCommand({
+      Bucket: bucketName,
+      Key: fileName
+    })
+
+    const response = await S3client.send(getObjectCommand)
+
+    if (!response.Body) {
+      throw new Error('No response body')
+    }
+
+    const fullPath = path.join(destDir, fileName)
+    const fileStream = fs.createWriteStream(fullPath)
+
+    response.Body.transformToString().then((data) => {
+      fileStream.write(data)
+      fileStream.close()
+    })
+    return true
+  } catch (error) {
+    return false
+  }
 }

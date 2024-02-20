@@ -20,23 +20,10 @@ export default async function Main(
   })
   await detachRoleFromInstanceProfile(secrets, mainWindow, instanceProfileName)
   try {
-    const data = await client.send(
+    await client.send(
       new DeleteInstanceProfileCommand({
         InstanceProfileName: instanceProfileName
       })
     )
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'deleteInstanceProfile',
-      message: `Instance profile ${instanceProfileName} deleted`,
-      success: true,
-      response: data
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'deleteInstanceProfile',
-      message: `Instance profile ${instanceProfileName} failed to delete`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 }

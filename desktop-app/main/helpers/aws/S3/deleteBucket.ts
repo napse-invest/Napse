@@ -26,18 +26,5 @@ export default async function Main(
         Bucket: bucketName
       })
     )
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'deleteBucket',
-      message: `Bucket ${bucketName} deleted`,
-      success: true,
-      response: data
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'deleteBucket',
-      message: `Bucket ${bucketName} failed to delete`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 }

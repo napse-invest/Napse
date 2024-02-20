@@ -25,18 +25,5 @@ export default async function Main(
 
   try {
     const data = await iamClient.send(new AttachRolePolicyCommand(params))
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'attachIAMPolicy',
-      message: `Policy ${policyArn} attached to role ${roleName}`,
-      success: true,
-      response: data
-    })
-  } catch (err) {
-    mainWindow.webContents.send('AWSChannel', {
-      from: 'attachIAMPolicy',
-      message: `Policy ${policyArn} failed to attach to role ${roleName}`,
-      success: false,
-      error: err
-    })
-  }
+  } catch (err) {}
 }
