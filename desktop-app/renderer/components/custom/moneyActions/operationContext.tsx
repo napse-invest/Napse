@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useContext, useState } from 'react'
 
-const OperationContext = createContext<{
+export const OperationContext = createContext<{
   triggerRefresh: boolean
   setTriggerRefresh: React.Dispatch<React.SetStateAction<boolean>>
 }>({

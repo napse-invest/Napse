@@ -1,3 +1,5 @@
+'use client'
+
 import { Operation } from '@/api/spaces/spaces'
 import CustomForm from '@/components/custom/selectedObject/inputs'
 import { Button } from '@/components/ui/button'
@@ -21,9 +23,9 @@ import { useToast } from '@/components/ui/use-toast'
 import { ArrowDownOnSquareIcon } from '@heroicons/react/24/outline'
 import { AxiosResponse } from 'axios'
 import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import * as z from 'zod'
-import { useOperationContext } from './operationContext'
+import { OperationContext } from './operationContext'
 
 const OperationSchema = z.object({
   ticker: z
@@ -62,7 +64,7 @@ export function InvestMoneyActionButton<T extends ObjectWithName>({
     []
   )
   const [selectedTicker, setSelectedTicker] = useState<string>('')
-  const { setTriggerRefresh } = useOperationContext()
+  const { triggerRefresh, setTriggerRefresh } = useContext(OperationContext)
 
   useEffect(() => {
     const fetchPossibleInvestments = async () => {
@@ -144,6 +146,7 @@ export function InvestMoneyActionButton<T extends ObjectWithName>({
             }
           ]}
           onSubmit={async (values) => {
+            console.log('SUBMITTING')
             const newInvestment: Operation = {
               ticker: selectedTicker,
               amount: values.amount
@@ -157,7 +160,7 @@ export function InvestMoneyActionButton<T extends ObjectWithName>({
               console.log('response::', response)
               if (response.status === 200) {
                 // Trigger space refresh
-                setTriggerRefresh((prev) => !prev)
+                setTriggerRefresh(true)
               }
 
               toast({
