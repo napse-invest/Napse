@@ -1,3 +1,31 @@
+# [1.4.0](https://github.com/napse-invest/Napse/compare/v1.3.0...v1.4.0) (2024-01-05)
+
+
+### Bug Fixes
+
+* **breadcrum:** display now fleet & bot uuid ([fe33680](https://github.com/napse-invest/Napse/commit/fe336808e9dadf1e5dc4a4446581fff1b9baa350))
+* **forms:** fixed issues with form state, and changed them where ever they were ([158b9fc](https://github.com/napse-invest/Napse/commit/158b9fcbf9ce79fb62b1c0ba60220cf9bd23a42d))
+* **list:** end of list & create interfaces ([7df09e0](https://github.com/napse-invest/Napse/commit/7df09e0cb8fbccf1dfb19a19c160793f8ba0c96c))
+* **panelCard:** rework valuePanelCard and accept ReactNode for PanelCard's badge ([fb4383b](https://github.com/napse-invest/Napse/commit/fb4383bb798f76c53d19d9e94c1ecf395b6c394d))
+* **space:** add fleet list ([5a59144](https://github.com/napse-invest/Napse/commit/5a591447d157d6dc68c3eca028bbb59dcf34d7e8))
+* **space:** add invest & withdraw button ([5b69ea8](https://github.com/napse-invest/Napse/commit/5b69ea8c48757ad2d2bb0f50c28ce9fee0b84365))
+* **space:** adjustments ([7ef5c0e](https://github.com/napse-invest/Napse/commit/7ef5c0e80acd1703495a3d995ed9ac0cfa711366))
+* **space:** end of base space ([53f3c3a](https://github.com/napse-invest/Napse/commit/53f3c3a3895289efdc1ced41cb3a7b5b3d2b83b3))
+* **space:** finish space dashboard ([79f5cdb](https://github.com/napse-invest/Napse/commit/79f5cdb6b5c495271d1629a9dc3c971064c48966))
+* **space:** finish space tab ([5674645](https://github.com/napse-invest/Napse/commit/5674645c6c40eaefd5156efbefbafaaf524c943d))
+* **space:** setup detail and start graph ([781bfc7](https://github.com/napse-invest/Napse/commit/781bfc7b7e156b1a97bb9e6d50cbe525bc0bc117))
+* **space:** size diff on walletBoard ([65179d7](https://github.com/napse-invest/Napse/commit/65179d73365a6b89eb44786560ba68c7ed444d05))
+* **space:** work on space section rework ([9d48244](https://github.com/napse-invest/Napse/commit/9d482440e797289c3043a69af01fe5f42841d27c))
+* **tremor:** fix rounded-tremor-full value ([31ae34c](https://github.com/napse-invest/Napse/commit/31ae34cefe77ccd3f25f217534d6154ce44a0d9a))
+* **ux:** little improvements here and there ([b5ad53d](https://github.com/napse-invest/Napse/commit/b5ad53d008276a3a3c255668f9ac237a400fdf3e))
+* **ValuePanelCard:** badge can be undifined ([1741efe](https://github.com/napse-invest/Napse/commit/1741efecb6e9f38ae1ed3c961b9ea3fca35360c6))
+
+
+### Features
+
+* **exchanges:** create implemented ([2b14666](https://github.com/napse-invest/Napse/commit/2b14666cd0b44425672b254215cef0b16f05d967))
+* **layouts:** streamlined settings layout for all objects ([3408654](https://github.com/napse-invest/Napse/commit/34086547b79277761b33014d1bb7e2c3c0c727db))
+
 # [1.3.0](https://github.com/napse-invest/Napse/compare/v1.2.0...v1.3.0) (2023-10-16)
 
 
