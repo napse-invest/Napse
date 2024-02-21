@@ -136,6 +136,11 @@ const SATUS = {
       description: 'Updating the Elastic Beanstalk environment.',
       busy: true
     },
+    waitForEbEnvToBeReady2: {
+      description:
+        'Waiting for the Elastic Beanstalk environment to be ready. This may take a few minutes.',
+      busy: true
+    },
     END: {
       description: 'Update complete, happy trading!',
       busy: false

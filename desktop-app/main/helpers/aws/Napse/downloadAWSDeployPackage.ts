@@ -20,5 +20,13 @@ export default async function Main(
   if (fs.existsSync(path.join(destDir, `deploy-aws-${version}.zip`))) {
     return
   }
-  await download(mainWindow, url, { directory: destDir })
+  let downloaded = false
+  while (!downloaded) {
+    try {
+      await download(mainWindow, url, { directory: destDir })
+      downloaded = true
+    } catch (e) {
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+    }
+  }
 }

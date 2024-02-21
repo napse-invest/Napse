@@ -16,22 +16,31 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import { Slider } from '@/components/ui/slider'
 import { Switch } from '@/components/ui/switch'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 export interface InputType<T extends Object> {
   label: string
   key: keyof T
-  type: 'input' | 'switch' | 'select'
+  type: 'input' | 'switch' | 'select' | 'slider'
   zod: z.ZodTypeAny
   default?: string | number | boolean
   value?: string | number | boolean
   description?: string
+  placeholder?: string | number
   disabled?: boolean
-  possibilities?: string[]
+  sliderSettings?: {
+    min: number
+    max: number
+    step: number
+  }
+  // possibilities?: string[]
+  possibilities?: { [key: string]: string }
+  setter?: Dispatch<SetStateAction<any>>
 }
 
 function defaultValue(input: InputType<any>) {
@@ -96,6 +105,11 @@ export default function CustomForm<T extends Object>({
       )
     )
   }, [inputs, form])
+
+  const [sliderValue, setSliderValue] = useState([50])
+
+  const handleSliderChange = () => {}
+  console.log('inputs', inputs)
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
@@ -111,40 +125,80 @@ export default function CustomForm<T extends Object>({
                     <FormLabel>{input.label}</FormLabel>
                     {input.type === 'select' ? (
                       <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        // onValueChange={field.onChange}
+                        onValueChange={(newValue: string) => {
+                          input.setter ? input.setter(newValue) : null
+                          form.setValue(input.key as string, newValue)
+                        }}
+                        defaultValue={input.default as string}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={field.value} />
+                            <SelectValue
+                              placeholder={input.placeholder as string}
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {input.possibilities?.map((possibility) => (
-                            <SelectItem
-                              key={possibility}
-                              value={possibility}
-                              disabled={input.disabled}
-                            >
-                              {possibility}
-                            </SelectItem>
-                          ))}
+                          {Object.entries(input.possibilities ?? []).map(
+                            ([uuid, name]) => (
+                              <SelectItem
+                                key={name}
+                                value={uuid}
+                                disabled={input.disabled}
+                              >
+                                {name}
+                              </SelectItem>
+                            )
+                          )}
                         </SelectContent>
                       </Select>
                     ) : (
                       <FormControl>
                         {input.type === 'input' ? (
                           <Input
-                            placeholder={input.value as string}
+                            placeholder={input.placeholder as string}
                             disabled={input.disabled}
                             {...field}
+                            onChange={(e) => {
+                              if (input.zod instanceof z.ZodNumber) {
+                                const numericValue = Number(e.target.value)
+                                if (!isNaN(numericValue)) {
+                                  field.onChange(numericValue)
+                                }
+                              } else {
+                                field.onChange(e.target.value)
+                              }
+                            }}
+
+                            // onChange={(e) => {
+                            //   const amount = Number(e.target.value)
+                            //   input.setter && input.setter(amount)
+                            // }}
                           />
                         ) : input.type === 'switch' ? (
                           <Switch
                             checked={field.value}
                             disabled={input.disabled}
                             onCheckedChange={field.onChange}
+                            {...field}
                           />
+                        ) : input.type === 'slider' ? (
+                          <div className="flex flex-row">
+                            <Slider
+                              defaultValue={[input.default as number]}
+                              max={input.sliderSettings?.max ?? 100}
+                              min={input.sliderSettings?.min ?? 0}
+                              step={input.sliderSettings?.step ?? 1}
+                              onValueChange={(newValue: number[]) => {
+                                // TODO: use setter instead
+                                setSliderValue(newValue)
+                                form.setValue(input.key as string, newValue[0])
+                              }}
+                              className=""
+                            />
+                            <p className="w-20 text-end">{sliderValue} %</p>
+                          </div>
                         ) : (
                           <></>
                         )}

@@ -177,7 +177,11 @@ export default function Settings(): JSX.Element {
                             zod: z.string(),
                             value: secrets.AWS__REGION,
                             default: secrets.AWS__REGION,
-                            possibilities: ['eu-west-3', 'us-east-1']
+                            placeholder: secrets.AWS__REGION,
+                            possibilities: {
+                              'eu-west-3': 'eu-west-3',
+                              'us-east-1': 'us-east-1'
+                            }
                           }
                         ]}
                         onSubmit={(values) => {

@@ -100,5 +100,29 @@ export default async function Main(
     EB_ENV_NAME,
     version
   )
+  let allDeployedOrTerminated = false
+
+  updateStatus(mainWindow, 'update', 'waitForEbEnvToBeReady2')
+  while (!allDeployedOrTerminated) {
+    const environments = await getEnvironments(
+      secrets,
+      mainWindow,
+      EB_APP_NAME,
+      EB_ENV_NAME,
+      'waiting for deployment to get envURL'
+    )
+    if (environments) {
+      for (const env of environments) {
+        if (env.Status === 'Ready') {
+          allDeployedOrTerminated = true
+          if (env.CNAME === undefined) {
+            throw new Error('EndpointURL is undefined')
+          }
+          break
+        }
+      }
+    }
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+  }
   updateStatus(mainWindow, 'update', 'END')
 }
