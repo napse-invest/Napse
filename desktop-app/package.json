@@ -48,7 +48,7 @@
     "embla-carousel-react": "^8.0.0-rc20",
     "lucide-react": "^0.303.0",
     "next-themes": "^0.2.1",
-    "react-day-picker": "^8.8.1",
+    "react-day-picker": "^8.10.0",
     "react-hook-form": "^7.47.0",
     "react-redux": "^8.1.2",
     "redaxios": "^0.5.1",
