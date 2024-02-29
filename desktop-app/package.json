@@ -46,7 +46,7 @@
     "electron-serve": "^1.1.0",
     "electron-store": "^8.1.0",
     "embla-carousel-react": "^8.0.0-rc20",
-    "lucide-react": "^0.303.0",
+    "lucide-react": "^0.343.0",
     "next-themes": "^0.2.1",
     "react-day-picker": "^8.10.0",
     "react-hook-form": "^7.47.0",
