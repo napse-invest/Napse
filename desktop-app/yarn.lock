@@ -7879,10 +7879,10 @@ smartwrap@^2.0.2:
     wcwidth "^1.0.1"
     yargs "^15.1.0"
 
-sonner@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/sonner/-/sonner-1.4.0.tgz#f71b0576909043f6b32f05ff796c86ef6b97350a"
-  integrity sha512-nvkTsIuOmi9e5Wz5If8ldasJjZNVfwiXYijBi2dbijvTQnQppvMcXTFNxL/NUFWlI2yJ1JX7TREDsg+gYm9WyA==
+sonner@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/sonner/-/sonner-1.4.2.tgz#92740c293e9d911de726080995bd8a0cc677ccd1"
+  integrity sha512-x3Kfzfhb56V/ErvUnH5dZcsu6QkZpyIlRAogO4vAbN+AkBsA/8CFqOV+5djqbE5pQCpejtO4JBWL1zRj2sO/Vg==
 
 source-map-js@^1.0.2:
   version "1.0.2"

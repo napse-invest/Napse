@@ -54,7 +54,7 @@
     "redaxios": "^0.5.1",
     "separator": "^0.1.0",
     "shadcn-ui": "^0.4.1",
-    "sonner": "^1.4.0",
+    "sonner": "^1.4.2",
     "table": "^6.8.1",
     "tabs": "^0.2.0",
     "tailwind-merge": "^1.14.0",
