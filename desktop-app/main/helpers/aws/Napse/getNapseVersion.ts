@@ -9,7 +9,6 @@ export default function Main(): Promise<string> {
       return response.data.tag_name
     })
     .catch((error) => {
-      console.error(error)
       throw error
     })
 }

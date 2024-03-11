@@ -74,5 +74,55 @@ function getServers(): Record<string, Server> {
   return {}
 }
 
-export { addServer, getServer, getServers, removeServer, updateServer }
+function getLastUpdateDateCheck(provider: string): string {
+  if (typeof window !== 'undefined') {
+    if (!localStorage.updates) {
+      localStorage.updates = JSON.stringify({})
+    }
+    if (!localStorage.updates[provider]) {
+      const updates = JSON.parse(localStorage.updates)
+      updates[provider] = {}
+      localStorage.updates = JSON.stringify(updates)
+    }
+    const updates = JSON.parse(localStorage.updates)
+    if (!updates[provider].lastUpdateDateCheck) {
+      updates[provider].lastUpdateDateCheck = new Date(0)
+      updates[provider].updateable = false
+      localStorage.updates = JSON.stringify(updates)
+    }
+    return JSON.parse(localStorage.updates)[provider].lastUpdateDateCheck
+  }
+  return ''
+}
+
+function updateLastUpdateDateCheck(
+  provider: string,
+  updateable: boolean
+): void {
+  if (typeof window !== 'undefined') {
+    if (!localStorage.updates) {
+      localStorage.updates = JSON.stringify({})
+    }
+    if (!localStorage.updates[provider]) {
+      const updates = JSON.parse(localStorage.updates)
+      updates[provider] = {}
+      localStorage.updates = JSON.stringify(updates)
+    }
+    const updates = JSON.parse(localStorage.updates)
+
+    updates[provider].lastUpdateDateCheck = new Date()
+    updates[provider].updateable = updateable
+    localStorage.updates = JSON.stringify(updates)
+  }
+}
+
+export {
+  addServer,
+  getLastUpdateDateCheck,
+  getServer,
+  getServers,
+  removeServer,
+  updateLastUpdateDateCheck,
+  updateServer
+}
 export type { Server }

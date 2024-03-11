@@ -11,8 +11,7 @@ export default async function Main(
   },
   mainWindow: Electron.BrowserWindow,
   applicationName: string,
-  environmentName: string,
-  info: string = ''
+  environmentName: string
 ) {
   const client = new ElasticBeanstalkClient({
     region: secrets.AWS__REGION,

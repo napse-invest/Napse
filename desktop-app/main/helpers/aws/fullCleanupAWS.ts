@@ -49,8 +49,7 @@ export default async function Main(
       secrets,
       mainWindow,
       EB_APP_NAME,
-      EB_ENV_NAME,
-      'Waiting for environments to terminate / deploy before cleaning up'
+      EB_ENV_NAME
     )
     if (environments) {
       for (const env of environments) {
@@ -74,8 +73,7 @@ export default async function Main(
     secrets,
     mainWindow,
     EB_APP_NAME,
-    EB_ENV_NAME,
-    'Waiting for environments to terminate'
+    EB_ENV_NAME
   )
   while (!allterminated && environments) {
     allterminated = true
@@ -90,8 +88,7 @@ export default async function Main(
       secrets,
       mainWindow,
       EB_APP_NAME,
-      EB_ENV_NAME,
-      'Waiting for environments to terminate'
+      EB_ENV_NAME
     )
   }
   updateStatus(mainWindow, 'fullReset', 'deleteAllSecrets')

@@ -108,8 +108,7 @@ export default async function Main(
       secrets,
       mainWindow,
       EB_APP_NAME,
-      EB_ENV_NAME,
-      'waiting for deployment to get envURL'
+      EB_ENV_NAME
     )
     if (environments) {
       for (const env of environments) {

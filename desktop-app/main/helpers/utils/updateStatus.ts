@@ -211,7 +211,7 @@ export default async function Main<T extends keyof typeof SATUS>(
   extraData?: { [key: string]: string }
 ) {
   const index = Object.keys(SATUS[stage]).indexOf(step as string)
-  mainWindow.webContents.send('AWSChannel', {
+  mainWindow.webContents.send('ServerChannel', {
     from: stage,
     message:
       `${index}/${Object.keys(SATUS[stage]).length - 1} ` +

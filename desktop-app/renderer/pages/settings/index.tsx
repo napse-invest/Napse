@@ -10,16 +10,22 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import {
-  Carousel,
-  CarouselApi,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious
-} from '@/components/ui/carousel'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 import { Progress } from '@/components/ui/progress'
+import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { addServer, removeServer } from '@/lib/localStorage'
+import { useToast } from '@/components/ui/use-toast'
+import {
+  addServer,
+  getLastUpdateDateCheck,
+  removeServer,
+  updateLastUpdateDateCheck
+} from '@/lib/localStorage'
 import { ReloadIcon } from '@radix-ui/react-icons'
 import { ipcRenderer } from 'electron'
 import fs from 'fs'
@@ -32,6 +38,10 @@ const defaultSecrets = {
   AWS__API_SECRET: '',
   AWS__REGION: ''
 }
+type TypeProviders =
+  | 'Amazon Web Services'
+  | 'Microsoft Azure'
+  | 'Google Cloud Platfrom'
 
 function writeSecretsToFile(secrets: { [key: string]: string }) {
   const rootPath = process.env.HOME || process.env.USERPROFILE
@@ -48,33 +58,68 @@ function writeSecretsToFile(secrets: { [key: string]: string }) {
   fs.writeFileSync(filePath, JSON.stringify(secrets), 'utf8')
 }
 
+async function testIsDeployed(
+  secrets: { [key: string]: string },
+  provider: TypeProviders
+) {
+  if (provider === 'Amazon Web Services') {
+    return await ipcRenderer.invoke('isDeployedAWS', {
+      secrets
+    })
+  }
+  throw new Error('Provider not supported')
+}
+
+async function testIsReadyToUpdate(
+  secrets: { [key: string]: string },
+  provider: TypeProviders
+) {
+  if (provider === 'Amazon Web Services') {
+    return await ipcRenderer.invoke('isReadyToUpdateAWS', {
+      secrets
+    })
+  }
+  throw new Error('Provider not supported')
+}
+
+async function testHasAvailableUpdate(
+  secrets: { [key: string]: string },
+  provider: TypeProviders
+) {
+  if (provider === 'Amazon Web Services') {
+    if (
+      new Date(getLastUpdateDateCheck(provider)).getTime() + 1000 * 60 * 60 <
+      new Date().getTime()
+    ) {
+      const updatable = await ipcRenderer.invoke('hasAvailableUpdate', {
+        secrets
+      })
+      updateLastUpdateDateCheck(provider, updatable)
+      return updatable
+    } else {
+      return false
+    }
+  }
+  throw new Error('Provider not supported')
+}
+
 export default function Settings(): JSX.Element {
+  const { toast } = useToast()
   const [infoDeploy, setInfoDeploy] = useState('')
   const [infoUpdate, setInfoUpdate] = useState('')
   const [infoFullReset, setInfoFullReset] = useState('')
   const [isErrorMessage, setIsErrorMessage] = useState(false)
   const [secrets, setSecrets] = useState(defaultSecrets)
+  const [secrestsSet, setSecretsSet] = useState(false)
   const [loading, setLoading] = useState(false)
   const [progress, setProgress] = useState(0)
-  const [canScroll, setCanScroll] = useState(false)
-  const [api, setApi] = useState<CarouselApi>()
-  const [current, setCurrent] = useState(0)
-  const [count, setCount] = useState(0)
+  const [provider, setProvider] = useState<TypeProviders>('Amazon Web Services')
+  const [isDeployed, setIsDeployed] = useState(false)
+  const [isReadyToUpdate, setIsReadyToUpdate] = useState(false)
+  const [hasAvailableUpdate, setHasAvailableUpdate] = useState(false)
 
   useEffect(() => {
-    if (!api) {
-      return
-    }
-    setCount(api.scrollSnapList().length)
-    setCurrent(api.selectedScrollSnap() + 1)
-
-    api.on('select', () => {
-      setCurrent(api.selectedScrollSnap() + 1)
-    })
-  }, [api])
-
-  useEffect(() => {
-    ipcRenderer.on('AWSChannel', function listener(event, data) {
+    ipcRenderer.on('ServerChannel', function listener(event, data) {
       if (data.from === 'deploy') {
         setInfoDeploy(data.errorMessage ? data.errorMessage : data.message)
         if (data.extraData?.envURL) {
@@ -92,7 +137,7 @@ export default function Settings(): JSX.Element {
             throw new Error('No secrets file found')
           }
           addServer(
-            'AWS',
+            provider,
             'https://' + serverData.domain,
             serverData.master_key
           )
@@ -101,15 +146,14 @@ export default function Settings(): JSX.Element {
         setInfoUpdate(data.errorMessage ? data.errorMessage : data.message)
       } else if (data.from === 'fullReset') {
         setInfoFullReset(data.errorMessage ? data.errorMessage : data.message)
-        removeServer('AWS')
+        removeServer(provider)
       }
       setIsErrorMessage(data.errorMessage ? true : false)
 
       setLoading(data.busy)
       setProgress(data.progress)
-      setCanScroll(data.busy)
     })
-  }, [])
+  }, [provider])
 
   useEffect(() => {
     const rootPath = process.env.HOME || process.env.USERPROFILE
@@ -126,7 +170,34 @@ export default function Settings(): JSX.Element {
     } else {
       writeSecretsToFile(defaultSecrets)
     }
+    setSecretsSet(true)
   }, [])
+
+  useEffect(() => {
+    async function apiCall() {
+      if (!secrestsSet) return
+      setIsDeployed(await testIsDeployed(secrets, provider))
+      setIsReadyToUpdate(await testIsReadyToUpdate(secrets, provider))
+    }
+    apiCall()
+  }, [secrets, provider, secrestsSet])
+
+  useEffect(() => {
+    async function handleUpdateAvailable() {
+      if (!secrestsSet) return
+      setHasAvailableUpdate(await testHasAvailableUpdate(secrets, provider))
+    }
+    handleUpdateAvailable()
+  }, [secrets, provider, secrestsSet])
+
+  useEffect(() => {
+    if (hasAvailableUpdate) {
+      toast({
+        title: 'Update available',
+        description: 'An update is available for your server.'
+      })
+    }
+  }, [hasAvailableUpdate, toast])
 
   return (
     <ContextHeader isServer>
@@ -134,203 +205,281 @@ export default function Settings(): JSX.Element {
         header="Settings"
         description="Here you can configure the application."
       >
-        <Tabs defaultValue={'Deploy to AWS'}>
-          <TabsList>
-            <TabsTrigger value={'Deploy to AWS'}>Deploy to AWS</TabsTrigger>
-          </TabsList>
+        <div className="flex flex-col space-y-5">
+          <Separator />
+          <h2 className="text-2xl font-bold leading-tight tracking-tighter">
+            Server Configuration
+          </h2>
+          <p className="text-sm">
+            {
+              "In order to fully use Napse's functionalities, you'll need to deploy your own server. Don't worry, we've made it easy for you !"
+            }
+            <br />
+            Start by selecting your provider and then follow the steps.
+          </p>
 
-          <TabsContent value={'Deploy to AWS'}>
-            <Carousel className="w-[40%]" setApi={setApi}>
-              <CarouselContent>
-                <CarouselItem>
-                  <Card className="h-[100%]">
-                    <CardHeader>
-                      <CardTitle>Step 1 : AWS credentials</CardTitle>
-                      <CardDescription>
-                        In order to get started, please fill in this form with
-                        you AWS credentials.
-                        <br />
-                        Next step : Deployement
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <CustomForm
-                        inputs={[
-                          {
-                            label: 'Token',
-                            key: 'token',
-                            type: 'input',
-                            zod: z.string(),
-                            value: secrets.AWS__API_TOKEN
-                          },
-                          {
-                            label: 'Secret',
-                            key: 'secret',
-                            type: 'input',
-                            zod: z.string(),
-                            value: secrets.AWS__API_SECRET
-                          },
-                          {
-                            label: 'Region',
-                            key: 'region',
-                            type: 'select',
-                            zod: z.string(),
-                            value: secrets.AWS__REGION,
-                            default: secrets.AWS__REGION,
-                            placeholder: secrets.AWS__REGION,
-                            possibilities: {
-                              'eu-west-3': 'eu-west-3',
-                              'us-east-1': 'us-east-1'
-                            }
-                          }
-                        ]}
-                        onSubmit={(values) => {
-                          writeSecretsToFile({
-                            AWS__API_TOKEN: values.token,
-                            AWS__API_SECRET: values.secret,
-                            AWS__REGION: values.region
-                          })
-                          setSecrets({
-                            AWS__API_TOKEN: values.token,
-                            AWS__API_SECRET: values.secret,
-                            AWS__REGION: values.region
-                          })
-                        }}
-                        buttonDescription="Save"
-                      />
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
-                <CarouselItem>
-                  <Card className="h-[100%]">
-                    <CardHeader>
-                      <CardTitle>Step 2 : Deployment</CardTitle>
-                      <CardDescription>
-                        {
-                          "We've made deploying your own server easy, just click this button!"
-                        }
-                        <br />
-                        Next step : Updating
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex flex-col items-center justify-center">
-                      <div className="h-4" />
-                      <Button
-                        className="w-[100%]"
-                        onClick={() => {
-                          ipcRenderer.invoke('deployAWS', {
-                            secrets
-                          })
-                        }}
-                        disabled={loading}
-                      >
-                        {loading && (
-                          <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                        )}
-                        {loading ? 'Deploying' : 'Deploy to AWS'}
-                      </Button>
-                      <div className="h-1" />
-                      {loading && <Progress value={progress} />}
-                      <div className="h-1" />
-                      <div className="text-muted-foreground text-center text-sm">
-                        {infoDeploy}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
-                <CarouselItem>
-                  <Card className="h-[100%]">
-                    <CardHeader>
-                      <CardTitle>Step 3 : Updating</CardTitle>
-                      <CardDescription>
-                        {
-                          "He's a little button to update your server, just in case you want to do so."
-                        }
-                        <br />
-                        Next step : Full Reset
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex flex-col items-center justify-center">
-                      <div className="h-4" />
-                      <Button
-                        className="w-[100%]"
-                        onClick={async () => {
-                          await new Promise((resolve) =>
-                            setTimeout(resolve, 100)
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className="h-7 w-32 ">
+              <Button variant="outline" disabled={loading}>
+                Provider
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              <DropdownMenuRadioGroup
+                value={provider}
+                onValueChange={(value) => {
+                  setProvider(value as TypeProviders)
+                }}
+              >
+                <DropdownMenuRadioItem value="Amazon Web Services">
+                  Amazon Web Services
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="Microsoft Azure" disabled>
+                  Microsoft Azure
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="Google Cloud Platfrom" disabled>
+                  Google Cloud
+                </DropdownMenuRadioItem>
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          {provider && (
+            <Tabs defaultValue={'Setup'} className="max-w-xl">
+              <TabsList>
+                <Separator orientation="vertical" className="relative h-2/3" />
+                <TabsTrigger value={'Setup'} disabled={loading}>
+                  Setup
+                </TabsTrigger>
+                <TabsTrigger value={'Deploy'} disabled={loading}>
+                  Deploy
+                </TabsTrigger>
+                <TabsTrigger value={'Update'} disabled={loading}>
+                  Update
+                </TabsTrigger>
+                <TabsTrigger value={'Reset'} disabled={loading}>
+                  Reset
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value={'Setup'}>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>{provider + ' credentials'}</CardTitle>
+                    <CardDescription>
+                      In order to get started, please fill in this form with
+                      your {provider} credentials.
+                      <br />
+                      {"You'll need to create an " +
+                        provider +
+                        " account if you don't have one."}
+                      <br />
+                      More info here:
+                      <br />
+                      <button
+                        className="focus:ring-opacity/50 text-blue-500 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        onClick={() =>
+                          ipcRenderer.send(
+                            'open-new-window',
+                            'https://napse-invest.github.io/Napse/'
                           )
-                          ipcRenderer.invoke('updateAWS', {
-                            secrets
-                          })
-                        }}
-                        disabled={loading}
-                      >
-                        {loading && (
-                          <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                        )}
-                        {loading ? 'Updating' : 'Update'}
-                      </Button>
-                      <div className="h-1" />
-                      {loading && <Progress value={progress} />}
-                      <div className="h-1" />
-                      <div
-                        className={
-                          (isErrorMessage
-                            ? ' text-destructive'
-                            : 'text-muted-foreground') + ' text-center text-sm'
                         }
                       >
-                        {infoUpdate}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
-                <CarouselItem>
-                  <Card className="h-[100%]">
-                    <CardHeader>
-                      <CardTitle>Step 4 : Full Reset</CardTitle>
-                      <CardDescription>
+                        https://napse-invest.github.io/Napse/
+                      </button>
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <CustomForm
+                      inputs={[
                         {
-                          "Had enough of your server? Just click this button and it'll be gone."
+                          label: 'Token',
+                          key: 'token',
+                          type: 'input',
+                          zod: z.string(),
+                          value: secrets.AWS__API_TOKEN
+                        },
+                        {
+                          label: 'Secret',
+                          key: 'secret',
+                          type: 'input',
+                          zod: z.string(),
+                          value: secrets.AWS__API_SECRET
+                        },
+                        {
+                          label: 'Region',
+                          key: 'region',
+                          type: 'select',
+                          zod: z.string(),
+                          value: secrets.AWS__REGION,
+                          default: secrets.AWS__REGION,
+                          placeholder: secrets.AWS__REGION,
+                          possibilities: {
+                            'eu-west-3': 'eu-west-3',
+                            'us-east-1': 'us-east-1'
+                          }
                         }
-                        <br />
-                        {"It's just that easy."}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex flex-col items-center justify-center">
-                      <div className="h-4" />
-                      <Button
-                        className="w-[100%]"
-                        onClick={() => {
-                          const res = ipcRenderer.invoke('fullCleanupAWS', {
-                            secrets
-                          })
-                        }}
-                        disabled={loading}
-                      >
-                        {loading && (
-                          <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                        )}
-                        {loading ? 'Reseting' : 'Full Reset'}
-                      </Button>
-
-                      <div className="h-1" />
-                      {loading && <Progress value={progress} />}
-                      <div className="h-1" />
-                      <div className="text-muted-foreground text-center text-sm">
-                        {infoFullReset}
+                      ]}
+                      onSubmit={(values) => {
+                        writeSecretsToFile({
+                          AWS__API_TOKEN: values.token,
+                          AWS__API_SECRET: values.secret,
+                          AWS__REGION: values.region
+                        })
+                        setSecrets({
+                          AWS__API_TOKEN: values.token,
+                          AWS__API_SECRET: values.secret,
+                          AWS__REGION: values.region
+                        })
+                      }}
+                      buttonDescription="Save"
+                    />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              <TabsContent value={'Deploy'}>
+                <Card className="h-[100%]">
+                  <CardHeader>
+                    <CardTitle>Deployment</CardTitle>
+                    <CardDescription>
+                      {
+                        "We've made deploying your own server easy, just click this button!"
+                      }
+                      {isDeployed && (
+                        <div className=" text-destructive text-sm">
+                          Warning: Server already deployed
+                        </div>
+                      )}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-col items-center justify-center">
+                    <div className="h-4" />
+                    <Button
+                      className="w-[100%]"
+                      onClick={() => {
+                        ipcRenderer.invoke('deployAWS', {
+                          secrets
+                        })
+                      }}
+                      disabled={loading || isDeployed}
+                    >
+                      {loading && (
+                        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                      )}
+                      {loading ? 'Deploying' : 'Deploy to AWS'}
+                    </Button>
+                    <div className="h-1" />
+                    {loading && <Progress value={progress} />}
+                    <div className="h-1" />
+                    <div className="text-muted-foreground text-center text-sm">
+                      {infoDeploy}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              <TabsContent value={'Update'}>
+                <Card className="h-[100%]">
+                  <CardHeader>
+                    <CardTitle>Updating</CardTitle>
+                    <CardDescription>
+                      {
+                        "Here's a little button to update your server, just in case you want to do so."
+                      }
+                      {!isReadyToUpdate ? (
+                        <div className=" text-destructive text-sm">
+                          Warning: No server deployed
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                      {!hasAvailableUpdate ? (
+                        <div className=" text-destructive text-sm">
+                          No updates available
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-col items-center justify-center">
+                    <div className="h-4" />
+                    <Button
+                      className="w-[100%]"
+                      onClick={async () => {
+                        await new Promise((resolve) => setTimeout(resolve, 100))
+                        ipcRenderer.invoke('updateAWS', {
+                          secrets
+                        })
+                      }}
+                      disabled={
+                        loading ||
+                        !isReadyToUpdate ||
+                        !isDeployed ||
+                        !hasAvailableUpdate
+                      }
+                    >
+                      {loading && (
+                        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                      )}
+                      {loading ? 'Updating' : 'Update'}
+                    </Button>
+                    <div className="h-1" />
+                    {loading && <Progress value={progress} />}
+                    <div className="h-1" />
+                    <div
+                      className={
+                        (isErrorMessage
+                          ? ' text-destructive'
+                          : 'text-muted-foreground') + ' text-center text-sm'
+                      }
+                    >
+                      {infoUpdate}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              <TabsContent value={'Reset'}>
+                <Card className="h-[100%]">
+                  <CardHeader>
+                    <CardTitle>Full Reset</CardTitle>
+                    <CardDescription>
+                      {
+                        "Had enough of your server? Just click this button and it'll be gone."
+                      }
+                      <br />
+                      {"It's just that easy."}
+                      <div className=" text-destructive text-sm">
+                        {!isReadyToUpdate ? 'Warning: No server deployed' : ''}
                       </div>
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
-              </CarouselContent>
-              <div className="text-muted-foreground text-center text-sm">
-                Slide {current} of {count}
-              </div>
-              <CarouselPrevious disabled={canScroll || current === 1} />
-              <CarouselNext disabled={canScroll || current === count} />
-            </Carousel>
-          </TabsContent>
-        </Tabs>
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-col items-center justify-center">
+                    <div className="h-4" />
+                    <Button
+                      className="w-[100%]"
+                      onClick={() => {
+                        ipcRenderer.invoke('fullCleanupAWS', {
+                          secrets
+                        })
+                      }}
+                      disabled={loading || !isReadyToUpdate || !isDeployed}
+                    >
+                      {loading && (
+                        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                      )}
+                      {loading ? 'Reseting' : 'Full Reset'}
+                    </Button>
+
+                    <div className="h-1" />
+                    {loading && <Progress value={progress} />}
+                    <div className="h-1" />
+                    <div className="text-muted-foreground text-center text-sm">
+                      {infoFullReset}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          )}
+        </div>
       </DefaultPageLayout>
     </ContextHeader>
   )
