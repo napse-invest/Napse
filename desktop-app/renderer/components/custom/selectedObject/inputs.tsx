@@ -19,6 +19,7 @@ import {
 import { Slider } from '@/components/ui/slider'
 import { Switch } from '@/components/ui/switch'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader2 } from 'lucide-react'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -107,10 +108,20 @@ export default function CustomForm<T extends Object>({
   }, [inputs, form])
 
   const [sliderValue, setSliderValue] = useState([50])
+  const [isLoading, setIsLoading] = useState(false)
 
+<<<<<<< HEAD
+=======
+  const handleOnSubmit = (values: { [x: string]: any }) => {
+    onSubmit(values)
+    setIsLoading(false)
+  }
+
+>>>>>>> 1ada62cdb2632369d0b68076501e82022232d120
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+      {/* <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2"> */}
+      <form className="space-y-2">
         {inputs.map((input, index) => {
           return (
             <FormField
@@ -159,7 +170,12 @@ export default function CustomForm<T extends Object>({
                             {...field}
                             onChange={(e) => {
                               if (input.zod instanceof z.ZodNumber) {
-                                const numericValue = Number(e.target.value)
+                                if (e.target.value.slice(-1) === '.') {
+                                  field.onChange(e.target.value)
+                                  return
+                                }
+                                const numericValue = parseFloat(e.target.value)
+                                console.log('numericValue', numericValue)
                                 if (!isNaN(numericValue)) {
                                   field.onChange(numericValue)
                                 }
@@ -213,7 +229,23 @@ export default function CustomForm<T extends Object>({
           footer
         ) : (
           <div className="flex flex-col items-end">
-            <Button type="submit">{buttonDescription ?? 'Submit'}</Button>
+            {isLoading ? (
+              <Button disabled type="submit">
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                {buttonDescription ?? 'Submit'}
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                onClick={(e) => {
+                  console.log('props', e)
+                  setIsLoading(true)
+                  return form.handleSubmit(onSubmit)(e)
+                }}
+              >
+                {buttonDescription ?? 'Submit'}
+              </Button>
+            )}
           </div>
         )}
       </form>

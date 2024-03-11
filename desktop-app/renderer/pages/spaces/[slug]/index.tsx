@@ -1,7 +1,11 @@
+'use client'
 import { Fleet, listFleet } from '@/api/fleets/fleets'
 import { Key, getCurrentKey } from '@/api/key/key'
 import { RetrievedNapseSpace, retrieveSpace } from '@/api/spaces/spaces'
-import { useOperationContext } from '@/components/custom/moneyActions/operationContext'
+import {
+  OperationContext,
+  OperationProvider
+} from '@/components/custom/moneyActions/operationContext'
 import InfoPanelCard from '@/components/custom/panel/infoPanelCard'
 import ValuePanelCard from '@/components/custom/panel/valuePanelCard'
 import ContextHeader from '@/components/layout/contextHeader'
@@ -20,7 +24,7 @@ import CreateFleetDialog from '@/pages/fleets/createFleetDialog'
 import { AreaChart, Icon, Metric, Card as TremorCard } from '@tremor/react'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import WalletBoard from '../../../components/custom/board/walletBoard'
 import OperationDataTable from '../../../components/custom/data-table/operationDataTable'
 import SpaceMoneyActionButtons from '../../../components/custom/moneyActions/spaceMoneyActionButtons'
@@ -49,17 +53,24 @@ const formattedFakeDashboardData = fakeDashboardData.map((item) => {
   return { ...item, date: format(item.date, 'd MMM yy') }
 })
 
-export default function Space(): JSX.Element {
+export default function WrappedSpace(): JSX.Element {
+  return (
+    <OperationProvider>
+      <Space />
+    </OperationProvider>
+  )
+}
+
+export function Space(): JSX.Element {
   const searchParams = useSearchParams()
   const router = useRouter()
 
   const spaceID: string = searchParams.get('space') || ''
-  // const spaceID: string = 'wrongSpaceUUID'
   const [currentKey, setCurrentKey] = useState<Key>()
 
   const [space, setSpace] = useState<RetrievedNapseSpace>()
   const [fleets, setFleets] = useState<Fleet[]>([])
-  const { triggerRefresh, setTriggerRefresh } = useOperationContext()
+  const { triggerRefresh, setTriggerRefresh } = useContext(OperationContext)
 
   useEffect(() => {
     async function fetchSpace() {
@@ -92,9 +103,10 @@ export default function Space(): JSX.Element {
 
     // Operation trigger
     if (triggerRefresh) {
+      setTriggerRefresh(false)
       fetchSpace()
     }
-  }, [spaceID, searchParams, router, triggerRefresh])
+  }, [spaceID, searchParams, router, triggerRefresh, setTriggerRefresh])
 
   if (!space) {
     // TODO: setup a squeleton or a loader
