@@ -110,14 +110,6 @@ export default function CustomForm<T extends Object>({
   const [sliderValue, setSliderValue] = useState([50])
   const [isLoading, setIsLoading] = useState(false)
 
-<<<<<<< HEAD
-=======
-  const handleOnSubmit = (values: { [x: string]: any }) => {
-    onSubmit(values)
-    setIsLoading(false)
-  }
-
->>>>>>> 1ada62cdb2632369d0b68076501e82022232d120
   return (
     <Form {...form}>
       {/* <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2"> */}
