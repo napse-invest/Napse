@@ -61,7 +61,7 @@ export default function AddNewServerDialog({
   const searchParams = useSearchParams()
   const { toast } = useToast()
   const router = useRouter()
-  const forbiddenNames = Object.keys(servers)
+  const forbiddenNames = Object.keys(servers || [])
   return (
     <Dialog>
       <DialogTrigger asChild>
