@@ -390,7 +390,7 @@ export default function Settings(): JSX.Element {
                       ) : (
                         <></>
                       )}
-                      {!hasAvailableUpdate ? (
+                      {isReadyToUpdate && !hasAvailableUpdate ? (
                         <div className=" text-destructive text-sm">
                           No updates available
                         </div>
