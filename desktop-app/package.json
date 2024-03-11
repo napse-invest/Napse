@@ -2,7 +2,7 @@
   "private": true,
   "name": "napse",
   "description": "Napse Desktop App",
-  "homepage": "https://napse.invest.com",
+  "homepage": "https://napse-invest.com",
   "version": "1.0.0",
   "author": "Napse Invest <napse.invest@gmail.com>",
   "main": "app/background.js",
