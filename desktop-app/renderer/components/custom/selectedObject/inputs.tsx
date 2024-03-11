@@ -110,11 +110,6 @@ export default function CustomForm<T extends Object>({
   const [sliderValue, setSliderValue] = useState([50])
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleOnSubmit = (values: { [x: string]: any }) => {
-    onSubmit(values)
-    setIsLoading(false)
-  }
-
   return (
     <Form {...form}>
       {/* <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2"> */}
@@ -131,17 +126,16 @@ export default function CustomForm<T extends Object>({
                     <FormLabel>{input.label}</FormLabel>
                     {input.type === 'select' ? (
                       <Select
-                        // onValueChange={field.onChange}
                         onValueChange={(newValue: string) => {
                           input.setter ? input.setter(newValue) : null
                           form.setValue(input.key as string, newValue)
                         }}
-                        defaultValue={field.value}
+                        defaultValue={input.default as string}
                       >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue
-                              placeholder={input.placeholder ?? ''}
+                              placeholder={input.placeholder as string}
                             />
                           </SelectTrigger>
                         </FormControl>
