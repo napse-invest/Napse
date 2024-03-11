@@ -23,8 +23,9 @@ export interface Fleet extends BaseFleet {
   exchangeAccount: string
 }
 
-export interface RetrievedFleet extends BaseFleet {
+export interface RetrievedFleet extends Fleet {
   created_at: string
+  testing: boolean
   statistics: Statistics
   wallet: Wallet
   bots: Bot[]
@@ -82,4 +83,64 @@ export async function createFleet(
     formatedData
   )
   return response as AxiosResponse<Fleet>
+}
+
+// Invest related
+export interface Operation {
+  ticker: string
+  amount: number
+}
+export async function fleetPossibleInvestments(
+  searchParams: ReturnType<typeof useSearchParams>,
+  fleet: RetrievedFleet
+): Promise<AxiosResponse<Operation[]>> {
+  const response = await request(
+    searchParams,
+    'GET',
+    `/api/fleet/${fleet.uuid}/invest/`
+  )
+  return response as AxiosResponse<Operation[]>
+}
+
+export async function fleetInvest(
+  searchParams: ReturnType<typeof useSearchParams>,
+  fleet: RetrievedFleet,
+  investment: Operation
+): Promise<AxiosResponse<Operation>> {
+  const formated_operation = convertInterfaceToSnakeCaseDict(investment)
+  const response = await request(
+    searchParams,
+    'POST',
+    `/api/fleet/${fleet.uuid}/invest/`,
+    formated_operation
+  )
+  return response as AxiosResponse<Operation>
+}
+
+// Withdraw related
+export async function fleetPossibleWithdraws(
+  searchParams: ReturnType<typeof useSearchParams>,
+  fleet: RetrievedFleet
+): Promise<AxiosResponse<Operation[]>> {
+  const response = await request(
+    searchParams,
+    'GET',
+    `/api/fleet/${fleet.uuid}/withdraw/`
+  )
+  return response as AxiosResponse<Operation[]>
+}
+
+export async function fleetWithdraw(
+  searchParams: ReturnType<typeof useSearchParams>,
+  fleet: RetrievedFleet,
+  investment: Operation
+): Promise<AxiosResponse<Operation>> {
+  const formated_operation = convertInterfaceToSnakeCaseDict(investment)
+  const response = await request(
+    searchParams,
+    'POST',
+    `/api/fleet/${fleet.uuid}/withdraw/`,
+    formated_operation
+  )
+  return response as AxiosResponse<Operation>
 }

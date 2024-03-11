@@ -1,4 +1,5 @@
 import { RetrievedFleet, retrieveFleet } from '@/api/fleets/fleets'
+import FleetMoneyActionButtons from '@/components/custom/moneyActions/fleetMoneyActionButtons'
 import ValuePanelCard from '@/components/custom/panel/valuePanelCard'
 import ContextHeader from '@/components/layout/contextHeader'
 import DefaultPageLayout from '@/components/layout/defaultPageLayout'
@@ -16,7 +17,6 @@ import { AreaChart, Icon, Metric, Card as TremorCard } from '@tremor/react'
 import { format } from 'date-fns'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import MoneyActionButtons from '../../../components/custom/moneyActionButtons'
 import { fakeDashboardData } from '../../../lib/fakeDashboardData'
 
 const formattedFakeDashboardData = fakeDashboardData.map((item) => {
@@ -49,6 +49,12 @@ export default function Fleet(): JSX.Element {
     }
   }, [fleetID, searchParams, router])
 
+  if (!fleet) {
+    // TODO: setup a squeleton or a loader
+    return <></>
+  } else {
+  }
+
   return (
     <ContextHeader isBot>
       <DefaultPageLayout
@@ -63,7 +69,7 @@ export default function Fleet(): JSX.Element {
               <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
               <TabsTrigger value="fleets">Bots</TabsTrigger>
             </TabsList>
-            <MoneyActionButtons />
+            <FleetMoneyActionButtons fleet={fleet} />
           </div>
           <TabsContent value="dashboard" className="mt-8 flex flex-row gap-6">
             {/* Graph card */}
