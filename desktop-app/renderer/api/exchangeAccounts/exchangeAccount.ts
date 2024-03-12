@@ -8,6 +8,8 @@ export interface BaseExchangeAccount {
   description: string
   exchange: string
   testing: boolean
+  privateKey: string
+  publicKey: string
 }
 export interface ExchangeAccount extends BaseExchangeAccount {
   uuid: string
