@@ -37,7 +37,7 @@ if (isProd) {
   })
   ipcMain.handle('fullCleanupAWS', async (event, args) => {
     if (args.secrets) {
-      return await fullCleanupAWS(args.secrets, mainWindow)
+      return await fullCleanupAWS(args.secrets, args.deleteData, mainWindow)
     }
   })
   ipcMain.handle('updateAWS', async (event, args) => {
@@ -83,9 +83,12 @@ if (isProd) {
         EB_APP_NAME,
         EB_ENV_NAME
       )
-      if (environments) {
+      if (environments && environments.length > 0) {
         for (const env of environments) {
-          if (env.Status != EnvironmentStatus.Ready) {
+          if (
+            env.Status != EnvironmentStatus.Terminated &&
+            env.Status != EnvironmentStatus.Ready
+          ) {
             allReady = false
             break
           }

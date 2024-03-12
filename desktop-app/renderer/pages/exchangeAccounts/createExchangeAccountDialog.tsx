@@ -25,7 +25,9 @@ const defaultExchangeAccount: BaseExchangeAccount = {
   name: 'My Exchange Account',
   description: 'My Exchange Account Description',
   testing: true,
-  exchange: 'BINANCE'
+  exchange: 'BINANCE',
+  privateKey: '',
+  publicKey: ''
 }
 
 export default function CreateExchangeAccountDialog({
@@ -41,9 +43,7 @@ export default function CreateExchangeAccountDialog({
 }): JSX.Element {
   const searchParams = useSearchParams()
   const [possibleExchanges, setPossibleExchanges] = useState<string[]>([])
-  const [exchangeAccount, setExchangeAccount] = useState<BaseExchangeAccount>(
-    defaultExchangeAccount
-  )
+
   useEffect(() => {
     const fetchPossibleExchanges = async () => {
       try {
@@ -118,6 +118,20 @@ export default function CreateExchangeAccountDialog({
               type: 'switch',
               zod: z.boolean(),
               default: defaultExchangeAccount.testing
+            },
+            {
+              label: 'Public API Key',
+              key: 'publicKey',
+              type: 'input',
+              zod: z.string(),
+              default: defaultExchangeAccount.publicKey
+            },
+            {
+              label: 'Private API Key',
+              key: 'privateKey',
+              type: 'input',
+              zod: z.string(),
+              default: defaultExchangeAccount.privateKey
             }
           ]}
           onSubmit={async (values) => {
