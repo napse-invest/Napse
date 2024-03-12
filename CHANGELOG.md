@@ -1,3 +1,36 @@
+# [1.5.0](https://github.com/napse-invest/Napse/compare/v1.4.0...v1.5.0) (2024-03-12)
+
+
+### Bug Fixes
+
+* **createDialog:** fix dialog selector & snake_case format for create call (to REST API) ([1bfafa7](https://github.com/napse-invest/Napse/commit/1bfafa7beb716a22ee4713ec87d63ba569143362))
+* **CustomForm:** add placeholder ([5403af0](https://github.com/napse-invest/Napse/commit/5403af0803a2c8fa2f2ecc6042c96188a27af1ea))
+* **CustomTable:** add sorting to custom table ([93db947](https://github.com/napse-invest/Napse/commit/93db9477c13316741e7404a652518db294b3ad54))
+* **deployment:** everything works ([3329e49](https://github.com/napse-invest/Napse/commit/3329e499d38997ad0f3f53f8ae73dcf21c8ab8d7))
+* **fleet:** add delta on fleet ([50e2208](https://github.com/napse-invest/Napse/commit/50e2208062f082faedeedd898aab499f52e4ad49))
+* **fleet:** fix redirection from fleet detail to bot detail ([8ad78a1](https://github.com/napse-invest/Napse/commit/8ad78a1dcfc7f9e860ec9ea44b57d34f3df685bb))
+* **fleet:** fix toast mantisse error ([bcb6087](https://github.com/napse-invest/Napse/commit/bcb608795785ee3d13a8d0a98727a1a1aef1e93e))
+* **form:** slider now keep its value ([663d058](https://github.com/napse-invest/Napse/commit/663d058986d9f4b4ce27f50778739990f30d0505))
+* **graph:** fix formatted datetime ([c93d3ff](https://github.com/napse-invest/Napse/commit/c93d3ff6472627a0bd744f58eb627deb9c86a8d4))
+* **PanelCard:** add size modification for valuePanelCard ([360017b](https://github.com/napse-invest/Napse/commit/360017be07fafb5a474ee07719d42152f3ff7ec9))
+* **selector:** fix dict in possilbiites for select form's field ([b75dc9f](https://github.com/napse-invest/Napse/commit/b75dc9fa72ff9a256bca84c36aaba9419de9eccb))
+
+
+### Features
+
+* **aws-sdk:** basic integration for the sdk ([5a38d76](https://github.com/napse-invest/Napse/commit/5a38d7656e6af8f55724b206c76537f40c2960bc))
+* **bot:** add retrieve bot to bot/slug page ([0daa84f](https://github.com/napse-invest/Napse/commit/0daa84f9a848f14676278702d612f78ac6cf68e8))
+* **bot:** list bot page ([2850aa0](https://github.com/napse-invest/Napse/commit/2850aa09771a8bdc3b5055830f14c77e09328d04))
+* **cluster:** add toast for cluster share validation ([e545d38](https://github.com/napse-invest/Napse/commit/e545d387f1c69289978e6c21d6f91fd4bdc7f6c8))
+* **clusterDataTable:** add dataTable for cluster ([25a926f](https://github.com/napse-invest/Napse/commit/25a926f62b253de36655463e920037d09f37c205))
+* **customForm:** add loading button ([526eb1d](https://github.com/napse-invest/Napse/commit/526eb1d9de0423203d298cf16114ba20b7a38952))
+* **CustomForm:** add slider type in CustomForm ([5ef57f6](https://github.com/napse-invest/Napse/commit/5ef57f63eb3bb292947e050051a612f67d9d83a6))
+* **fleet:** add Cluster dialog ([016b756](https://github.com/napse-invest/Napse/commit/016b756a4b30b0c81c965751d063a7479fe7f8a8))
+* **fleet:** add money action button for fleet (testing) ([87a46fa](https://github.com/napse-invest/Napse/commit/87a46faf56eff63cd34b30b6a60398487394c830))
+* **https-full-deployment:** done ([1e841ba](https://github.com/napse-invest/Napse/commit/1e841ba8cb1992af517d58642174cef5fe903551))
+* **server & aws:** reworked server UI and AWS deployement ([34837d7](https://github.com/napse-invest/Napse/commit/34837d71f5cce0abfb390fa98feaf4748778de27))
+* **space:** add investment ([d64ad67](https://github.com/napse-invest/Napse/commit/d64ad67a4aab44527736b319b707ce4d7e3d22be))
+
 # [1.4.0](https://github.com/napse-invest/Napse/compare/v1.3.0...v1.4.0) (2024-01-05)
 
 
