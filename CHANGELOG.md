@@ -1,3 +1,16 @@
+# [1.6.0](https://github.com/napse-invest/Napse/compare/v1.5.0...v1.6.0) (2024-03-12)
+
+
+### Bug Fixes
+
+* **exchangeAccount:** create fixed ([dc81bac](https://github.com/napse-invest/Napse/commit/dc81bace759424b45662d7660d5d288bca1ada3a))
+* **exchangeAccount:** create fixed ([cb461d1](https://github.com/napse-invest/Napse/commit/cb461d154e1431443645c426619c6eb20290ac80))
+
+
+### Features
+
+* **electron:** build now works ([62bbfac](https://github.com/napse-invest/Napse/commit/62bbfac2d46ed9a156d58517beba53609ca11f6b))
+
 # [1.5.0](https://github.com/napse-invest/Napse/compare/v1.4.0...v1.5.0) (2024-03-12)
 
 
