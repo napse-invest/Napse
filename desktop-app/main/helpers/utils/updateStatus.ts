@@ -197,7 +197,7 @@ const SATUS = {
       busy: true
     },
     END: {
-      description: 'Full reset complete, see you soon!',
+      description: 'Reset complete, see you soon!',
       busy: false
     }
   }
@@ -219,6 +219,7 @@ export default async function Main<T extends keyof typeof SATUS>(
     busy: errorMessage ? false : (SATUS[stage][step] as StatusStep).busy,
     progress: (index / (Object.keys(SATUS[stage]).length - 1)) * 100,
     errorMessage: errorMessage,
-    extraData: extraData
+    extraData: extraData,
+    step: step
   })
 }

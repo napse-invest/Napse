@@ -24,6 +24,7 @@ export default async function Main(
     AWS__API_SECRET: string
     AWS__REGION: string
   },
+  deleteData: boolean,
   mainWindow: BrowserWindow
 ) {
   updateStatus(mainWindow, 'fullReset', 'START')
@@ -101,7 +102,9 @@ export default async function Main(
   await deleteIAMRole(secrets, mainWindow, IAM_ROLE_NAME_SERVICE_ROLE)
   updateStatus(mainWindow, 'fullReset', 'deleteEBApp')
   await deleteEBApp(secrets, mainWindow, EB_APP_NAME)
-  updateStatus(mainWindow, 'fullReset', 'deleteBucket')
-  await deleteBucket(secrets, mainWindow, EB_BUCKET_NAME)
+  if (deleteData) {
+    updateStatus(mainWindow, 'fullReset', 'deleteBucket')
+    await deleteBucket(secrets, mainWindow, EB_BUCKET_NAME)
+  }
   updateStatus(mainWindow, 'fullReset', 'END')
 }
