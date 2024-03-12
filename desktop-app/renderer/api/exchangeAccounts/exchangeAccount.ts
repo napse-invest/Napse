@@ -14,7 +14,8 @@ export interface BaseExchangeAccount {
 export interface ExchangeAccount extends BaseExchangeAccount {
   uuid: string
 }
-export interface RetreivedExchangeAccount extends ExchangeAccount {}
+export interface RetreivedExchangeAccount
+  extends Omit<Omit<ExchangeAccount, 'privateKey'>, 'publicKey'> {}
 
 export async function getExchangeAccount(
   searchParams: ReturnType<typeof useSearchParams>,
