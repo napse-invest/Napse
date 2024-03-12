@@ -1,5 +1,12 @@
+'use client'
 import { Fleet, listFleet } from '@/api/fleets/fleets'
+import { Key, getCurrentKey } from '@/api/key/key'
 import { RetrievedNapseSpace, retrieveSpace } from '@/api/spaces/spaces'
+import {
+  OperationContext,
+  OperationProvider
+} from '@/components/custom/moneyActions/operationContext'
+import InfoPanelCard from '@/components/custom/panel/infoPanelCard'
 import ValuePanelCard from '@/components/custom/panel/valuePanelCard'
 import ContextHeader from '@/components/layout/contextHeader'
 import DefaultPageLayout from '@/components/layout/defaultPageLayout'
@@ -11,81 +18,59 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { getKeyData } from '@/lib/dataManagement'
 import { standardUrlPartial } from '@/lib/queryParams'
-import {
-  BanknotesIcon,
-  ChartBarSquareIcon,
-  EllipsisHorizontalIcon,
-  TicketIcon
-} from '@heroicons/react/24/outline'
-import {
-  AreaChart,
-  Color,
-  Icon,
-  Metric,
-  Card as TremorCard
-} from '@tremor/react'
+import CreateFleetDialog from '@/pages/fleets/createFleetDialog'
+import { AreaChart, Icon, Metric, Card as TremorCard } from '@tremor/react'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
-import React$1, { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import WalletBoard from '../../../components/custom/board/walletBoard'
 import OperationDataTable from '../../../components/custom/data-table/operationDataTable'
-import MoneyActionButtons from '../../../components/custom/moneyActionButtons'
+import SpaceMoneyActionButtons from '../../../components/custom/moneyActions/spaceMoneyActionButtons'
 import { fakeDashboardData } from '../../../lib/fakeDashboardData'
 
-type KpiData = {
-  name: string
-  value: string | number
-  icon: React$1.ElementType
-  color: Color
-}
+import { format } from 'date-fns'
+import { ReadonlyURLSearchParams } from 'next/navigation'
+import { Dispatch, SetStateAction } from 'react'
 
-function getKeyData(key: string, value: number): KpiData {
-  const KpiData: Record<string, KpiData> = {
-    // TicketIcon
-    // BanknotesIcon
-    // ChartBarSquareIcon
-    value: {
-      icon: BanknotesIcon,
-      color: 'emerald',
-      name: 'Value',
-      value: value
-    },
-    order_count_30: {
-      icon: TicketIcon,
-      color: 'blue',
-      name: 'Orders',
-      value: value
-    },
-    delta_30: {
-      icon: ChartBarSquareIcon,
-      color: 'amber',
-      name: 'Delta',
-      value:
-        value >= 0
-          ? `+ ${(value * 100).toFixed(value % 1 === 0 ? 0 : 1)} %`
-          : `${(value * 100).toFixed(value % 1 === 0 ? 0 : 1)} %`
-    }
+async function fetchCurrentKey({
+  setCurrentKey,
+  searchParams
+}: {
+  setCurrentKey: Dispatch<SetStateAction<Key | undefined>>
+  searchParams: ReadonlyURLSearchParams
+}) {
+  try {
+    const response = await getCurrentKey(searchParams)
+    setCurrentKey(response)
+  } catch (error) {
+    console.error(error)
+    setCurrentKey(undefined)
   }
+}
+const formattedFakeDashboardData = fakeDashboardData.map((item) => {
+  return { ...item, date: format(item.date, 'd MMM yy') }
+})
 
+export default function WrappedSpace(): JSX.Element {
   return (
-    KpiData[key] || {
-      icon: EllipsisHorizontalIcon,
-      color: 'gray',
-      name: 'Unknown',
-      value: value
-    }
+    <OperationProvider>
+      <Space />
+    </OperationProvider>
   )
 }
 
-export default function Space(): JSX.Element {
+export function Space(): JSX.Element {
   const searchParams = useSearchParams()
   const router = useRouter()
 
   const spaceID: string = searchParams.get('space') || ''
-  // const spaceID: string = 'wrongSpaceUUID'
+  const [currentKey, setCurrentKey] = useState<Key>()
+
   const [space, setSpace] = useState<RetrievedNapseSpace>()
   const [fleets, setFleets] = useState<Fleet[]>([])
+  const { triggerRefresh, setTriggerRefresh } = useContext(OperationContext)
 
   useEffect(() => {
     async function fetchSpace() {
@@ -113,13 +98,20 @@ export default function Space(): JSX.Element {
     if (searchParams.get('server')) {
       fetchSpace()
       fetchFleets()
+      fetchCurrentKey({ setCurrentKey, searchParams })
     }
-  }, [spaceID, searchParams, router])
+
+    // Operation trigger
+    if (triggerRefresh) {
+      setTriggerRefresh(false)
+      fetchSpace()
+    }
+  }, [spaceID, searchParams, router, triggerRefresh, setTriggerRefresh])
 
   if (!space) {
+    // TODO: setup a squeleton or a loader
     return <></>
   } else {
-    console.log(space)
   }
 
   return (
@@ -138,9 +130,9 @@ export default function Space(): JSX.Element {
               <TabsTrigger value="operations">Operations</TabsTrigger>
               <TabsTrigger value="fleets">Fleets</TabsTrigger>
             </TabsList>
-            <MoneyActionButtons />
+            <SpaceMoneyActionButtons space={space} />
           </div>
-          <TabsContent value="dashboard" className="mt-4 flex flex-row gap-6">
+          <TabsContent value="dashboard" className="mt-8 flex flex-row gap-6">
             {/* Graph card */}
             <Card className="h-[30rem] w-[55rem] grow-0">
               <CardHeader>
@@ -149,7 +141,7 @@ export default function Space(): JSX.Element {
               <CardContent className="">
                 <AreaChart
                   className="mt-4 h-80"
-                  data={fakeDashboardData}
+                  data={formattedFakeDashboardData}
                   categories={['value']}
                   index="date"
                   colors={['green']}
@@ -195,12 +187,13 @@ export default function Space(): JSX.Element {
             <OperationDataTable space={space} />
           </TabsContent>
           <TabsContent value="fleets" className="mt-0">
-            <div>
+            <div className="my-10 grid max-w-screen-xl grid-cols-3 gap-6">
               {fleets.map((fleet, index) => (
                 <ValuePanelCard
                   key={index}
                   title={fleet.name}
                   value={fleet.value}
+                  delta={fleet.delta}
                   onClick={() => {
                     router.push(
                       standardUrlPartial(
@@ -216,6 +209,23 @@ export default function Space(): JSX.Element {
                   }}
                 />
               ))}
+              <InfoPanelCard
+                cardType={
+                  currentKey?.is_master_key ? 'button' : 'disabledButton'
+                }
+                tooltip={
+                  !currentKey?.is_master_key &&
+                  // 'You do not have the permission to create an exchange account.'
+                  `currentKey.is_master_key: ${currentKey?.is_master_key}`
+                }
+                textContent={
+                  <CreateFleetDialog
+                    fleets={fleets}
+                    setFleets={setFleets}
+                    disabledButton={currentKey?.is_master_key ? false : true}
+                  />
+                }
+              />
             </div>
           </TabsContent>
         </Tabs>

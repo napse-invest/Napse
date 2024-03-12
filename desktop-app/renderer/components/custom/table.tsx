@@ -1,18 +1,21 @@
 import {
-  ColumnDef,
-  Row,
-  flexRender,
-  getCoreRowModel,
-  useReactTable
-} from '@tanstack/react-table'
-import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow
-} from '../ui/table'
+} from '@/components/ui/table'
+import {
+  ColumnDef,
+  Row,
+  SortingState,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  useReactTable
+} from '@tanstack/react-table'
+import { useState } from 'react'
 
 export default function CustomTable<TData, TValue>({
   data,
@@ -25,10 +28,16 @@ export default function CustomTable<TData, TValue>({
   clickCallback?: (row: Row<TData>) => void
   className?: string
 }): JSX.Element {
+  const [sorting, setSorting] = useState<SortingState>([])
   const table = useReactTable({
     data: data,
     columns: columns,
-    getCoreRowModel: getCoreRowModel()
+    getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting
+    }
   })
   return (
     <div className={className}>

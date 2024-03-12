@@ -12,13 +12,18 @@ import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { ArrowUpRightIcon } from '@heroicons/react/24/outline'
 import { AreaChart, DonutChart, Icon, Metric } from '@tremor/react'
+import { format } from 'date-fns'
 import { fakeDashboardData } from '../../../lib/fakeDashboardData'
-import DisplayCurrencyDataDialog from '../data-table/displayCurrencyDialog'
+import CurrencyDataDialog from '../data-table/currencyDialog'
 
 export type simpleCurrencyData = {
   ticker: string
   value: number
 }
+
+const formattedFakeDashboardData = fakeDashboardData.map((item) => {
+  return { ...item, date: format(item.date, 'd MMM yy') }
+})
 
 export default function WalletBoard({
   space,
@@ -48,7 +53,7 @@ export default function WalletBoard({
         <CardContent className="">
           <AreaChart
             className="mt-4 h-80"
-            data={fakeDashboardData}
+            data={formattedFakeDashboardData}
             categories={['value']}
             index="date"
             colors={['green']}
@@ -89,7 +94,7 @@ export default function WalletBoard({
           </div>
         </CardContent>
         <CardFooter className="flex flex-col items-center">
-          <DisplayCurrencyDataDialog
+          <CurrencyDataDialog
             trigger={
               <Button variant="ghost" onClick={() => {}}>
                 Details

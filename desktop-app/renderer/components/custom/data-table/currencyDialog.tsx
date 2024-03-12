@@ -9,11 +9,9 @@ import {
 } from '@/components/ui/dialog'
 import { Currency } from 'api/wallets/wallets'
 import { ReactNode } from 'react'
-import DisplayCurrencyDataTable, {
-  currencyColumns
-} from './displayCurrencyDataTable'
+import CurrencyDataTable, { currencyColumns } from './currencyDataTable'
 
-export default function DisplayCurrencyDataDialog({
+export default function CurrencyDataDialog({
   trigger,
   space
 }: {
@@ -30,7 +28,7 @@ export default function DisplayCurrencyDataDialog({
 
           <DialogDescription>List of all currencies</DialogDescription>
         </DialogHeader>
-        <DisplayCurrencyDataTable data={currencies} columns={currencyColumns} />
+        <CurrencyDataTable data={currencies} columns={currencyColumns} />
       </DialogContent>
     </Dialog>
   )

@@ -43,7 +43,7 @@ export default function Servers(): JSX.Element {
                   updateServer(server)
                 }}
                 deleteOnClick={() => {
-                  removeServer(server.id)
+                  removeServer(server.name)
                   router
                     .push(
                       standardUrlPartial(

@@ -1,3 +1,4 @@
+import { ExchangeAccount } from '@/api/exchangeAccounts/exchangeAccount'
 import CustomForm from '@/components/custom/selectedObject/inputs'
 import { Button } from '@/components/ui/button'
 import {
@@ -24,7 +25,8 @@ import * as z from 'zod'
 const defaultSpace: BaseNapseSpace = {
   name: 'My Space',
   description: 'My Space Description',
-  exchange_account: '7bdd866e-f2a2-4ea9-a01e-02ddb77a80fe'
+  exchangeAccount: '7bdd866e-f2a2-4ea9-a01e-02ddb77a80fe',
+  testing: true
 }
 
 export default function CreateSpaceDialog({
@@ -38,7 +40,7 @@ export default function CreateSpaceDialog({
 }): JSX.Element {
   const searchParams = useSearchParams()
   const [possibleExchangeAccounts, setPossibleExchangeAccounts] = useState<
-    string[]
+    ExchangeAccount[]
   >([])
   const [space, setSpace] = useState<BaseNapseSpace>(defaultSpace)
 
@@ -47,7 +49,6 @@ export default function CreateSpaceDialog({
       try {
         const response = await getPossibleExchangeAccounts(searchParams)
         setPossibleExchangeAccounts(response.data)
-        console.log(response.data)
       } catch (error) {
         console.error(error)
         setPossibleExchangeAccounts([])
@@ -57,6 +58,14 @@ export default function CreateSpaceDialog({
       fetchPossibleExchangesAccount()
     }
   }, [searchParams])
+
+  const ExchangeAccountPossibilitiesSelection = possibleExchangeAccounts.reduce(
+    (obj, item) => {
+      obj[item.uuid] = item.name
+      return obj
+    },
+    {} as { [key: string]: string }
+  )
 
   return (
     <Dialog>
@@ -70,7 +79,7 @@ export default function CreateSpaceDialog({
           Add new
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="">
         <DialogHeader>
           <DialogTitle>Add a new Space</DialogTitle>
           <DialogDescription>
@@ -96,12 +105,11 @@ export default function CreateSpaceDialog({
             },
             {
               label: 'Exchange',
-              key: 'exchange_account',
-              // type: 'select',
-              // possibilities: possibleExchangeAccounts,
-              type: 'input',
+              key: 'exchangeAccount',
+              type: 'select',
+              possibilities: ExchangeAccountPossibilitiesSelection,
               zod: z.string(),
-              default: defaultSpace.exchange_account
+              default: Object.keys(ExchangeAccountPossibilitiesSelection)[0]
             }
           ]}
           onSubmit={async (values) => {
