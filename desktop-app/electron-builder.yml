@@ -1,5 +1,5 @@
 appId: com.example.nextron
-productName: My Nextron App
+productName: Napse
 copyright: Copyright © 2018 Yoshihide Shiono
 directories:
   output: dist
@@ -9,9 +9,5 @@ files:
     filter:
       - package.json
       - app
-
-linux:
-  target: deb
-  icon: renderer/public/images/logo.svg
 
 publish: null

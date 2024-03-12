@@ -20,14 +20,27 @@ import {
 } from 'main/helpers'
 import path from 'path'
 
-export const EB_BUCKET_NAME = 'napse-eb-bucket'
-export const EB_APP_NAME = 'napse'
+export const EB_BUCKET_NAME = `napse-eb-bucket${
+  process.env.NODE_ENV === 'production' ? '' : '-dev'
+}`
+export const EB_APP_NAME = `napse${
+  process.env.NODE_ENV === 'production' ? '' : '-dev'
+}`
 export const EB_APP_DESCRIPTION = 'No description'
-export const EB_ENV_NAME = 'napse-env'
-export const IAM_ROLE_NAME_SERVICE_ROLE = 'napse-iam-service-role'
-export const IAM_ROLE_NAME_EC2_ROLE = 'napse-iam-ec2-role'
-export const IAM_INSTANCE_PROFILE_NAME = 'napse-iam-instance-profile'
+export const EB_ENV_NAME = `napse-env${
+  process.env.NODE_ENV === 'production' ? '' : '-dev'
+}`
+export const IAM_ROLE_NAME_SERVICE_ROLE = `napse-iam-service-role${
+  process.env.NODE_ENV === 'production' ? '' : '-dev'
+}`
+export const IAM_ROLE_NAME_EC2_ROLE = `napse-iam-ec2-role${
+  process.env.NODE_ENV === 'production' ? '' : '-dev'
+}`
+export const IAM_INSTANCE_PROFILE_NAME = `napse-iam-instance-profile${
+  process.env.NODE_ENV === 'production' ? '' : '-dev'
+}`
 
+console.log('EB_BUCKET_NAME', EB_BUCKET_NAME)
 export default async function Main(
   secrets: {
     AWS__API_TOKEN: string

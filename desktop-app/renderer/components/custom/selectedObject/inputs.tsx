@@ -229,10 +229,14 @@ export default function CustomForm<T extends Object>({
             ) : (
               <Button
                 type="submit"
-                onClick={(e) => {
-                  console.log('props', e)
+                onClick={async (e) => {
                   setIsLoading(true)
-                  return form.handleSubmit(onSubmit)(e)
+                  const submit = form.handleSubmit(onSubmit)(e)
+
+                  await new Promise((resolve) => setTimeout(resolve, 400))
+                  setIsLoading(false)
+
+                  return submit
                 }}
               >
                 {buttonDescription ?? 'Submit'}
