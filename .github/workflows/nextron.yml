@@ -45,8 +45,3 @@ jobs:
           cmd: build # will run `yarn build` command (for each os)
           dir: desktop-app
       
-      - uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.platform }}-distributables
-          path: desktop-app/dist/Napse-*
-          if-no-files-found: error

@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: Build 
+    name: Build
     strategy:
       matrix:
         include:
@@ -60,6 +60,13 @@ jobs:
       
       - name: Get all distributables
         uses: actions/download-artifact@v3
+      
+      - name: Unzip distributables
+        run: |
+          ls
+          for f in *-distributables.zip; do
+            unzip -o $f -d desktop-app/dist
+          done
 
       - name: Filter out .blockmap files
         run: |
