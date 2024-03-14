@@ -1,8 +1,8 @@
 import {
-  ExchangeAccount,
+  RetreivedExchangeAccount,
   getExchangeAccount
 } from '@/api/exchangeAccounts/exchangeAccount'
-import { NapseSpace, getSpace } from '@/api/spaces/spaces'
+import { RetrievedNapseSpace, retrieveSpace } from '@/api/spaces/spaces'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -22,7 +22,8 @@ export default function BreadcrumbLayout() {
   const bot = searchParams.get('bot') || ''
   const server = getServer(serverID)
 
-  const [exchangeAccount, setExchangeAccount] = useState<ExchangeAccount>()
+  const [exchangeAccount, setExchangeAccount] =
+    useState<RetreivedExchangeAccount>()
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -38,11 +39,11 @@ export default function BreadcrumbLayout() {
     exchangeAccountID && fetchData()
   }, [exchangeAccountID, searchParams])
 
-  const [space, setSpace] = useState<NapseSpace>()
+  const [space, setSpace] = useState<RetrievedNapseSpace>()
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getSpace(searchParams, spaceID)
+        const response = await retrieveSpace(searchParams, spaceID)
         setSpace(response.data)
       } catch (error) {
         console.error(error)
@@ -113,7 +114,7 @@ export default function BreadcrumbLayout() {
                   searchParams
                 )}
               >
-                {exchangeAccountID}
+                {fleet}
               </BreadcrumbLink>
             </BreadcrumbItem>
           )}
@@ -122,7 +123,7 @@ export default function BreadcrumbLayout() {
               <BreadcrumbLink
                 href={standardUrlPartial('/bots/', bot, {}, searchParams)}
               >
-                {exchangeAccountID}
+                {bot}
               </BreadcrumbLink>
             </BreadcrumbItem>
           )}

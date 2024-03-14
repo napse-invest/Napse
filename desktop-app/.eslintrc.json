@@ -8,8 +8,7 @@
     "extends": [
         "plugin:react/recommended",
         "plugin:tailwindcss/recommended",
-        "next/core-web-vitals",
-        "next/babel"
+        "next/core-web-vitals"
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
