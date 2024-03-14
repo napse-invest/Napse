@@ -20,7 +20,7 @@ jobs:
           - platform: linux
             os: "ubuntu-22.04"
           - platform: windows
-            os: "windows-2019"
+            os: "windows-2022"
     runs-on: ${{ matrix.os }}
     needs: authorize
     steps:
@@ -28,10 +28,10 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
-      - name: Setup Node.js 
+      - name: Settp Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 14
+          node-version: 18.x
       
       - name: Run install
         uses: borales/actions-yarn@v5
@@ -42,7 +42,7 @@ jobs:
       - name: Build production bundle
         uses: borales/actions-yarn@v5
         with:
-          cmd: build # will run `yarn build` command
+          cmd: build # will run `yarn build` command (for each os)
           dir: desktop-app
       
       - uses: actions/upload-artifact@v3
@@ -50,4 +50,3 @@ jobs:
           name: ${{ matrix.platform }}-distributables
           path: desktop-app/dist/Napse-*
           if-no-files-found: error
-
