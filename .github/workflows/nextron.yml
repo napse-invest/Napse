@@ -20,7 +20,7 @@ jobs:
           - platform: linux
             os: "ubuntu-22.04"
           - platform: windows
-            os: "windows-2019"
+            os: "windows-2022"
     runs-on: ${{ matrix.os }}
     needs: authorize
     steps:
@@ -48,6 +48,6 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.platform }}-distributables
-          path: desktop-app/dist/Napse-(?!.*\.blockmap).*
+          path: desktop-app/dist/Napse-*
           if-no-files-found: error
 
