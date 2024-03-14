@@ -10,12 +10,12 @@ jobs:
     strategy:
       matrix:
         include:
-          # - platform: mac
-          #   os: "macos-12"
+          - platform: mac
+            os: "macos-12"
           - platform: linux
             os: "ubuntu-22.04"
-          # - platform: windows
-          #   os: "windows-2022"
+          - platform: windows
+            os: "windows-2022"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -52,12 +52,10 @@ jobs:
     runs-on: "ubuntu-22.04"
     needs: build
     steps:
-      - name: Tag Docker image
-        run: |
-          TAG_NAME=$(grep -oP '(?<=# \[)[^\]]+' CHANGELOG.md | head -n 1)
-          VERSION=v$TAG_NAME
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-      
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.target_commitish }}
+          
       - name: Get all distributables
         uses: actions/download-artifact@v3
       
@@ -65,13 +63,19 @@ jobs:
         run: |
           mkdir distributables
           cp -r linux-distributables/* distributables/
-          # cp -r mac-distributables/* distributables/
-          # cp -r windows-distributables/* distributables/
+          cp -r mac-distributables/* distributables/
+          cp -r windows-distributables/* distributables/
           ls distributables
-
+      
       - name: Filter out .blockmap files
         run: |
-          find distribuables -name '*.blockmap' -exec rm {} +
+          find distributables -name '*.blockmap' -exec rm {} +
+
+      - name: Tag Docker image
+        run: |
+          TAG_NAME=$(grep -oP '(?<=# \[)[^\]]+' CHANGELOG.md | head -n 1)
+          VERSION=v$TAG_NAME
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Publish all artifacts to GitHub Releases
         uses: softprops/action-gh-release@v1
