@@ -15,12 +15,12 @@ jobs:
     strategy:
       matrix:
         include:
+          - platform: mac
+            os: "macos-12"
           - platform: linux
             os: "ubuntu-22.04"
           - platform: windows
             os: "windows-2022"
-          - platform: mac
-            os: "macos-12"
     runs-on: ${{ matrix.os }}
     needs: authorize
     steps:
@@ -32,7 +32,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18.x
-
+      
       - name: Run install
         uses: borales/actions-yarn@v5
         with:
@@ -44,3 +44,10 @@ jobs:
         with:
           cmd: build # will run `yarn build` command (for each os)
           dir: desktop-app
+      
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.platform }}-distributables
+          path: desktop-app/dist/Napse-(?!.*\.blockmap).*
+          if-no-files-found: error
+
