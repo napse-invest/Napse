@@ -61,6 +61,10 @@ jobs:
       - name: Get all distributables
         uses: actions/download-artifact@v3
 
+      - name: Filter out .blockmap files
+        run: |
+          find desktop-app/dist -name '*.blockmap' -exec rm {} +
+
       - name: Publish all artifacts to GitHub Releases
         uses: softprops/action-gh-release@v1
         env:
