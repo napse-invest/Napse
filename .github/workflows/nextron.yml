@@ -28,10 +28,10 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
-      - name: Set Node.js 18.x
+      - name: Setup Node.js 
         uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 14
       
       - name: Run install
         uses: borales/actions-yarn@v5
