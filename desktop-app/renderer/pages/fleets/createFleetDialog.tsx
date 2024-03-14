@@ -152,7 +152,7 @@ export default function CreateFleetDialog({
       <DialogContent className="">
         <Form {...form}>
           <form
-            // onSubmit={form.handleSubmit(onSubmitFleet)}
+            onSubmit={form.handleSubmit(onSubmitFleet)}
             className="space-y-2"
           >
             <Carousel className="">
@@ -223,12 +223,7 @@ export default function CreateFleetDialog({
                       clusters={Clusters}
                       setClusters={setClusters}
                     />
-                    <Button
-                      type="submit"
-                      onClick={form.handleSubmit(onSubmitFleet)}
-                    >
-                      Create
-                    </Button>
+                    <Button type="submit">Create</Button>
                   </div>
                 </CarouselItem>
               </CarouselContent>

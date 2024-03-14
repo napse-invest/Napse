@@ -8,11 +8,14 @@ export interface BaseExchangeAccount {
   description: string
   exchange: string
   testing: boolean
+  privateKey: string
+  publicKey: string
 }
 export interface ExchangeAccount extends BaseExchangeAccount {
   uuid: string
 }
-export interface RetreivedExchangeAccount extends ExchangeAccount {}
+export interface RetreivedExchangeAccount
+  extends Omit<Omit<ExchangeAccount, 'privateKey'>, 'publicKey'> {}
 
 export async function getExchangeAccount(
   searchParams: ReturnType<typeof useSearchParams>,
