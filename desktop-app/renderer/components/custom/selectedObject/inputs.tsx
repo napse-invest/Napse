@@ -112,8 +112,7 @@ export default function CustomForm<T extends Object>({
 
   return (
     <Form {...form}>
-      {/* <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2"> */}
-      <form className="space-y-2">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         {inputs.map((input, index) => {
           return (
             <FormField
@@ -228,11 +227,12 @@ export default function CustomForm<T extends Object>({
               </Button>
             ) : (
               <Button
-                type="submit"
-                onClick={(e) => {
-                  console.log('props', e)
+                onClick={async (e) => {
                   setIsLoading(true)
-                  return form.handleSubmit(onSubmit)(e)
+                  const submit = form.handleSubmit(onSubmit)(e)
+                  await new Promise((resolve) => setTimeout(resolve, 400))
+                  setIsLoading(false)
+                  return submit
                 }}
               >
                 {buttonDescription ?? 'Submit'}

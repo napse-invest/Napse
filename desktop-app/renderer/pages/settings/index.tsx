@@ -30,7 +30,7 @@ import { ReloadIcon } from '@radix-ui/react-icons'
 import { ipcRenderer } from 'electron'
 import fs from 'fs'
 import path from 'path'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { z } from 'zod'
 
 const defaultSecrets = {
@@ -102,7 +102,19 @@ async function testHasAvailableUpdate(
   }
   throw new Error('Provider not supported')
 }
-
+async function updateStatus(
+  secrestsSet: boolean,
+  secrets: { [key: string]: string },
+  provider: TypeProviders,
+  setIsDeployed: Dispatch<SetStateAction<boolean>>,
+  setIsReadyToUpdate: Dispatch<SetStateAction<boolean>>,
+  setHasAvailableUpdate: Dispatch<SetStateAction<boolean>>
+) {
+  if (!secrestsSet) return
+  setIsDeployed(await testIsDeployed(secrets, provider))
+  setIsReadyToUpdate(await testIsReadyToUpdate(secrets, provider))
+  setHasAvailableUpdate(await testHasAvailableUpdate(secrets, provider))
+}
 export default function Settings(): JSX.Element {
   const { toast } = useToast()
   const [infoDeploy, setInfoDeploy] = useState('')
@@ -148,12 +160,29 @@ export default function Settings(): JSX.Element {
         setInfoFullReset(data.errorMessage ? data.errorMessage : data.message)
         removeServer(provider)
       }
+      if (data.step === 'END') {
+        updateStatus(
+          secrestsSet,
+          secrets,
+          provider,
+          setIsDeployed,
+          setIsReadyToUpdate,
+          setHasAvailableUpdate
+        )
+      }
       setIsErrorMessage(data.errorMessage ? true : false)
 
       setLoading(data.busy)
       setProgress(data.progress)
     })
-  }, [provider])
+  }, [
+    provider,
+    secrestsSet,
+    secrets,
+    setIsDeployed,
+    setIsReadyToUpdate,
+    setHasAvailableUpdate
+  ])
 
   useEffect(() => {
     const rootPath = process.env.HOME || process.env.USERPROFILE
@@ -175,19 +204,16 @@ export default function Settings(): JSX.Element {
 
   useEffect(() => {
     async function apiCall() {
-      if (!secrestsSet) return
-      setIsDeployed(await testIsDeployed(secrets, provider))
-      setIsReadyToUpdate(await testIsReadyToUpdate(secrets, provider))
+      updateStatus(
+        secrestsSet,
+        secrets,
+        provider,
+        setIsDeployed,
+        setIsReadyToUpdate,
+        setHasAvailableUpdate
+      )
     }
     apiCall()
-  }, [secrets, provider, secrestsSet])
-
-  useEffect(() => {
-    async function handleUpdateAvailable() {
-      if (!secrestsSet) return
-      setHasAvailableUpdate(await testHasAvailableUpdate(secrets, provider))
-    }
-    handleUpdateAvailable()
   }, [secrets, provider, secrestsSet])
 
   useEffect(() => {
@@ -256,8 +282,11 @@ export default function Settings(): JSX.Element {
                 <TabsTrigger value={'Update'} disabled={loading}>
                   Update
                 </TabsTrigger>
-                <TabsTrigger value={'Reset'} disabled={loading}>
-                  Reset
+                <TabsTrigger value={'Pause'} disabled={loading}>
+                  Pause
+                </TabsTrigger>
+                <TabsTrigger value={'Full Reset'} disabled={loading}>
+                  Full Reset
                 </TabsTrigger>
               </TabsList>
               <TabsContent value={'Setup'}>
@@ -343,12 +372,12 @@ export default function Settings(): JSX.Element {
                       {
                         "We've made deploying your own server easy, just click this button!"
                       }
-                      {isDeployed && (
-                        <div className=" text-destructive text-sm">
-                          Warning: Server already deployed
-                        </div>
-                      )}
                     </CardDescription>
+                    {isDeployed && (
+                      <div className=" text-destructive text-sm">
+                        Warning: Server already deployed
+                      </div>
+                    )}
                   </CardHeader>
                   <CardContent className="flex flex-col items-center justify-center">
                     <div className="h-4" />
@@ -383,21 +412,16 @@ export default function Settings(): JSX.Element {
                       {
                         "Here's a little button to update your server, just in case you want to do so."
                       }
-                      {!isReadyToUpdate ? (
-                        <div className=" text-destructive text-sm">
-                          Warning: No server deployed
-                        </div>
-                      ) : (
-                        <></>
-                      )}
-                      {!hasAvailableUpdate ? (
-                        <div className=" text-destructive text-sm">
-                          No updates available
-                        </div>
-                      ) : (
-                        <></>
-                      )}
                     </CardDescription>
+                    <div className=" text-destructive text-sm">
+                      {!isDeployed
+                        ? 'Warning: No server deployed'
+                        : !isReadyToUpdate
+                        ? 'Warning: Server not ready'
+                        : !hasAvailableUpdate
+                        ? 'Warning: No updates available'
+                        : ''}
+                    </div>
                   </CardHeader>
                   <CardContent className="flex flex-col items-center justify-center">
                     <div className="h-4" />
@@ -436,7 +460,52 @@ export default function Settings(): JSX.Element {
                   </CardContent>
                 </Card>
               </TabsContent>
-              <TabsContent value={'Reset'}>
+              <TabsContent value={'Pause'}>
+                <Card className="h-[100%]">
+                  <CardHeader>
+                    <CardTitle>Pause</CardTitle>
+                    <CardDescription>
+                      {
+                        "If you're not using your server, you can pause it to save some money."
+                      }
+                    </CardDescription>
+                    <div className=" text-destructive text-sm">
+                      {!isDeployed
+                        ? 'Warning: No server deployed'
+                        : !isReadyToUpdate
+                        ? 'Warning: Server not ready'
+                        : ''}
+                    </div>
+                  </CardHeader>
+
+                  <CardContent className="flex flex-col items-center justify-center">
+                    <div className="h-4" />
+                    <Button
+                      className="w-[100%]"
+                      onClick={() => {
+                        ipcRenderer.invoke('fullCleanupAWS', {
+                          secrets: secrets,
+                          deleteData: false
+                        })
+                      }}
+                      disabled={loading || !isReadyToUpdate || !isDeployed}
+                    >
+                      {loading && (
+                        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                      )}
+                      {loading ? 'Shutting down server' : 'Shut down server'}
+                    </Button>
+
+                    <div className="h-1" />
+                    {loading && <Progress value={progress} />}
+                    <div className="h-1" />
+                    <div className="text-muted-foreground text-center text-sm">
+                      {infoFullReset}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              <TabsContent value={'Full Reset'}>
                 <Card className="h-[100%]">
                   <CardHeader>
                     <CardTitle>Full Reset</CardTitle>
@@ -444,12 +513,14 @@ export default function Settings(): JSX.Element {
                       {
                         "Had enough of your server? Just click this button and it'll be gone."
                       }
-                      <br />
-                      {"It's just that easy."}
-                      <div className=" text-destructive text-sm">
-                        {!isReadyToUpdate ? 'Warning: No server deployed' : ''}
-                      </div>
                     </CardDescription>
+                    <div className=" text-destructive text-sm">
+                      {!isDeployed
+                        ? 'Warning: No server deployed'
+                        : !isReadyToUpdate
+                        ? 'Warning: Server not ready'
+                        : ''}
+                    </div>
                   </CardHeader>
                   <CardContent className="flex flex-col items-center justify-center">
                     <div className="h-4" />
@@ -457,7 +528,8 @@ export default function Settings(): JSX.Element {
                       className="w-[100%]"
                       onClick={() => {
                         ipcRenderer.invoke('fullCleanupAWS', {
-                          secrets
+                          secrets: secrets,
+                          deleteData: true
                         })
                       }}
                       disabled={loading || !isReadyToUpdate || !isDeployed}
