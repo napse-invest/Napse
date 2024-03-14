@@ -1,5 +1,5 @@
 import { EnvironmentStatus } from '@aws-sdk/client-elastic-beanstalk'
-import { BrowserWindow, app, ipcMain } from 'electron'
+import { BrowserWindow, app, autoUpdater, dialog, ipcMain } from 'electron'
 import serve from 'electron-serve'
 import {
   EB_APP_NAME,
@@ -25,6 +25,35 @@ if (isProd) {
 ;(async () => {
   await app.whenReady()
 
+  if (isProd) {
+    const server = 'https://hazel-c8oqh794d-napse-investment.vercel.app/'
+    const url = `${server}/update/${process.platform}/${app.getVersion()}`
+
+    autoUpdater.setFeedURL({ url })
+    setInterval(() => {
+      autoUpdater.checkForUpdates()
+    }, 60000)
+    autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+      const dialogOpts = {
+        type: 'info',
+        buttons: ['Restart', 'Later'],
+        title: 'Application Update',
+        message: process.platform === 'win32' ? releaseNotes : releaseName,
+        detail:
+          'A new version has been downloaded. Restart the application to apply the updates.'
+      }
+
+      dialog.showMessageBox(dialogOpts).then((returnValue) => {
+        if (returnValue.response === 0) autoUpdater.quitAndInstall()
+      })
+      console.log('update-downloaded')
+    })
+    autoUpdater.on('error', (message) => {
+      console.error('There was a problem updating the application')
+      console.error(message)
+    })
+  }
+
   const mainWindow = createWindow('main', {
     width: 1000,
     height: 600
@@ -37,7 +66,7 @@ if (isProd) {
   })
   ipcMain.handle('fullCleanupAWS', async (event, args) => {
     if (args.secrets) {
-      return await fullCleanupAWS(args.secrets, mainWindow)
+      return await fullCleanupAWS(args.secrets, args.deleteData, mainWindow)
     }
   })
   ipcMain.handle('updateAWS', async (event, args) => {
@@ -83,9 +112,12 @@ if (isProd) {
         EB_APP_NAME,
         EB_ENV_NAME
       )
-      if (environments) {
+      if (environments && environments.length > 0) {
         for (const env of environments) {
-          if (env.Status != EnvironmentStatus.Ready) {
+          if (
+            env.Status != EnvironmentStatus.Terminated &&
+            env.Status != EnvironmentStatus.Ready
+          ) {
             allReady = false
             break
           }
