@@ -20,7 +20,7 @@ jobs:
           - platform: windows
             os: "windows-2022"
           - platform: mac
-            os: "macos-12.7"
+            os: "macos-12"
     runs-on: ${{ matrix.os }}
     needs: authorize
     steps:
