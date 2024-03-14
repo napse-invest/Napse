@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/napse-invest/Napse/compare/v1.6.0...v1.7.0) (2024-03-14)
+
+
+### Features
+
+* **electron:** build ([cc12bec](https://github.com/napse-invest/Napse/commit/cc12becdaed2b4096de90648c97b0ba74a93a19b))
+
 # [1.6.0](https://github.com/napse-invest/Napse/compare/v1.5.0...v1.6.0) (2024-03-12)
 
 
