@@ -10,4 +10,4 @@ update-version:
 	./set-version.sh
 
 build: update-version
-	cd desktop-app && yarn build:all
+	cd desktop-app && yarn build
