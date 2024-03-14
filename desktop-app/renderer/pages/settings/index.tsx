@@ -419,7 +419,7 @@ export default function Settings(): JSX.Element {
                         : !isReadyToUpdate
                         ? 'Warning: Server not ready'
                         : !hasAvailableUpdate
-                        ? 'No updates available'
+                        ? 'Warning: No updates available'
                         : ''}
                     </div>
                   </CardHeader>

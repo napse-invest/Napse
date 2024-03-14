@@ -40,7 +40,6 @@ export const IAM_INSTANCE_PROFILE_NAME = `napse-iam-instance-profile${
   process.env.NODE_ENV === 'production' ? '' : '-dev'
 }`
 
-console.log('EB_BUCKET_NAME', EB_BUCKET_NAME)
 export default async function Main(
   secrets: {
     AWS__API_TOKEN: string

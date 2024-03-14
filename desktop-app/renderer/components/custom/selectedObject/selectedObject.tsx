@@ -79,6 +79,7 @@ export default function SelectedObject<T extends Object>({
         <CustomForm<typeof object>
           inputs={inputs}
           onSubmit={async (values) => {
+            console.log(values)
             if (!updateOnClick) return
             try {
               await updateOnClick(values)
