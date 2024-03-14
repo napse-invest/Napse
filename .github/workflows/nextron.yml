@@ -20,7 +20,7 @@ jobs:
           - platform: linux
             os: "ubuntu-22.04"
           - platform: windows
-            os: "windows-2022"
+            os: "windows-2019"
     runs-on: ${{ matrix.os }}
     needs: authorize
     steps:
