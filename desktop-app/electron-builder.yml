@@ -10,4 +10,8 @@ files:
       - package.json
       - app
 
+linux:
+  target: deb
+
+
 publish: null
