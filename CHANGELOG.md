@@ -1,3 +1,53 @@
+## [1.7.8](https://github.com/napse-invest/Napse/compare/v1.7.7...v1.7.8) (2024-03-14)
+
+
+### Bug Fixes
+
+* **ci:** build ([42668ad](https://github.com/napse-invest/Napse/commit/42668ad114c36160beffcac9031409dc05853f37))
+
+## [1.7.7](https://github.com/napse-invest/Napse/compare/v1.7.6...v1.7.7) (2024-03-14)
+
+
+### Bug Fixes
+
+* **ci:** build ([eed19f2](https://github.com/napse-invest/Napse/commit/eed19f2c9db6ccd89727afa140c0059a55387939))
+
+## [1.7.6](https://github.com/napse-invest/Napse/compare/v1.7.5...v1.7.6) (2024-03-14)
+
+
+### Bug Fixes
+
+* **ci:** build ([22a18d2](https://github.com/napse-invest/Napse/commit/22a18d29205f8be5e5ff1c9f1e9d3e20e28aa4cf))
+
+## [1.7.5](https://github.com/napse-invest/Napse/compare/v1.7.4...v1.7.5) (2024-03-14)
+
+
+### Bug Fixes
+
+* **ci:** build ([24a1acf](https://github.com/napse-invest/Napse/commit/24a1acfafd051a8647ab3f7f3f141189e0a6b294))
+* **ci:** build ([3eb13c7](https://github.com/napse-invest/Napse/commit/3eb13c79f94b13d2e4aeacbc3d29db023192a8f5))
+
+## [1.7.4](https://github.com/napse-invest/Napse/compare/v1.7.3...v1.7.4) (2024-03-14)
+
+
+### Bug Fixes
+
+* **ci:** build ([d55288b](https://github.com/napse-invest/Napse/commit/d55288b6e29cdef178d2f7623cf342bdcfd3e35c))
+
+## [1.7.3](https://github.com/napse-invest/Napse/compare/v1.7.2...v1.7.3) (2024-03-14)
+
+
+### Bug Fixes
+
+* **ci:** build ([3ef8c0f](https://github.com/napse-invest/Napse/commit/3ef8c0fce370dc436df56b874dac7fa5f06a3497))
+
+## [1.7.2](https://github.com/napse-invest/Napse/compare/v1.7.1...v1.7.2) (2024-03-14)
+
+
+### Bug Fixes
+
+* **ci:** build ([d394ff6](https://github.com/napse-invest/Napse/commit/d394ff6a0f51659ad966059aa2bcc3d6f130ee48))
+
 ## [1.7.1](https://github.com/napse-invest/Napse/compare/v1.7.0...v1.7.1) (2024-03-14)
 
 
