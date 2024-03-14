@@ -1,3 +1,10 @@
+## [1.7.4](https://github.com/napse-invest/Napse/compare/v1.7.3...v1.7.4) (2024-03-14)
+
+
+### Bug Fixes
+
+* **ci:** build ([d55288b](https://github.com/napse-invest/Napse/commit/d55288b6e29cdef178d2f7623cf342bdcfd3e35c))
+
 ## [1.7.3](https://github.com/napse-invest/Napse/compare/v1.7.2...v1.7.3) (2024-03-14)
 
 
