@@ -77,7 +77,8 @@
     "tailwindcss-animate": "^1.0.6",
     "toast": "^0.5.4",
     "zlib": "^1.0.5",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "electron-builder": "^24.13.3"
   },
   "devDependencies": {
     "@types/node": "^20.8.5",
@@ -87,7 +88,6 @@
     "@typescript-eslint/parser": "^6.16.0",
     "autoprefixer": "^10.4.7",
     "electron": "^21.4.4",
-    "electron-builder": "^24.13.3",
     "eslint": "^8.57.0",
     "eslint-config-next": "13.5.4",
     "eslint-config-standard-with-typescript": "^39.1.0",
