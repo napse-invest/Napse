@@ -71,7 +71,7 @@ jobs:
 
       - name: Filter out .blockmap files
         run: |
-          find distribuables -name '*.blockmap' -exec rm {} +
+          find distributables -name '*.blockmap' -exec rm {} +
 
       - name: Publish all artifacts to GitHub Releases
         uses: softprops/action-gh-release@v1
