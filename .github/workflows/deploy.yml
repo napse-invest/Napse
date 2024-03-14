@@ -65,8 +65,8 @@ jobs:
         run: |
           mkdir distributables
           cp -r linux-distributables/* distributables/
-          cp -r mac-distributables/* distributables/
-          cp -r windows-distributables/* distributables/
+          # cp -r mac-distributables/* distributables/
+          # cp -r windows-distributables/* distributables/
           ls distributables
 
       - name: Filter out .blockmap files
