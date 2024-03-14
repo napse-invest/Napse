@@ -16,11 +16,11 @@ jobs:
       matrix:
         include:
           - platform: linux
-            os: "ubuntu-22.04.4"
+            os: "ubuntu-22.04"
           - platform: windows
             os: "windows-2022"
           - platform: mac
-            os: "macos-12.7.3"
+            os: "macos-12.7"
     runs-on: ${{ matrix.os }}
     needs: authorize
     steps:
