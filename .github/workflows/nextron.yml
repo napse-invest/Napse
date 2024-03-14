@@ -36,7 +36,7 @@ jobs:
       - name: Run install
         uses: borales/actions-yarn@v5
         with:
-          cmd: install # will run `yarn install` command
+          cmd: install --network-timeout 1000000  # will run `yarn install` command
           dir: desktop-app
 
       - name: Build production bundle
