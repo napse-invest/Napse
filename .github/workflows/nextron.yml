@@ -44,4 +44,3 @@ jobs:
         with:
           cmd: build # will run `yarn build` command (for each os)
           dir: desktop-app
-      

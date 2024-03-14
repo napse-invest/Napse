@@ -64,9 +64,9 @@ jobs:
       - name: Unzip distributables
         run: |
           ls
-          for f in *-distributables.zip; do
-            unzip -o $f -d desktop-app/dist
-          done
+          cd linux-distributables
+          ls
+          
 
       - name: Filter out .blockmap files
         run: |
@@ -78,7 +78,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ env.VERSION }}
         with:
-          files: desktop-app/dist/Napse-*
+          files: Napse-*
           tag_name: ${{ env.VERSION }}
           body: ${{ github.event.release.body }}
           draft: false
