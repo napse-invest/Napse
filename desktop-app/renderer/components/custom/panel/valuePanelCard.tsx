@@ -19,14 +19,14 @@ function getDeltaType({ delta }: { delta: number }): string {
   return 'decrease'
 }
 
-function formatCurrencyValue(value: number): string {
+export function formatCurrencyValue(value: number): string {
   return `$${value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
 }
 
 function ValuePanelCard({
   title = '',
   value = 0,
-  delta = 0,
+  delta,
   description = '',
   cardType = 'button',
   tooltip = '',
@@ -40,24 +40,30 @@ function ValuePanelCard({
   tooltip?: string
   onClick?: () => void
 }): JSX.Element {
-  const badge = (
-    <BadgeDelta
-      className="rounded-tremor-full"
-      deltaType={getDeltaType({ delta })}
-      isIncreasePositive={true}
-      size="xs"
-    >
-      {delta >= 0
-        ? `+${delta.toFixed(delta % 1 == 0 ? 0 : 1)}`
-        : delta.toFixed(delta % 1 == 0 ? 0 : 1)}{' '}
-      %
-    </BadgeDelta>
-  )
+  const badge = () => {
+    if (typeof delta == undefined || delta == null) {
+      return <></>
+    }
+    return (
+      <BadgeDelta
+        className="rounded-tremor-full"
+        deltaType={getDeltaType({ delta })}
+        isIncreasePositive={true}
+        size="xs"
+      >
+        {delta >= 0
+          ? `+${(delta * 100).toFixed(delta % 1 == 0 ? 0 : 1)}`
+          : (delta * 100).toFixed(delta % 1 == 0 ? 0 : 1)}{' '}
+        %
+      </BadgeDelta>
+    )
+  }
   return (
     <PanelCard
-      className="h-32 w-80 min-w-fit"
+      className="min-w-fit sm:h-28 sm:w-60 lg:h-32 lg:w-80"
+      // className="h-32 w-80 min-w-fit"
       title={title}
-      badge={badge}
+      badge={badge()}
       description={description}
       cardType={cardType}
       tooltip={tooltip}

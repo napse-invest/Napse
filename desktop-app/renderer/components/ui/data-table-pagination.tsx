@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { useEffect } from 'react'
+
 interface DataTablePaginationProps<TData> {
   table: Table<TData>
 }
@@ -22,15 +22,13 @@ interface DataTablePaginationProps<TData> {
 export function DataTablePagination<TData>({
   table
 }: DataTablePaginationProps<TData>) {
-  useEffect(() => {
-    table.setPageSize(5)
-  }, [table])
   return (
     <div className="flex items-center justify-between px-2">
-      <div className="text-muted-foreground flex-1 text-sm">
+      {/* <div className="text-muted-foreground flex-1 text-sm">
         {table.getFilteredSelectedRowModel().rows.length} of{' '}
         {table.getFilteredRowModel().rows.length} row(s) selected.
-      </div>
+      </div> */}
+      <div></div>
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>
@@ -44,7 +42,7 @@ export function DataTablePagination<TData>({
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
-              {[5, 10, 20, 50].map((pageSize) => (
+              {[10, 20, 30, 40, 50].map((pageSize) => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
                 </SelectItem>
@@ -97,9 +95,4 @@ export function DataTablePagination<TData>({
       </div>
     </div>
   )
-}
-
-export default function Todo(): JSX.Element {
-  // TODO: implement or move this file
-  return <></>
 }

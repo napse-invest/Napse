@@ -14,6 +14,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import * as z from 'zod'
 import SelectedAPIKey from './selectedAPIKey'
+
 export default function Servers(): JSX.Element {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -39,11 +40,15 @@ export default function Servers(): JSX.Element {
                 objectIdentifier="name"
                 object={server}
                 setObject={setServer}
-                updateOnClick={() => {
-                  updateServer(server)
+                updateOnClick={(values) => {
+                  updateServer({
+                    name: values.name,
+                    url: values.url,
+                    token: values.token
+                  })
                 }}
                 deleteOnClick={() => {
-                  removeServer(server.id)
+                  removeServer(server.name)
                   router
                     .push(
                       standardUrlPartial(

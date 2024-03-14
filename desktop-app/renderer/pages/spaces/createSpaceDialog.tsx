@@ -1,4 +1,5 @@
-import AllInputs from '@/components/custom/selectedObject/inputs'
+import { ExchangeAccount } from '@/api/exchangeAccounts/exchangeAccount'
+import CustomForm from '@/components/custom/selectedObject/inputs'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -11,7 +12,6 @@ import {
 
 import { DialogClose } from '@radix-ui/react-dialog'
 import { PlusIcon } from '@radix-ui/react-icons'
-import { RetreivedExchangeAccount } from 'api/exchangeAccounts/exchangeAccount'
 import {
   BaseNapseSpace,
   NapseSpace,
@@ -20,11 +20,13 @@ import {
 } from 'api/spaces/spaces'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import * as z from 'zod'
 
 const defaultSpace: BaseNapseSpace = {
   name: 'My Space',
   description: 'My Space Description',
-  exchange_account: 'BINANCE'
+  exchangeAccount: '7bdd866e-f2a2-4ea9-a01e-02ddb77a80fe',
+  testing: true
 }
 
 export default function CreateSpaceDialog({
@@ -38,7 +40,7 @@ export default function CreateSpaceDialog({
 }): JSX.Element {
   const searchParams = useSearchParams()
   const [possibleExchangeAccounts, setPossibleExchangeAccounts] = useState<
-    RetreivedExchangeAccount[]
+    ExchangeAccount[]
   >([])
   const [space, setSpace] = useState<BaseNapseSpace>(defaultSpace)
 
@@ -57,6 +59,14 @@ export default function CreateSpaceDialog({
     }
   }, [searchParams])
 
+  const ExchangeAccountPossibilitiesSelection = possibleExchangeAccounts.reduce(
+    (obj, item) => {
+      obj[item.uuid] = item.name
+      return obj
+    },
+    {} as { [key: string]: string }
+  )
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -69,7 +79,7 @@ export default function CreateSpaceDialog({
           Add new
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="">
         <DialogHeader>
           <DialogTitle>Add a new Space</DialogTitle>
           <DialogDescription>
@@ -77,48 +87,45 @@ export default function CreateSpaceDialog({
             to provide the name and the exchange account.
           </DialogDescription>
         </DialogHeader>
-        <AllInputs
+        <CustomForm<BaseNapseSpace>
           inputs={[
             {
               label: 'Name',
               key: 'name',
-              type: 'input'
+              type: 'input',
+              zod: z.string(),
+              default: defaultSpace.name
             },
             {
               label: 'Description',
               key: 'description',
-              type: 'input'
+              type: 'input',
+              zod: z.string(),
+              default: defaultSpace.description
             },
             {
-              label: 'Exchange Account',
-              key: 'exchange_account',
-              type: 'input'
+              label: 'Exchange',
+              key: 'exchangeAccount',
+              type: 'select',
+              possibilities: ExchangeAccountPossibilitiesSelection,
+              zod: z.string(),
+              default: Object.keys(ExchangeAccountPossibilitiesSelection)[0]
             }
           ]}
-          object={space}
-          setObject={setSpace}
-          objectName="Space"
+          onSubmit={async (values) => {
+            try {
+              const response = await createSpace(searchParams, {
+                ...defaultSpace,
+                ...values
+              })
+              setSpaces([...spaces, response.data])
+              document.getElementById('close-button')?.click()
+            } catch (error) {
+              console.log(error)
+            }
+          }}
+          buttonDescription="Create"
         />
-        <div className="flex flex-col items-end">
-          <Button
-            className=""
-            type="submit"
-            size="default"
-            onClick={async () => {
-              try {
-                const response = await createSpace(searchParams, {
-                  ...space
-                })
-                setSpaces([...spaces, response.data])
-                document.getElementById('close-button')?.click()
-              } catch (error) {
-                console.log(error)
-              }
-            }}
-          >
-            Create
-          </Button>
-        </div>
       </DialogContent>
       <DialogClose id="close-button" />
     </Dialog>
