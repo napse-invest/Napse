@@ -61,16 +61,17 @@ jobs:
       - name: Get all distributables
         uses: actions/download-artifact@v3
       
-      - name: Unzip distributables
+      - name: Get distributables
         run: |
-          ls
-          cd linux-distributables
-          ls
-          
+          mkdir distributables
+          cp -r linux-distributables/* distributables/
+          cp -r mac-distributables/* distributables/
+          cp -r windows-distributables/* distributables/
+          ls distributables
 
       - name: Filter out .blockmap files
         run: |
-          find desktop-app/dist -name '*.blockmap' -exec rm {} +
+          find distribuables -name '*.blockmap' -exec rm {} +
 
       - name: Publish all artifacts to GitHub Releases
         uses: softprops/action-gh-release@v1
@@ -78,7 +79,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ env.VERSION }}
         with:
-          files: Napse-*
+          files: distributables/*
           tag_name: ${{ env.VERSION }}
           body: ${{ github.event.release.body }}
           draft: false
