@@ -110,15 +110,9 @@ export default function CustomForm<T extends Object>({
   const [sliderValue, setSliderValue] = useState([50])
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleOnSubmit = (values: { [x: string]: any }) => {
-    onSubmit(values)
-    setIsLoading(false)
-  }
-
   return (
     <Form {...form}>
-      {/* <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2"> */}
-      <form className="space-y-2">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         {inputs.map((input, index) => {
           return (
             <FormField
@@ -131,17 +125,16 @@ export default function CustomForm<T extends Object>({
                     <FormLabel>{input.label}</FormLabel>
                     {input.type === 'select' ? (
                       <Select
-                        // onValueChange={field.onChange}
                         onValueChange={(newValue: string) => {
                           input.setter ? input.setter(newValue) : null
                           form.setValue(input.key as string, newValue)
                         }}
-                        defaultValue={field.value}
+                        defaultValue={input.default as string}
                       >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue
-                              placeholder={input.placeholder ?? ''}
+                              placeholder={input.placeholder as string}
                             />
                           </SelectTrigger>
                         </FormControl>
@@ -234,11 +227,12 @@ export default function CustomForm<T extends Object>({
               </Button>
             ) : (
               <Button
-                type="submit"
-                onClick={(e) => {
-                  console.log('props', e)
+                onClick={async (e) => {
                   setIsLoading(true)
-                  return form.handleSubmit(onSubmit)(e)
+                  const submit = form.handleSubmit(onSubmit)(e)
+                  await new Promise((resolve) => setTimeout(resolve, 400))
+                  setIsLoading(false)
+                  return submit
                 }}
               >
                 {buttonDescription ?? 'Submit'}
