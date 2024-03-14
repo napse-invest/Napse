@@ -12,7 +12,7 @@ import {
 import { DialogClose } from '@radix-ui/react-dialog'
 import { PlusIcon } from '@radix-ui/react-icons'
 import {
-  ExchangeAccount,
+  BaseExchangeAccount,
   RetreivedExchangeAccount,
   createExchangeAccount,
   getPossibleExchanges
@@ -21,11 +21,13 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { z } from 'zod'
 
-const defaultExchangeAccount: ExchangeAccount = {
+const defaultExchangeAccount: BaseExchangeAccount = {
   name: 'My Exchange Account',
   description: 'My Exchange Account Description',
   testing: true,
-  exchange: 'BINANCE'
+  exchange: 'BINANCE',
+  privateKey: '',
+  publicKey: ''
 }
 
 export default function CreateExchangeAccountDialog({
@@ -41,9 +43,7 @@ export default function CreateExchangeAccountDialog({
 }): JSX.Element {
   const searchParams = useSearchParams()
   const [possibleExchanges, setPossibleExchanges] = useState<string[]>([])
-  const [exchangeAccount, setExchangeAccount] = useState<ExchangeAccount>(
-    defaultExchangeAccount
-  )
+
   useEffect(() => {
     const fetchPossibleExchanges = async () => {
       try {
@@ -59,6 +59,14 @@ export default function CreateExchangeAccountDialog({
       fetchPossibleExchanges()
     }
   }, [searchParams])
+
+  const ExchangePossibilitiesSelection = possibleExchanges.reduce(
+    (obj, name) => {
+      obj[name] = name
+      return obj
+    },
+    {} as { [key: string]: string }
+  )
 
   return (
     <Dialog>
@@ -80,7 +88,7 @@ export default function CreateExchangeAccountDialog({
             provide the server name and the server URL.
           </DialogDescription>
         </DialogHeader>
-        <CustomForm<ExchangeAccount>
+        <CustomForm<BaseExchangeAccount>
           inputs={[
             {
               label: 'Name',
@@ -100,7 +108,7 @@ export default function CreateExchangeAccountDialog({
               label: 'Exchange',
               key: 'exchange',
               type: 'select',
-              possibilities: possibleExchanges,
+              possibilities: ExchangePossibilitiesSelection,
               zod: z.string(),
               default: defaultExchangeAccount.exchange
             },
@@ -110,6 +118,20 @@ export default function CreateExchangeAccountDialog({
               type: 'switch',
               zod: z.boolean(),
               default: defaultExchangeAccount.testing
+            },
+            {
+              label: 'Public API Key',
+              key: 'publicKey',
+              type: 'input',
+              zod: z.string(),
+              default: defaultExchangeAccount.publicKey
+            },
+            {
+              label: 'Private API Key',
+              key: 'privateKey',
+              type: 'input',
+              zod: z.string(),
+              default: defaultExchangeAccount.privateKey
             }
           ]}
           onSubmit={async (values) => {

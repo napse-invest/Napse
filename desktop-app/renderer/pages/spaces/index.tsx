@@ -14,7 +14,7 @@ import CreateSpaceDialog from './createSpaceDialog'
 export default function Spaces(): JSX.Element {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const [Spaces, setSpaces] = useState<NapseSpace[]>([])
+  const [spaces, setSpaces] = useState<NapseSpace[]>([])
   const [currentKey, setCurrentKey] = useState<Key>()
 
   useEffect(() => {
@@ -51,20 +51,20 @@ export default function Spaces(): JSX.Element {
         }
       >
         <div className="my-10 grid max-w-screen-xl grid-cols-3 gap-6">
-          {Spaces.map((space, index) => (
+          {spaces.map((space, index) => (
             <ValuePanelCard
               key={index}
               title={space.name}
               value={space.value}
               delta={space.delta}
               onClick={() => {
-                console.log('space', space.uuid)
+                // console.log('space', space.uuid)
                 router.push(
                   standardUrlPartial(
                     '/spaces/',
                     space.uuid,
                     {
-                      exchangeAccount: space.exchange_account,
+                      exchangeAccount: space.exchangeAccount,
                       space: space.uuid,
                       fleet: '',
                       bot: ''
@@ -84,7 +84,7 @@ export default function Spaces(): JSX.Element {
             }
             textContent={
               <CreateSpaceDialog
-                spaces={Spaces}
+                spaces={spaces}
                 setSpaces={setSpaces}
                 disabledButton={currentKey?.is_master_key ? false : true}
               />

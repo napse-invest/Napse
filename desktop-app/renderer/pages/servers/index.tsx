@@ -8,6 +8,7 @@ import { standardUrlPartial } from '@/lib/queryParams'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import AddNewServerDialog from './AddNewServerDialog'
 
 export default function Servers(): JSX.Element {
   const router = useRouter()
@@ -41,9 +42,9 @@ export default function Servers(): JSX.Element {
                 .push(
                   standardUrlPartial(
                     '/servers/',
-                    server.id,
+                    server.name,
                     {
-                      server: server.id,
+                      server: server.name,
                       exchangeAccount: '',
                       space: '',
                       fleet: '',
@@ -70,7 +71,18 @@ export default function Servers(): JSX.Element {
           'Here is an overview of all your servers. Select one in order to start using Napse!'
         }
       >
-        <div className="my-10 grid grid-cols-3 gap-6">{cards}</div>
+        <div className="my-10 grid grid-cols-3 gap-6">
+          <>
+            {cards}
+            <InfoPanelCard
+              cardType={'button'}
+              tooltip={'Add a new server'}
+              textContent={
+                <AddNewServerDialog servers={servers} setServers={setServers} />
+              }
+            />
+          </>
+        </div>
       </DefaultPageLayout>
     </ContextHeader>
   )

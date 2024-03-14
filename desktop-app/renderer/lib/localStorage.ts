@@ -1,7 +1,6 @@
 interface Server {
   name: string
   url: string
-  id: string
   token: string
 }
 
@@ -9,62 +8,62 @@ function addServer(
   name: string,
   url: string,
   token: string
-): number | undefined {
-  if (typeof window !== 'undefined') {
-    if (!localStorage.servers) {
-      localStorage.servers = JSON.stringify({})
-    }
-    var id = 0
-    const servers = JSON.parse(localStorage.servers)
-    while (servers[id]) {
-      id++
-    }
-    servers[id] = { name, url, token }
-    localStorage.servers = JSON.stringify(servers)
-    return id
-  }
-}
-
-function removeServer(id: string): void {
+): string | undefined {
   if (typeof window !== 'undefined') {
     if (!localStorage.servers) {
       localStorage.servers = JSON.stringify({})
     }
     const servers = JSON.parse(localStorage.servers)
-    delete servers[id]
+    if (Object.keys(servers).includes(name)) {
+      return
+    }
+    servers[name] = { name, url, token }
     localStorage.servers = JSON.stringify(servers)
+    return name
   }
 }
 
 function updateServer(server: Server) {
+  console.log(server)
   if (typeof window !== 'undefined') {
     if (!localStorage.servers) {
       localStorage.servers = JSON.stringify({})
     }
     const servers = JSON.parse(localStorage.servers)
-    servers[server.id] = {
+    servers[server.name] = {
       name: server.name,
       url: server.url,
       token: server.token
     }
+    console.log(servers)
     localStorage.servers = JSON.stringify(servers)
   }
 }
 
-function getServer(id: string): Server {
+function removeServer(name: string): void {
+  if (typeof window !== 'undefined') {
+    if (!localStorage.servers) {
+      localStorage.servers = JSON.stringify({})
+    }
+    const servers = JSON.parse(localStorage.servers)
+    delete servers[name]
+    localStorage.servers = JSON.stringify(servers)
+  }
+}
+
+function getServer(name: string): Server {
   if (typeof window !== 'undefined') {
     if (!localStorage.servers) {
       localStorage.servers = JSON.stringify({})
     }
     return {
-      id: id.toString() || '',
       name: '',
       url: '',
       token: '',
-      ...JSON.parse(localStorage.servers)[id]
+      ...JSON.parse(localStorage.servers)[name]
     }
   }
-  return { name: '', url: '', id: '', token: '' }
+  return { name: '', url: '', token: '' }
 }
 
 function getServers(): Record<string, Server> {
@@ -72,14 +71,60 @@ function getServers(): Record<string, Server> {
     if (!localStorage.servers) {
       localStorage.servers = JSON.stringify({})
     }
-    const parsed = JSON.parse(localStorage.servers)
-    Object.keys(parsed).map((key) => {
-      parsed[key]['id'] = key.toString()
-    })
-    return parsed
+    return JSON.parse(localStorage.servers)
   }
   return {}
 }
 
-export { addServer, getServer, getServers, removeServer, updateServer }
+function getLastUpdateDateCheck(provider: string): string {
+  if (typeof window !== 'undefined') {
+    if (!localStorage.updates) {
+      localStorage.updates = JSON.stringify({})
+    }
+    if (!localStorage.updates[provider]) {
+      const updates = JSON.parse(localStorage.updates)
+      updates[provider] = {}
+      localStorage.updates = JSON.stringify(updates)
+    }
+    const updates = JSON.parse(localStorage.updates)
+    if (!updates[provider].lastUpdateDateCheck) {
+      updates[provider].lastUpdateDateCheck = new Date(0)
+      updates[provider].updateable = false
+      localStorage.updates = JSON.stringify(updates)
+    }
+    return JSON.parse(localStorage.updates)[provider].lastUpdateDateCheck
+  }
+  return ''
+}
+
+function updateLastUpdateDateCheck(
+  provider: string,
+  updateable: boolean
+): void {
+  if (typeof window !== 'undefined') {
+    if (!localStorage.updates) {
+      localStorage.updates = JSON.stringify({})
+    }
+    if (!localStorage.updates[provider]) {
+      const updates = JSON.parse(localStorage.updates)
+      updates[provider] = {}
+      localStorage.updates = JSON.stringify(updates)
+    }
+    const updates = JSON.parse(localStorage.updates)
+
+    updates[provider].lastUpdateDateCheck = new Date()
+    updates[provider].updateable = updateable
+    localStorage.updates = JSON.stringify(updates)
+  }
+}
+
+export {
+  addServer,
+  getLastUpdateDateCheck,
+  getServer,
+  getServers,
+  removeServer,
+  updateLastUpdateDateCheck,
+  updateServer
+}
 export type { Server }

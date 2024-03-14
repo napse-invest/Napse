@@ -1,16 +1,21 @@
+import { convertInterfaceToSnakeCaseDict } from '@/api/request'
 import { request } from 'api/request'
 import { AxiosResponse } from 'axios'
 import { useSearchParams } from 'next/navigation'
 
-export interface ExchangeAccount {
+export interface BaseExchangeAccount {
   name: string
   description: string
   exchange: string
   testing: boolean
+  privateKey: string
+  publicKey: string
 }
-export interface RetreivedExchangeAccount extends ExchangeAccount {
+export interface ExchangeAccount extends BaseExchangeAccount {
   uuid: string
 }
+export interface RetreivedExchangeAccount
+  extends Omit<Omit<ExchangeAccount, 'privateKey'>, 'publicKey'> {}
 
 export async function getExchangeAccount(
   searchParams: ReturnType<typeof useSearchParams>,
@@ -33,13 +38,14 @@ export async function listExchangeAccount(
 
 export async function createExchangeAccount(
   searchParams: ReturnType<typeof useSearchParams>,
-  data: ExchangeAccount
+  data: BaseExchangeAccount
 ): Promise<AxiosResponse<RetreivedExchangeAccount>> {
+  const formatedData = convertInterfaceToSnakeCaseDict(data)
   const response = await request(
     searchParams,
     'POST',
     '/api/exchange_account/',
-    data
+    formatedData
   )
   return response as AxiosResponse<RetreivedExchangeAccount>
 }
