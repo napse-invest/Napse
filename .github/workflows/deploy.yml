@@ -42,7 +42,7 @@ jobs:
           cmd: build # will run `yarn build` command (for each os)
           dir: desktop-app
       
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.platform }}-distributables
           path: desktop-app/dist/Napse-*
