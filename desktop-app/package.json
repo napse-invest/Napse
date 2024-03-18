@@ -51,7 +51,7 @@
     "@tanstack/react-table": "^8.13.2",
     "@tremor/react": "^3.14.1",
     "add": "^2.0.6",
-    "axios": "^1.6.0",
+    "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "^0.2.1",
