@@ -19,7 +19,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@babel/traverse": "^7.23.2",
+    "@babel/traverse": "^7.24.1",
     "@aws-sdk/client-ec2": "^3.535.0",
     "@aws-sdk/client-elastic-beanstalk": "^3.535.0",
     "@aws-sdk/client-iam": "^3.485.0",
