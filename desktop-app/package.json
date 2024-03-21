@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@babel/traverse": "^7.24.1",
-    "@aws-sdk/client-ec2": "^3.535.0",
+    "@aws-sdk/client-ec2": "^3.537.0",
     "@aws-sdk/client-elastic-beanstalk": "^3.535.0",
     "@aws-sdk/client-iam": "^3.485.0",
     "@aws-sdk/client-s3": "^3.484.0",

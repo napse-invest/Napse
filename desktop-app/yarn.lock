@@ -107,10 +107,10 @@
     "@aws-sdk/util-utf8-browser" "^3.0.0"
     tslib "^1.11.1"
 
-"@aws-sdk/client-ec2@^3.535.0":
-  version "3.535.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-ec2/-/client-ec2-3.535.0.tgz#9d822af92504217738bd82db00a64ba407d6824d"
-  integrity sha512-+skOL8YtQBrYS0bN2MH2H/UCcLGwxSFFD4Vb1uZRCFz0z5cMzblIf+rrTRYXeiW3XZw2XdCxbK7/V0TGxc9RTA==
+"@aws-sdk/client-ec2@^3.537.0":
+  version "3.537.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-ec2/-/client-ec2-3.537.0.tgz#6e198a85a726bf8cf50cbf94d3376af327618e87"
+  integrity sha512-o0/MYeezLL1kthZFyStu5uZ8kstdfjPVwK5ct5phAmrCow8O34t1PkPtPRJ75V0Y1AmOR2S6/X+Bv0Sh9ftcIQ==
   dependencies:
     "@aws-crypto/sha256-browser" "3.0.0"
     "@aws-crypto/sha256-js" "3.0.0"
