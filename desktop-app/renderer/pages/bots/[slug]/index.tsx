@@ -1,6 +1,8 @@
 import { RetrievedBot, Statistics, retrieveBot } from '@/api/bots/bots'
+import CurrencyDataDialog from '@/components/custom/data-table/currencyDialog'
 import ContextHeader from '@/components/layout/contextHeader'
 import DefaultPageLayout from '@/components/layout/defaultPageLayout'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -16,7 +18,8 @@ import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { fakeDashboardData } from '@/lib/fakeDashboardData'
 import { standardUrlPartial } from '@/lib/queryParams'
-import { AreaChart, DonutChart, Metric } from '@tremor/react'
+import { ArrowUpRightIcon } from '@heroicons/react/24/outline'
+import { AreaChart, DonutChart, Icon, Metric } from '@tremor/react'
 import { format } from 'date-fns'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -25,9 +28,15 @@ const valueFormatter = (number: number) =>
   `$${Intl.NumberFormat('us').format(number).toString()}`
 
 function formatCurrencyValue(value: number): string {
-  return `$${value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
+  if (value >= 0) {
+    return `+$${value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
+  }
+  return `-$${(-value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`
 }
 function formatDeltaValue(value: number): string {
+  if (value >= 0) {
+    return `+${value.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,')}%`
+  }
   return `${value.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,')}%`
 }
 
@@ -70,7 +79,7 @@ export default function Bot(): JSX.Element {
       fetchBot()
     }
   }, [botID, searchParams, router])
-  console.log(bot)
+  console.log('BOT::', bot)
 
   if (!bot) {
     // TODO: setup a squeleton or a loader
@@ -83,20 +92,32 @@ export default function Bot(): JSX.Element {
     value: currency.value
   }))
 
-  const investPercentKey: string = 'invested_percent'
+  const {
+    ['invested_percent']: investPercent,
+    ['diff_30']: diff30,
+    ['delta_30']: delta30,
+    ...statistics
+  } = bot.statistics as Statistics
 
-  // Création d'un nouvel objet sans la clé spécifiée
-  const { [investPercentKey]: investPercent, ...statistics } =
-    bot.statistics as Statistics
+  // Make history data
+  const data = []
+  for (let dataPoint of bot.wallet?.history?.data_points || []) {
+    const value = dataPoint.fields.find((field) => field.key === 'WALLET_VALUE')
+      ?.value
+    console.log('value::', value)
+    const date = dataPoint.created_at
+    const obj = { date, value }
+    data.push(obj)
+  }
+  const formatedData = data.map((item) => {
+    return { ...item, date: format(item.date, 'd MMM yy') }
+  })
+
+  console.log('formatedData::', formatedData)
 
   return (
     <ContextHeader isBot>
-      <DefaultPageLayout
-        header={bot.name}
-        description={
-          'Bots look to make your money grow while you do something else.'
-        }
-      >
+      <DefaultPageLayout header={bot.name} description={''}>
         <Tabs defaultValue="wallet" className="w-full">
           <TabsList>
             <TabsTrigger value="wallet">Wallet</TabsTrigger>
@@ -105,6 +126,9 @@ export default function Bot(): JSX.Element {
             </TabsTrigger>
             <TabsTrigger value="orders" disabled>
               Orders
+            </TabsTrigger>
+            <TabsTrigger value="settings" disabled>
+              Settings
             </TabsTrigger>
           </TabsList>
           <TabsContent value="wallet" className="mt-8 flex flex-row gap-6">
@@ -116,13 +140,23 @@ export default function Bot(): JSX.Element {
                   <HoverCard>
                     <HoverCardTrigger>
                       <div className="flex flex-row gap-2">
-                        {/* TODO: Color depending of value (+ || -) */}
-                        <div className="text-emerald-700 dark:text-emerald-500">
-                          {/* TODO: dynamic stat from backend */}
-                          +$430.90
+                        <div
+                          className={`text-${
+                            (diff30 as number) >= 0
+                              ? 'text-emerald-700 dark:text-emerald-500'
+                              : 'text-red-700 dark:text-red-500'
+                          }`}
+                        >
+                          {formatCurrencyValue(diff30 as number)}
                         </div>
-                        <div className="text-emerald-700 dark:text-emerald-500">
-                          ({formatDeltaValue(bot?.delta as number)})
+                        <div
+                          className={`text-${
+                            (delta30 as number) >= 0
+                              ? 'text-emerald-700 dark:text-emerald-500'
+                              : 'text-red-700 dark:text-red-500'
+                          }`}
+                        >
+                          ({formatDeltaValue(delta30 as number)})
                         </div>
                       </div>
                     </HoverCardTrigger>
@@ -134,7 +168,8 @@ export default function Bot(): JSX.Element {
               </CardHeader>
               <CardContent className="">
                 <AreaChart
-                  data={formattedFakeDashboardData}
+                  // data={formattedFakeDashboardData}
+                  data={formatedData}
                   index="date"
                   categories={['value']}
                   colors={['blue', 'violet', 'fuchsia']}
@@ -156,13 +191,13 @@ export default function Bot(): JSX.Element {
                               <div>{statName}</div>
                               <div>{statValue}</div>
                             </div>
-                            <Separator className="my-2" />
+                            <Separator className="my-3" />
                           </div>
                         )
                       }
                     )}
                   </div>
-                  <div className="flex flex-row justify-center">
+                  <div className="flex flex-col items-center">
                     <DonutChart
                       data={simpleCurrencies}
                       showAnimation={true}
@@ -172,6 +207,22 @@ export default function Bot(): JSX.Element {
                       valueFormatter={valueFormatter}
                       className="mx-20 w-44"
                     />
+                    <div className="mt-2">
+                      <CurrencyDataDialog
+                        trigger={
+                          <Button variant="ghost" onClick={() => {}}>
+                            Details
+                            <Icon
+                              size="xs"
+                              icon={ArrowUpRightIcon}
+                              variant="simple"
+                              className="icon-md"
+                            />
+                          </Button>
+                        }
+                        wallet={bot.wallet}
+                      />
+                    </div>
                   </div>
                 </div>
               </CardContent>

@@ -1,4 +1,4 @@
-import { RetrievedNapseSpace } from '@/api/spaces/spaces'
+import { Wallet } from '@/api/wallets/wallets'
 import {
   Dialog,
   DialogContent,
@@ -13,12 +13,12 @@ import CurrencyDataTable, { currencyColumns } from './currencyDataTable'
 
 export default function CurrencyDataDialog({
   trigger,
-  space
+  wallet
 }: {
   trigger: ReactNode
-  space: RetrievedNapseSpace
+  wallet: Wallet
 }): JSX.Element {
-  const currencies: Currency[] = space ? space['wallet']['currencies'] : []
+  const currencies: Currency[] = wallet ? wallet['currencies'] : []
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>

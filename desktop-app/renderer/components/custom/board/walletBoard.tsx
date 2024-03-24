@@ -106,7 +106,7 @@ export default function WalletBoard({
                 />
               </Button>
             }
-            space={space}
+            wallet={space.wallet}
           />
         </CardFooter>
       </Card>
