@@ -1,4 +1,4 @@
-import { Fleet, createFleet } from '@/api/fleets/fleets'
+import { Cluster, Fleet, createFleet } from '@/api/fleets/fleets'
 import { NapseSpace, listSpace } from '@/api/spaces/spaces'
 import { Button } from '@/components/ui/button'
 import { DialogClose } from '@radix-ui/react-dialog'
@@ -11,7 +11,6 @@ import { PlusIcon } from '@radix-ui/react-icons'
 import { FieldValues, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
-import { Cluster } from '@/api/fleets/fleets'
 import {
   Carousel,
   CarouselContent,

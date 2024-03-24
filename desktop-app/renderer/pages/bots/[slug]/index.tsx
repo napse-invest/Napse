@@ -1,4 +1,4 @@
-import { RetrievedBot, retrieveBot } from '@/api/bots/bots'
+import { RetrievedBot, Statistics, retrieveBot } from '@/api/bots/bots'
 import ContextHeader from '@/components/layout/contextHeader'
 import DefaultPageLayout from '@/components/layout/defaultPageLayout'
 import {
@@ -83,6 +83,12 @@ export default function Bot(): JSX.Element {
     value: currency.value
   }))
 
+  const investPercentKey: string = 'invested_percent'
+
+  // Création d'un nouvel objet sans la clé spécifiée
+  const { [investPercentKey]: investPercent, ...statistics } =
+    bot.statistics as Statistics
+
   return (
     <ContextHeader isBot>
       <DefaultPageLayout
@@ -140,9 +146,9 @@ export default function Bot(): JSX.Element {
                   className="mt-6 hidden h-96 sm:block"
                 />
                 <div className="my-4 text-base font-medium">Summary</div>
-                <div className="grid grid-cols-3 items-center gap-10">
-                  <div className="col-span-2">
-                    {Object.entries(bot.statistics || {}).map(
+                <div className="flex flex-row items-center gap-10">
+                  <div className="w-full px-6">
+                    {Object.entries(statistics || {}).map(
                       ([statName, statValue], index) => {
                         return (
                           <div key={index}>
@@ -156,16 +162,16 @@ export default function Bot(): JSX.Element {
                       }
                     )}
                   </div>
-                  <div className="flex flex-row justify-around">
+                  <div className="flex flex-row justify-center">
                     <DonutChart
                       data={simpleCurrencies}
-                      showAnimation={false}
+                      showAnimation={true}
                       category="value"
                       index="ticker"
+                      label={`${investPercent}% invested`}
                       valueFormatter={valueFormatter}
-                      className="col-span-1 min-h-0 w-44 min-w-0" // warning appear in console
+                      className="mx-20 w-44"
                     />
-                    <div></div>
                   </div>
                 </div>
               </CardContent>

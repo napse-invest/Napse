@@ -4,8 +4,8 @@ import { request } from 'api/request'
 import { AxiosResponse } from 'axios'
 import { useSearchParams } from 'next/navigation'
 
-interface Statistics {
-  [key: string]: number
+export interface Statistics {
+  [key: string]: number | string
 }
 
 export interface Bot {
