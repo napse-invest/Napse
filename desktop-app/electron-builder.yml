@@ -1,6 +1,5 @@
 appId: com.example.nextron
 productName: Napse
-copyright: Copyright © 2018 Yoshihide Shiono
 directories:
   output: dist
   buildResources: resources
@@ -11,7 +10,16 @@ files:
       - app
 
 linux:
-  target: deb
+  target: ["deb", "AppImage", "zip"]
+  category: "Finance"
+  artifactName: "Napse-${os}-${arch}-${version}.${ext}"
 
+mac:
+  target: ["dmg"]
+  artifactName: "Napse-${os}-${arch}-${version}.${ext}"
+
+win:
+  target: ["nsis", "zip"]
+  artifactName: "Napse-${os}-${arch}-${version}.${ext}"
 
 publish: null

@@ -4,35 +4,88 @@ on:
   release:
     types: [published]
 
-
-
 jobs:
-  release:
-    runs-on: ${{ matrix.os }}
-
+  build:
+    name: Build
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
-
+        include:
+          - platform: mac
+            os: "macos-12"
+          - platform: linux
+            os: "ubuntu-22.04"
+          - platform: windows
+            os: "windows-2022"
+    runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          ref: ${{ github.event.release.target_commitish }}
 
-      - name: Setup Node.js
+      - name: Settp Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18.x
-          
-
-      - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
+          node-version: 20
+      
+      - name: Run install
+        uses: borales/actions-yarn@v5
         with:
-          # GitHub token, automatically provided to the action
-          # (No need to define this secret in the repo settings)
-          github_token: ${{ secrets.github_token }}
+          cmd: install --network-timeout 1000000  # will run `yarn install` command
+          dir: desktop-app
+      - name: Update package.json
+        run: |
+          ./set-version.sh
 
-          # If the commit is tagged with a version (e.g. "v1.0.0"),
-          # release the app after building
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+      - name: Build production bundle
+        uses: borales/actions-yarn@v5
+        with:
+          cmd: build # will run `yarn build` command (for each os)
+          dir: desktop-app
+      
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.platform }}-distributables
+          path: desktop-app/dist/Napse-*
+          if-no-files-found: error
+  publish:
+    name: Publish
+    runs-on: "ubuntu-22.04"
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.target_commitish }}
+          
+      - name: Get all distributables
+        uses: actions/download-artifact@v4
+      
+      - name: Get distributables
+        run: |
+          mkdir distributables
+          cp -r linux-distributables/* distributables/
+          cp -r mac-distributables/* distributables/
+          cp -r windows-distributables/* distributables/
+          ls distributables
+      
+      - name: Filter out .blockmap files
+        run: |
+          find distributables -name '*.blockmap' -exec rm {} +
+
+      - name: Tag Docker image
+        run: |
+          TAG_NAME=$(grep -oP '(?<=# \[)[^\]]+' CHANGELOG.md | head -n 1)
+          VERSION=v$TAG_NAME
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Publish all artifacts to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ env.VERSION }}
+        with:
+          files: distributables/*
+          tag_name: ${{ env.VERSION }}
+          body: ${{ github.event.release.body }}
+          draft: false
+          prerelease: false
+

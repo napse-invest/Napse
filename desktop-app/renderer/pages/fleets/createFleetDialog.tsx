@@ -86,7 +86,8 @@ export default function CreateFleetDialog({
 
   const defaultValues = {
     name: 'Fleet Name',
-    space: Object.keys(napseSpacePossibilitiesSelection)[0]
+    space: searchParams.get('space') as string
+    // space: Object.keys(napseSpacePossibilitiesSelection)[0]
   }
 
   const form = useForm<z.infer<typeof FleetSchema>>({
@@ -119,7 +120,7 @@ export default function CreateFleetDialog({
         space: values.space,
         clusters: Clusters
       }
-      console.log('fleetData::', fleetData)
+      console.log('fleetData::', values.space)
 
       const response = await createFleet(searchParams, fleetData)
       setFleets([...fleets, response.data])
@@ -152,7 +153,7 @@ export default function CreateFleetDialog({
       <DialogContent className="">
         <Form {...form}>
           <form
-            // onSubmit={form.handleSubmit(onSubmitFleet)}
+            onSubmit={form.handleSubmit(onSubmitFleet)}
             className="space-y-2"
           >
             <Carousel className="">
@@ -223,12 +224,7 @@ export default function CreateFleetDialog({
                       clusters={Clusters}
                       setClusters={setClusters}
                     />
-                    <Button
-                      type="submit"
-                      onClick={form.handleSubmit(onSubmitFleet)}
-                    >
-                      Create
-                    </Button>
+                    <Button type="submit">Create</Button>
                   </div>
                 </CarouselItem>
               </CarouselContent>

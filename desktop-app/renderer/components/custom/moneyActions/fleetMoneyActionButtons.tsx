@@ -22,7 +22,6 @@ export default function FleetMoneyActionButtons({
 }: {
   fleet: RetrievedFleet
 }): JSX.Element {
-  console.log('fleet::', fleet)
   return (
     <>
       {fleet.testing && (
