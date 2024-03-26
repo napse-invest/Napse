@@ -2,8 +2,10 @@ import { connectKey } from '@/api/key/key'
 import InfoPanelCard from '@/components/custom/panel/infoPanelCard'
 import ContextHeader from '@/components/layout/contextHeader'
 import DefaultPageLayout from '@/components/layout/defaultPageLayout'
+import fs from 'fs'
+import path from 'path'
 
-import { Server, getServers } from '@/lib/localStorage'
+import { Server, getServers, updateServer } from '@/lib/localStorage'
 import { standardUrlPartial } from '@/lib/queryParams'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
@@ -62,6 +64,25 @@ export default function Servers(): JSX.Element {
       })
     ).then(setCards)
   }, [servers, router, searchParams])
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production') return
+    const rootPath = process.env.HOME || process.env.USERPROFILE
+    if (!rootPath) throw new Error('No root path found')
+
+    const filePath = path.join(rootPath, '.napse-dev', 'api-keys.json')
+    const dirPath = path.dirname(filePath)
+    if (!fs.existsSync(dirPath)) {
+      return
+    }
+    const file = fs.readFileSync(filePath, 'utf8')
+    const data = JSON.parse(file)
+    // iterate over keys and values
+    Object.keys(data).forEach((key) => {
+      const server = data[key]
+      updateServer({ name: key, url: server.url, token: server.token })
+    })
+  }, [])
 
   return (
     <ContextHeader isServer>

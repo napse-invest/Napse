@@ -24,7 +24,6 @@ function addServer(
 }
 
 function updateServer(server: Server) {
-  console.log(server)
   if (typeof window !== 'undefined') {
     if (!localStorage.servers) {
       localStorage.servers = JSON.stringify({})
@@ -35,7 +34,6 @@ function updateServer(server: Server) {
       url: server.url,
       token: server.token
     }
-    console.log(servers)
     localStorage.servers = JSON.stringify(servers)
   }
 }
