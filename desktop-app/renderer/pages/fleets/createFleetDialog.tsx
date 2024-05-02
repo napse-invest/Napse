@@ -86,7 +86,8 @@ export default function CreateFleetDialog({
 
   const defaultValues = {
     name: 'Fleet Name',
-    space: Object.keys(napseSpacePossibilitiesSelection)[0]
+    space: searchParams.get('space') as string
+    // space: Object.keys(napseSpacePossibilitiesSelection)[0]
   }
 
   const form = useForm<z.infer<typeof FleetSchema>>({
@@ -119,7 +120,7 @@ export default function CreateFleetDialog({
         space: values.space,
         clusters: Clusters
       }
-      console.log('fleetData::', fleetData)
+      console.log('fleetData::', values.space)
 
       const response = await createFleet(searchParams, fleetData)
       setFleets([...fleets, response.data])

@@ -417,10 +417,10 @@ export default function Settings(): JSX.Element {
                       {!isDeployed
                         ? 'Warning: No server deployed'
                         : !isReadyToUpdate
-                        ? 'Warning: Server not ready'
-                        : !hasAvailableUpdate
-                        ? 'Warning: No updates available'
-                        : ''}
+                          ? 'Warning: Server not ready'
+                          : !hasAvailableUpdate
+                            ? 'Warning: No updates available'
+                            : ''}
                     </div>
                   </CardHeader>
                   <CardContent className="flex flex-col items-center justify-center">
@@ -473,8 +473,8 @@ export default function Settings(): JSX.Element {
                       {!isDeployed
                         ? 'Warning: No server deployed'
                         : !isReadyToUpdate
-                        ? 'Warning: Server not ready'
-                        : ''}
+                          ? 'Warning: Server not ready'
+                          : ''}
                     </div>
                   </CardHeader>
 
@@ -518,8 +518,8 @@ export default function Settings(): JSX.Element {
                       {!isDeployed
                         ? 'Warning: No server deployed'
                         : !isReadyToUpdate
-                        ? 'Warning: Server not ready'
-                        : ''}
+                          ? 'Warning: Server not ready'
+                          : ''}
                     </div>
                   </CardHeader>
                   <CardContent className="flex flex-col items-center justify-center">
