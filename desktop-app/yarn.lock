@@ -9359,10 +9359,17 @@ randombytes@^2.1.0:
   dependencies:
     safe-buffer "^5.1.0"
 
-react-day-picker@^8.10.0, react-day-picker@^8.9.1:
+react-day-picker@^8.9.1:
   version "8.10.0"
   resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-8.10.0.tgz#729c5b9564967a924213978fb9c0751884a60595"
   integrity sha512-mz+qeyrOM7++1NCb1ARXmkjMkzWVh2GL9YiPbRjKe0zHccvekk4HE+0MPOZOrosn8r8zTHIIeOUXTmXRqmkRmg==
+
+react-day-picker@^9.0.6:
+  version "9.0.6"
+  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-9.0.6.tgz#e711a861998ec521d1cb81ad193a772a9af4f6d6"
+  integrity sha512-q4TUrUgA/TZbtrnoXYZrcQRky+HUHqnRmsldDG/jjsYQQehmQPRv4gWihEMrmcfI3sVWQlhUXx3bbnCYhfVMiA==
+  dependencies:
+    date-fns "^3.6.0"
 
 react-dom@^18.2.0:
   version "18.2.0"
